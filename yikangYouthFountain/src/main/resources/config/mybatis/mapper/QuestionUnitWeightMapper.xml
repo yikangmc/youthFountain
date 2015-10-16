@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yikangyiliao.pension.dao.QuestionUnitWeightDao" >
+  <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.QuestionUnitWeight" >
+    <id column="question_unit_weight_id" property="questionUnitWeightId" jdbcType="BIGINT" />
+    <result column="question_portrait_id" property="questionPortraitId" jdbcType="VARCHAR" />
+    <result column="weight_value" property="weightValue" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    question_unit_weight_id, question_portrait_id, weight_value, create_time, update_time, 
+    create_user_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from question_unit_weights
+    where question_unit_weight_id = #{questionUnitWeightId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from question_unit_weights
+    where question_unit_weight_id = #{questionUnitWeightId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yikangyiliao.pension.entity.QuestionUnitWeight" >
+    insert into question_unit_weights (question_unit_weight_id, question_portrait_id, 
+      weight_value, create_time, update_time, 
+      create_user_id)
+    values (#{questionUnitWeightId,jdbcType=BIGINT}, #{questionPortraitId,jdbcType=VARCHAR}, 
+      #{weightValue,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, 
+      #{createUserId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.QuestionUnitWeight" >
+    insert into question_unit_weights
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="questionUnitWeightId != null" >
+        question_unit_weight_id,
+      </if>
+      <if test="questionPortraitId != null" >
+        question_portrait_id,
+      </if>
+      <if test="weightValue != null" >
+        weight_value,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createUserId != null" >
+        create_user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="questionUnitWeightId != null" >
+        #{questionUnitWeightId,jdbcType=BIGINT},
+      </if>
+      <if test="questionPortraitId != null" >
+        #{questionPortraitId,jdbcType=VARCHAR},
+      </if>
+      <if test="weightValue != null" >
+        #{weightValue,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yikangyiliao.pension.entity.QuestionUnitWeight" >
+    update question_unit_weights
+    <set >
+      <if test="questionPortraitId != null" >
+        question_portrait_id = #{questionPortraitId,jdbcType=VARCHAR},
+      </if>
+      <if test="weightValue != null" >
+        weight_value = #{weightValue,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where question_unit_weight_id = #{questionUnitWeightId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yikangyiliao.pension.entity.QuestionUnitWeight" >
+    update question_unit_weights
+    set question_portrait_id = #{questionPortraitId,jdbcType=VARCHAR},
+      weight_value = #{weightValue,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      create_user_id = #{createUserId,jdbcType=VARCHAR}
+    where question_unit_weight_id = #{questionUnitWeightId,jdbcType=BIGINT}
+  </update>
+</mapper>

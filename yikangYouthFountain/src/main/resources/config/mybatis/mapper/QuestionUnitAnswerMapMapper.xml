@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yikangyiliao.pension.dao.QuestionUnitAnswerMapDao" >
+  <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.QuestionUnitAnswerMap" >
+    <id column="question_crosswise_portrait_answer_id" property="questionCrosswisePortraitAnswerId" jdbcType="BIGINT" />
+    <result column="answer_id" property="answerId" jdbcType="BIGINT" />
+    <result column="question_portrait_group" property="questionPortraitGroup" jdbcType="BIGINT" />
+    <result column="question_crosswise_group" property="questionCrosswiseGroup" jdbcType="BIGINT" />
+    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
+    <result column="answer_type" property="answerType" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    question_crosswise_portrait_answer_id, answer_id, question_portrait_group, question_crosswise_group, 
+    is_delete, answer_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from question_unit_answer_maps
+    where question_crosswise_portrait_answer_id = #{questionCrosswisePortraitAnswerId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from question_unit_answer_maps
+    where question_crosswise_portrait_answer_id = #{questionCrosswisePortraitAnswerId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yikangyiliao.pension.entity.QuestionUnitAnswerMap" >
+    insert into question_unit_answer_maps (question_crosswise_portrait_answer_id, answer_id, 
+      question_portrait_group, question_crosswise_group, 
+      is_delete, answer_type)
+    values (#{questionCrosswisePortraitAnswerId,jdbcType=BIGINT}, #{answerId,jdbcType=BIGINT}, 
+      #{questionPortraitGroup,jdbcType=BIGINT}, #{questionCrosswiseGroup,jdbcType=BIGINT}, 
+      #{isDelete,jdbcType=TINYINT}, #{answerType,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.QuestionUnitAnswerMap" >
+    insert into question_unit_answer_maps
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="questionCrosswisePortraitAnswerId != null" >
+        question_crosswise_portrait_answer_id,
+      </if>
+      <if test="answerId != null" >
+        answer_id,
+      </if>
+      <if test="questionPortraitGroup != null" >
+        question_portrait_group,
+      </if>
+      <if test="questionCrosswiseGroup != null" >
+        question_crosswise_group,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="answerType != null" >
+        answer_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="questionCrosswisePortraitAnswerId != null" >
+        #{questionCrosswisePortraitAnswerId,jdbcType=BIGINT},
+      </if>
+      <if test="answerId != null" >
+        #{answerId,jdbcType=BIGINT},
+      </if>
+      <if test="questionPortraitGroup != null" >
+        #{questionPortraitGroup,jdbcType=BIGINT},
+      </if>
+      <if test="questionCrosswiseGroup != null" >
+        #{questionCrosswiseGroup,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="answerType != null" >
+        #{answerType,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yikangyiliao.pension.entity.QuestionUnitAnswerMap" >
+    update question_unit_answer_maps
+    <set >
+      <if test="answerId != null" >
+        answer_id = #{answerId,jdbcType=BIGINT},
+      </if>
+      <if test="questionPortraitGroup != null" >
+        question_portrait_group = #{questionPortraitGroup,jdbcType=BIGINT},
+      </if>
+      <if test="questionCrosswiseGroup != null" >
+        question_crosswise_group = #{questionCrosswiseGroup,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="answerType != null" >
+        answer_type = #{answerType,jdbcType=TINYINT},
+      </if>
+    </set>
+    where question_crosswise_portrait_answer_id = #{questionCrosswisePortraitAnswerId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yikangyiliao.pension.entity.QuestionUnitAnswerMap" >
+    update question_unit_answer_maps
+    set answer_id = #{answerId,jdbcType=BIGINT},
+      question_portrait_group = #{questionPortraitGroup,jdbcType=BIGINT},
+      question_crosswise_group = #{questionCrosswiseGroup,jdbcType=BIGINT},
+      is_delete = #{isDelete,jdbcType=TINYINT},
+      answer_type = #{answerType,jdbcType=TINYINT}
+    where question_crosswise_portrait_answer_id = #{questionCrosswisePortraitAnswerId,jdbcType=BIGINT}
+  </update>
+</mapper>

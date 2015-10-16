@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yikangyiliao.pension.dao.QuestionSurveyMapDao" >
+  <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.QuestionSurveyMap" >
+    <id column="question_survey_id" property="questionSurveyId" jdbcType="BIGINT" />
+    <result column="question_id" property="questionId" jdbcType="BIGINT" />
+    <result column="survey_id" property="surveyId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="data_source" property="dataSource" jdbcType="TINYINT" />
+    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    question_survey_id, question_id, survey_id, create_time, update_time, data_source, 
+    is_delete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from question_survey_maps
+    where question_survey_id = #{questionSurveyId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from question_survey_maps
+    where question_survey_id = #{questionSurveyId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yikangyiliao.pension.entity.QuestionSurveyMap" >
+    insert into question_survey_maps (question_survey_id, question_id, survey_id, 
+      create_time, update_time, data_source, 
+      is_delete)
+    values (#{questionSurveyId,jdbcType=BIGINT}, #{questionId,jdbcType=BIGINT}, #{surveyId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{dataSource,jdbcType=TINYINT}, 
+      #{isDelete,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.QuestionSurveyMap" >
+    insert into question_survey_maps
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="questionSurveyId != null" >
+        question_survey_id,
+      </if>
+      <if test="questionId != null" >
+        question_id,
+      </if>
+      <if test="surveyId != null" >
+        survey_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="dataSource != null" >
+        data_source,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="questionSurveyId != null" >
+        #{questionSurveyId,jdbcType=BIGINT},
+      </if>
+      <if test="questionId != null" >
+        #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="surveyId != null" >
+        #{surveyId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="dataSource != null" >
+        #{dataSource,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yikangyiliao.pension.entity.QuestionSurveyMap" >
+    update question_survey_maps
+    <set >
+      <if test="questionId != null" >
+        question_id = #{questionId,jdbcType=BIGINT},
+      </if>
+      <if test="surveyId != null" >
+        survey_id = #{surveyId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="dataSource != null" >
+        data_source = #{dataSource,jdbcType=TINYINT},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+    </set>
+    where question_survey_id = #{questionSurveyId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yikangyiliao.pension.entity.QuestionSurveyMap" >
+    update question_survey_maps
+    set question_id = #{questionId,jdbcType=BIGINT},
+      survey_id = #{surveyId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      data_source = #{dataSource,jdbcType=TINYINT},
+      is_delete = #{isDelete,jdbcType=TINYINT}
+    where question_survey_id = #{questionSurveyId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yikangyiliao.pension.dao.QuestionCrosswiseDao" >
+  <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.QuestionCrosswise" >
+    <id column="question_crosswise_id" property="questionCrosswiseId" jdbcType="BIGINT" />
+    <result column="question_crosswise_name" property="questionCrosswiseName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="create_user_id" property="createUserId" jdbcType="BIGINT" />
+    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
+    <result column="survey_table_id" property="surveyTableId" jdbcType="BIGINT" />
+    <result column="answer_type" property="answerType" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    question_crosswise_id, question_crosswise_name, create_time, update_time, create_user_id, 
+    is_delete, survey_table_id, answer_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from question_crosswises
+    where question_crosswise_id = #{questionCrosswiseId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from question_crosswises
+    where question_crosswise_id = #{questionCrosswiseId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yikangyiliao.pension.entity.QuestionCrosswise" >
+    insert into question_crosswises (question_crosswise_id, question_crosswise_name, 
+      create_time, update_time, create_user_id, 
+      is_delete, survey_table_id, answer_type
+      )
+    values (#{questionCrosswiseId,jdbcType=BIGINT}, #{questionCrosswiseName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{createUserId,jdbcType=BIGINT}, 
+      #{isDelete,jdbcType=TINYINT}, #{surveyTableId,jdbcType=BIGINT}, #{answerType,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.QuestionCrosswise" >
+    insert into question_crosswises
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="questionCrosswiseId != null" >
+        question_crosswise_id,
+      </if>
+      <if test="questionCrosswiseName != null" >
+        question_crosswise_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createUserId != null" >
+        create_user_id,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="surveyTableId != null" >
+        survey_table_id,
+      </if>
+      <if test="answerType != null" >
+        answer_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="questionCrosswiseId != null" >
+        #{questionCrosswiseId,jdbcType=BIGINT},
+      </if>
+      <if test="questionCrosswiseName != null" >
+        #{questionCrosswiseName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="surveyTableId != null" >
+        #{surveyTableId,jdbcType=BIGINT},
+      </if>
+      <if test="answerType != null" >
+        #{answerType,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yikangyiliao.pension.entity.QuestionCrosswise" >
+    update question_crosswises
+    <set >
+      <if test="questionCrosswiseName != null" >
+        question_crosswise_name = #{questionCrosswiseName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="surveyTableId != null" >
+        survey_table_id = #{surveyTableId,jdbcType=BIGINT},
+      </if>
+      <if test="answerType != null" >
+        answer_type = #{answerType,jdbcType=TINYINT},
+      </if>
+    </set>
+    where question_crosswise_id = #{questionCrosswiseId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yikangyiliao.pension.entity.QuestionCrosswise" >
+    update question_crosswises
+    set question_crosswise_name = #{questionCrosswiseName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      create_user_id = #{createUserId,jdbcType=BIGINT},
+      is_delete = #{isDelete,jdbcType=TINYINT},
+      survey_table_id = #{surveyTableId,jdbcType=BIGINT},
+      answer_type = #{answerType,jdbcType=TINYINT}
+    where question_crosswise_id = #{questionCrosswiseId,jdbcType=BIGINT}
+  </update>
+</mapper>

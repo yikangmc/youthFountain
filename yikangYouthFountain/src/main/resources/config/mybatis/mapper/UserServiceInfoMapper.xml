@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yikangyiliao.pension.dao.UserServiceInfoDao" >
+  <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.UserServiceInfo" >
+    <id column="user_service_info_id" property="userServiceInfoId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="job_category" property="jobCategory" jdbcType="BIGINT" />
+    <result column="user_postion" property="userPostion" jdbcType="BIGINT" />
+    <result column="provence_code" property="provenceCode" jdbcType="BIGINT" />
+    <result column="city_code" property="cityCode" jdbcType="BIGINT" />
+    <result column="district_code" property="districtCode" jdbcType="BIGINT" />
+    <result column="address_detail" property="addressDetail" jdbcType="VARCHAR" />
+    <result column="photo_url" property="photoUrl" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
+    <result column="user_service_name" property="userServiceName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_service_info_id, user_id, job_category, user_postion, provence_code, city_code, 
+    district_code, address_detail, photo_url, create_time, update_time, is_delete, user_service_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_service_infos
+    where user_service_info_id = #{userServiceInfoId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user_service_infos
+    where user_service_info_id = #{userServiceInfoId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yikangyiliao.pension.entity.UserServiceInfo" >
+    insert into user_service_infos (user_service_info_id, user_id, job_category, 
+      user_postion, provence_code, city_code, 
+      district_code, address_detail, photo_url, 
+      create_time, update_time, is_delete, 
+      user_service_name)
+    values (#{userServiceInfoId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{jobCategory,jdbcType=BIGINT}, 
+      #{userPostion,jdbcType=BIGINT}, #{provenceCode,jdbcType=BIGINT}, #{cityCode,jdbcType=BIGINT}, 
+      #{districtCode,jdbcType=BIGINT}, #{addressDetail,jdbcType=VARCHAR}, #{photoUrl,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{isDelete,jdbcType=TINYINT}, 
+      #{userServiceName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.UserServiceInfo" >
+    insert into user_service_infos
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userServiceInfoId != null" >
+        user_service_info_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="jobCategory != null" >
+        job_category,
+      </if>
+      <if test="userPostion != null" >
+        user_postion,
+      </if>
+      <if test="provenceCode != null" >
+        provence_code,
+      </if>
+      <if test="cityCode != null" >
+        city_code,
+      </if>
+      <if test="districtCode != null" >
+        district_code,
+      </if>
+      <if test="addressDetail != null" >
+        address_detail,
+      </if>
+      <if test="photoUrl != null" >
+        photo_url,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="userServiceName != null" >
+        user_service_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userServiceInfoId != null" >
+        #{userServiceInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="jobCategory != null" >
+        #{jobCategory,jdbcType=BIGINT},
+      </if>
+      <if test="userPostion != null" >
+        #{userPostion,jdbcType=BIGINT},
+      </if>
+      <if test="provenceCode != null" >
+        #{provenceCode,jdbcType=BIGINT},
+      </if>
+      <if test="cityCode != null" >
+        #{cityCode,jdbcType=BIGINT},
+      </if>
+      <if test="districtCode != null" >
+        #{districtCode,jdbcType=BIGINT},
+      </if>
+      <if test="addressDetail != null" >
+        #{addressDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl != null" >
+        #{photoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="userServiceName != null" >
+        #{userServiceName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yikangyiliao.pension.entity.UserServiceInfo" >
+    update user_service_infos
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="jobCategory != null" >
+        job_category = #{jobCategory,jdbcType=BIGINT},
+      </if>
+      <if test="userPostion != null" >
+        user_postion = #{userPostion,jdbcType=BIGINT},
+      </if>
+      <if test="provenceCode != null" >
+        provence_code = #{provenceCode,jdbcType=BIGINT},
+      </if>
+      <if test="cityCode != null" >
+        city_code = #{cityCode,jdbcType=BIGINT},
+      </if>
+      <if test="districtCode != null" >
+        district_code = #{districtCode,jdbcType=BIGINT},
+      </if>
+      <if test="addressDetail != null" >
+        address_detail = #{addressDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="photoUrl != null" >
+        photo_url = #{photoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="userServiceName != null" >
+        user_service_name = #{userServiceName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_service_info_id = #{userServiceInfoId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yikangyiliao.pension.entity.UserServiceInfo" >
+    update user_service_infos
+    set user_id = #{userId,jdbcType=BIGINT},
+      job_category = #{jobCategory,jdbcType=BIGINT},
+      user_postion = #{userPostion,jdbcType=BIGINT},
+      provence_code = #{provenceCode,jdbcType=BIGINT},
+      city_code = #{cityCode,jdbcType=BIGINT},
+      district_code = #{districtCode,jdbcType=BIGINT},
+      address_detail = #{addressDetail,jdbcType=VARCHAR},
+      photo_url = #{photoUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      is_delete = #{isDelete,jdbcType=TINYINT},
+      user_service_name = #{userServiceName,jdbcType=VARCHAR}
+    where user_service_info_id = #{userServiceInfoId,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 查询某个服务人员的信息， 根据用户id -->
+  <select id="getUserServiceInfoByUserId" resultType="map" parameterType="long">
+	  select 
+			us.user_id		  as userId, 
+			us.job_category   as jobCategory, 
+			us.user_postion   as userPosition, 
+			us.city_code      as cityCode, 
+			us.district_code  as districtCode, 
+			us.address_detail as addressDetail, 
+			us.photo_url	as photoUrl, 
+			us.create_time	as createTime, 
+			us.update_time  as updateTime, 
+			us.user_service_name as userName,
+			count(sa.senior_id)  as nums
+		 from user_service_infos us left join senior_account sa  on us.user_id=sa.create_user_id
+		 where  us.user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  
+  
+  <!-- 获取所有评估师页面 -->
+  <select id="getPingGuServiceAll" resultMap="BaseResultMap">
+  	select 
+  			us.user_id		  	as userId, 
+			us.job_category   	as jobCategory, 
+			us.user_postion   	as userPosition, 
+			us.city_code      	as cityCode, 
+			us.district_code  	as districtCode, 
+			us.address_detail 	as addressDetail, 
+			us.photo_url		as photoUrl, 
+			us.create_time		as createTime, 
+			us.update_time  	as updateTime, 
+			us.user_service_name as userName
+  	from  user_service_infos us
+	where us.job_category=0
+  </select>
+  
+  
+  <!--  获取某一个评估师-->
+  <select id="getPingGuServicerByUserId" resultType="map" parameterType="long">
+  	select 
+  			us.user_id		  	as userId,
+  			'无'					as 'desc',
+			us.photo_url		as photoUrl, 
+			us.user_service_name as userServiceName
+  	from  user_service_infos us
+  	where user_id=#{userId}
+	and us.job_category=0
+  </select>
+  
+</mapper>

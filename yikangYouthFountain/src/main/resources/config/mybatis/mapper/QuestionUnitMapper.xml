@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yikangyiliao.pension.dao.QuestionUnitDao" >
+  <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.QuestionUnit" >
+    <id column="question_portrait_id" property="questionPortraitId" jdbcType="BIGINT" />
+    <result column="question_portrait_name" property="questionPortraitName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="create_user_id" property="createUserId" jdbcType="BIGINT" />
+    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
+    <result column="order" property="order" jdbcType="TINYINT" />
+    <result column="survey_table_id" property="surveyTableId" jdbcType="BIGINT" />
+    <result column="question_crosswise_id" property="questionCrosswiseId" jdbcType="BIGINT" />
+    <result column="answer_type" property="answerType" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    question_portrait_id, question_portrait_name, create_time, update_time, create_user_id, 
+    is_delete, order, survey_table_id, question_crosswise_id, answer_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from question_units
+    where question_portrait_id = #{questionPortraitId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from question_units
+    where question_portrait_id = #{questionPortraitId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yikangyiliao.pension.entity.QuestionUnit" >
+    insert into question_units (question_portrait_id, question_portrait_name, 
+      create_time, update_time, create_user_id, 
+      is_delete, order, survey_table_id, 
+      question_crosswise_id, answer_type)
+    values (#{questionPortraitId,jdbcType=BIGINT}, #{questionPortraitName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{createUserId,jdbcType=BIGINT}, 
+      #{isDelete,jdbcType=TINYINT}, #{order,jdbcType=TINYINT}, #{surveyTableId,jdbcType=BIGINT}, 
+      #{questionCrosswiseId,jdbcType=BIGINT}, #{answerType,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.QuestionUnit" >
+    insert into question_units
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="questionPortraitId != null" >
+        question_portrait_id,
+      </if>
+      <if test="questionPortraitName != null" >
+        question_portrait_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createUserId != null" >
+        create_user_id,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="order != null" >
+        order,
+      </if>
+      <if test="surveyTableId != null" >
+        survey_table_id,
+      </if>
+      <if test="questionCrosswiseId != null" >
+        question_crosswise_id,
+      </if>
+      <if test="answerType != null" >
+        answer_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="questionPortraitId != null" >
+        #{questionPortraitId,jdbcType=BIGINT},
+      </if>
+      <if test="questionPortraitName != null" >
+        #{questionPortraitName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="order != null" >
+        #{order,jdbcType=TINYINT},
+      </if>
+      <if test="surveyTableId != null" >
+        #{surveyTableId,jdbcType=BIGINT},
+      </if>
+      <if test="questionCrosswiseId != null" >
+        #{questionCrosswiseId,jdbcType=BIGINT},
+      </if>
+      <if test="answerType != null" >
+        #{answerType,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yikangyiliao.pension.entity.QuestionUnit" >
+    update question_units
+    <set >
+      <if test="questionPortraitName != null" >
+        question_portrait_name = #{questionPortraitName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="order != null" >
+        order = #{order,jdbcType=TINYINT},
+      </if>
+      <if test="surveyTableId != null" >
+        survey_table_id = #{surveyTableId,jdbcType=BIGINT},
+      </if>
+      <if test="questionCrosswiseId != null" >
+        question_crosswise_id = #{questionCrosswiseId,jdbcType=BIGINT},
+      </if>
+      <if test="answerType != null" >
+        answer_type = #{answerType,jdbcType=TINYINT},
+      </if>
+    </set>
+    where question_portrait_id = #{questionPortraitId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yikangyiliao.pension.entity.QuestionUnit" >
+    update question_units
+    set question_portrait_name = #{questionPortraitName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      create_user_id = #{createUserId,jdbcType=BIGINT},
+      is_delete = #{isDelete,jdbcType=TINYINT},
+      order = #{order,jdbcType=TINYINT},
+      survey_table_id = #{surveyTableId,jdbcType=BIGINT},
+      question_crosswise_id = #{questionCrosswiseId,jdbcType=BIGINT},
+      answer_type = #{answerType,jdbcType=TINYINT}
+    where question_portrait_id = #{questionPortraitId,jdbcType=BIGINT}
+  </update>
+  
+  
+  <resultMap type="map" id="QuestionUnitAnswerMap">
+  	<result column="question_portrait_id" property="questionPortraitId"></result>
+  	<result column="question_portrait_name" property="questionPortraitName"></result>
+  	<result column="answer_type"  property="answerType"/>
+  	<result column="weight_value"  property="weightVal"/>
+  	<collection property="answers" ofType="map" javaType="list">
+  		<result column="answer_id" 		property="answerId"/>
+  		<result column="answer_text" 	property="answerText"/>
+  		<result column="answer_val"		property="answerVal"/>
+  	</collection>
+  </resultMap>
+  
+  <select id="getQuestionUnitAnswerMapByQuetionCrosswiseId" resultMap="QuestionUnitAnswerMap" parameterType="long">
+	select 	qp.question_portrait_id,
+			qp.question_portrait_name,
+	        answers.answer_id,
+	        answers.answer_text,
+	        answers.answer_val,
+	        qcpa.answer_type,
+            quw.weight_value
+	from question_units qp 
+	left join question_unit_answer_maps qcpa
+	on qp.question_portrait_id=qcpa.question_portrait_group
+	left join answers on qcpa.answer_id=answers.answer_id
+    left join question_unit_weights quw on qp.question_portrait_id=quw.question_portrait_id
+	where qp.question_crosswise_id=#{questionCrosswiseId}
+  </select>
+  
+</mapper>
