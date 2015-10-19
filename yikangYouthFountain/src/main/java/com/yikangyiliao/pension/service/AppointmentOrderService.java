@@ -17,10 +17,12 @@ import com.yikangyiliao.pension.common.utils.GenreateNumberUtils;
 import com.yikangyiliao.pension.common.utils.map.MapUtils;
 import com.yikangyiliao.pension.common.utils.map.model.GeoCodeModel;
 import com.yikangyiliao.pension.entity.AppointmentOrder;
+import com.yikangyiliao.pension.entity.Location;
 import com.yikangyiliao.pension.entity.OrderServiceDetail;
 import com.yikangyiliao.pension.entity.TimeQuantum;
 import com.yikangyiliao.pension.entity.UserServiceInfo;
 import com.yikangyiliao.pension.manager.AppointmentOrderManager;
+import com.yikangyiliao.pension.manager.LocationManager;
 import com.yikangyiliao.pension.manager.OrderServiceDetailManager;
 import com.yikangyiliao.pension.manager.TimeQuantumManager;
 import com.yikangyiliao.pension.schedule.PersonnelDistribution;
@@ -46,6 +48,10 @@ public class AppointmentOrderService {
 	
 	@Autowired
 	private GenreateNumberUtils genreateNumberUtils;
+	
+	
+	@Autowired
+	private LocationManager locationManager;
 	
 	
 	public Map<String,Object> addPointmentOrder(Map<String,Object> param) throws ParseException, InterruptedException{
@@ -111,11 +117,11 @@ public class AppointmentOrderService {
 				 
 				 
 				//todo 
-				 appointmentOrder.setProvenceCode(1l);
-				 appointmentOrder.setCityCode(1l);
+				 appointmentOrder.setProvenceCode("");
+				 appointmentOrder.setCityCode("");
+				 appointmentOrder.setDistrictCode("");
 				 
 				 
-				 appointmentOrder.setDistrictCode(Long.valueOf(districtCode));
 				 appointmentOrder.setLongitude(Double.valueOf(longitude));
 				 appointmentOrder.setLatitude(Double.valueOf(latitude));
 				 appointmentOrder.setDetailAddress(detailAddress);
@@ -194,8 +200,6 @@ public class AppointmentOrderService {
 				
 				if(checkServicerTimeQuantum(Long.valueOf(serviceUserId))){
 					Long currentDateTimeMillis=Calendar.getInstance().getTimeInMillis();
-					Date currentDate=Calendar.getInstance().getTime();
-				
 				
 					AppointmentOrder appointmentOrder =new AppointmentOrder();
 					
@@ -224,13 +228,6 @@ public class AppointmentOrderService {
 					 appointmentOrder.setStartTime(timeQuantum.getStartTime().toString());
 					 appointmentOrder.setEndTime(timeQuantum.getEndTime().toString());
 					 
-					 appointmentOrder.setProvenceCode(1l);
-					 appointmentOrder.setCityCode(1l);
-					 
-					 
-					 appointmentOrder.setDistrictCode(Long.valueOf(districtCode));
-					 
-					 
 					 appointmentOrder.setDetailAddress(detailAddress);
 					 appointmentOrder.setMapPostionAddress(mapPositionAddress);
 					 appointmentOrder.setServiceCount(Integer.valueOf("1"));
@@ -243,32 +240,47 @@ public class AppointmentOrderService {
 					 // 生成订单编号
 					 appointmentOrder.setOrderNumber(genreateNumberUtils.generateAppointmentOrderNumber());
 					 
+					 String address="";
+					Location city= locationManager.getCityByDistrictCode(districtCode);
+					Location provence=locationManager.getProvenceByCityCode(districtCode);
+					Location distirct=locationManager.getLocationByAdministrativeCode(districtCode);
+					
+					address=provence.getName()+city.getName()+distirct.getName()+mapPositionAddress+detailAddress;
+					
+					
+					 
 					 //设置经纬度
-					 try {
-						 GeoCodeModel geoCodeModel=MapUtils.getGeoCodeModelByAddress(detailAddress, null);
-						 if(null != geoCodeModel.getGeocodes() && geoCodeModel.getGeocodes().size()>0){
-							 //  TODO 有可能模糊地址对应的有多个这个问题要修改
-							 String lngLatStr=geoCodeModel.getGeocodes().get(0).getLocation();
-							 String lngStr=lngLatStr.split(",")[0];
-							 String latStr=lngLatStr.split(",")[1];
-							 appointmentOrder.setLongitude(Double.valueOf(lngStr));
-							 appointmentOrder.setLatitude(Double.valueOf(latStr));
-						 }
-						
-					} catch (IOException e) {
-						e.printStackTrace();
+					if(address.length()>0){
+						 try {
+							 GeoCodeModel geoCodeModel=MapUtils.getGeoCodeModelByAddress(address, city.getAdministrativeCode());
+							 if(null != geoCodeModel.getGeocodes() && geoCodeModel.getGeocodes().size()>0){
+								 //  TODO 有可能模糊地址对应的有多个这个问题要修改
+								 String lngLatStr=geoCodeModel.getGeocodes().get(0).getLocation();
+								 String lngStr=lngLatStr.split(",")[0];
+								 String latStr=lngLatStr.split(",")[1];
+								 appointmentOrder.setLongitude(Double.valueOf(lngStr));
+								 appointmentOrder.setLatitude(Double.valueOf(latStr));
+							 }
+							
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					}
 					 
 					 
-					 
-					 appointmentOrder.setAddress("");
+					 appointmentOrder.setAddress(address);
+					 appointmentOrder.setProvenceCode(provence.getAdministrativeCode());
+					 appointmentOrder.setCityCode(city.getAdministrativeCode());
+					 appointmentOrder.setDistrictCode(districtCode);
 					
 					 
 					 appointmentOrderManager.insertSelective(appointmentOrder);
 					 
 					 
 					 OrderServiceDetail orderServiceDetail=new OrderServiceDetail();
+					 
 					 orderServiceDetail.setOrderId(appointmentOrder.getAppointmentOrderId());
+					 
 					 orderServiceDetail.setCreateTime(currentDateTimeMillis);
 					 orderServiceDetail.setUpdateTime(currentDateTimeMillis);
 					 
@@ -286,10 +298,12 @@ public class AppointmentOrderService {
 					 // 设置服务人员的，服务id
 					 orderServiceDetail.setServiceUserId(Long.valueOf(serviceUserId));
 					 
-					 
+					 //设置服务状态
 					 orderServiceDetail.setServiceType((byte)0);
 					 
+					 //设置回复
 					 orderServiceDetail.setServiceRecord("");
+					 
 					 
 					 orderServiceDetailManager.insertSelective(orderServiceDetail);
 					 

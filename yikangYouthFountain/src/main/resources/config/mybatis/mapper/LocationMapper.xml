@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yikangyiliao.pension.dao.LocationDao" >
-  <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.Location" >
+ <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.Location" >
     <id column="location_id" property="locationId" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="administrative_code" property="administrativeCode" jdbcType="VARCHAR" />
@@ -11,11 +11,12 @@
     <result column="is_hidden" property="isHidden" jdbcType="TINYINT" />
     <result column="zip_code" property="zipCode" jdbcType="VARCHAR" />
     <result column="phone_code" property="phoneCode" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="TINYINT" />
     <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     location_id, name, administrative_code, create_time, update_time, order_number, is_hidden, 
-    zip_code, phone_code, parent_id
+    zip_code, phone_code, level, parent_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -31,11 +32,11 @@
     insert into locations (location_id, name, administrative_code, 
       create_time, update_time, order_number, 
       is_hidden, zip_code, phone_code, 
-      parent_id)
+      level, parent_id)
     values (#{locationId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{administrativeCode,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{orderNumber,jdbcType=INTEGER}, 
       #{isHidden,jdbcType=TINYINT}, #{zipCode,jdbcType=VARCHAR}, #{phoneCode,jdbcType=VARCHAR}, 
-      #{parentId,jdbcType=VARCHAR})
+      #{level,jdbcType=TINYINT}, #{parentId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.Location" >
     insert into locations
@@ -66,6 +67,9 @@
       </if>
       <if test="phoneCode != null" >
         phone_code,
+      </if>
+      <if test="level != null" >
+        level,
       </if>
       <if test="parentId != null" >
         parent_id,
@@ -99,6 +103,9 @@
       <if test="phoneCode != null" >
         #{phoneCode,jdbcType=VARCHAR},
       </if>
+      <if test="level != null" >
+        #{level,jdbcType=TINYINT},
+      </if>
       <if test="parentId != null" >
         #{parentId,jdbcType=VARCHAR},
       </if>
@@ -131,6 +138,9 @@
       <if test="phoneCode != null" >
         phone_code = #{phoneCode,jdbcType=VARCHAR},
       </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=TINYINT},
+      </if>
       <if test="parentId != null" >
         parent_id = #{parentId,jdbcType=VARCHAR},
       </if>
@@ -147,7 +157,40 @@
       is_hidden = #{isHidden,jdbcType=TINYINT},
       zip_code = #{zipCode,jdbcType=VARCHAR},
       phone_code = #{phoneCode,jdbcType=VARCHAR},
+      level = #{level,jdbcType=TINYINT},
       parent_id = #{parentId,jdbcType=VARCHAR}
     where location_id = #{locationId,jdbcType=BIGINT}
   </update>
+  
+  <!-- 获取市，by 县编码 -->
+  <select id="getCityByDistrictCode" resultMap="BaseResultMap" parameterType="string">
+ 	select 
+ 		loc.* 
+ 	from 
+ 		   locations loc,location parent 
+ 	where  loc.parent_id=parent.location_id
+ 			and loc.administrative_code=#{administrativeCode}
+ 			and parent.levle=2
+  </select>
+  
+    <!-- 获取省，by 市编码 -->
+  <select id="getProvenceByCityCode" resultMap="BaseResultMap" parameterType="string">
+ 	select 
+ 		loc.* 
+ 	from 
+ 		   locations loc,location parent 
+ 	where  loc.parent_id=parent.location_id
+ 			and loc.administrative_code=#{administrativeCode}
+ 			and parent.levle=1
+  </select>
+  
+      <!-- 获取城市 by 编码 -->
+  <select id="getLocationByAdministrativeCode" resultMap="BaseResultMap" parameterType="string">
+ 	select 
+ 		loc.* 
+ 	from 
+ 		   locations loc
+ 	where  loc.administrative_code=#{administrativeCode}
+  </select>
+  
 </mapper>

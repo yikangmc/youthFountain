@@ -12,9 +12,9 @@
     <result column="start_time" property="startTime" jdbcType="VARCHAR" />
     <result column="end_time" property="endTime" jdbcType="VARCHAR" />
     <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
-    <result column="provence_code" property="provenceCode" jdbcType="BIGINT" />
-    <result column="city_code" property="cityCode" jdbcType="BIGINT" />
-    <result column="district_code" property="districtCode" jdbcType="BIGINT" />
+    <result column="provence_code" property="provenceCode" jdbcType="VARCHAR" />
+    <result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+    <result column="district_code" property="districtCode" jdbcType="VARCHAR" />
     <result column="longitude" property="longitude" jdbcType="DOUBLE" />
     <result column="latitude" property="latitude" jdbcType="DOUBLE" />
     <result column="detail_address" property="detailAddress" jdbcType="VARCHAR" />
@@ -60,8 +60,8 @@
     values (#{appointmentOrderId,jdbcType=BIGINT}, #{parentLinkAddress,jdbcType=VARCHAR}, 
       #{phoneNumber,jdbcType=VARCHAR}, #{myPhoneNumber,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
       #{appointmentDateTime,jdbcType=BIGINT}, #{timeQuanturmId,jdbcType=BIGINT}, #{startTime,jdbcType=VARCHAR}, 
-      #{endTime,jdbcType=VARCHAR}, #{orderStatus,jdbcType=INTEGER}, #{provenceCode,jdbcType=BIGINT}, 
-      #{cityCode,jdbcType=BIGINT}, #{districtCode,jdbcType=BIGINT}, #{longitude,jdbcType=DOUBLE}, 
+      #{endTime,jdbcType=VARCHAR}, #{orderStatus,jdbcType=INTEGER}, #{provenceCode,jdbcType=VARCHAR}, 
+      #{cityCode,jdbcType=VARCHAR}, #{districtCode,jdbcType=VARCHAR}, #{longitude,jdbcType=DOUBLE}, 
       #{latitude,jdbcType=DOUBLE}, #{detailAddress,jdbcType=VARCHAR}, #{mapPostionAddress,jdbcType=VARCHAR}, 
       #{assessmentId,jdbcType=BIGINT}, #{serviceCount,jdbcType=INTEGER}, #{orderNumber,jdbcType=VARCHAR}, 
       #{dataSource,jdbcType=TINYINT}, #{dataGroup,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, 
@@ -69,12 +69,6 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.AppointmentOrder" >
-  
-  
-    <selectKey resultType="Long" keyProperty="appointmentOrderId" order="AFTER">
-		SELECT LAST_INSERT_ID()
-	</selectKey>
-  
     insert into appointment_orders
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="appointmentOrderId != null" >
@@ -188,13 +182,13 @@
         #{orderStatus,jdbcType=INTEGER},
       </if>
       <if test="provenceCode != null" >
-        #{provenceCode,jdbcType=BIGINT},
+        #{provenceCode,jdbcType=VARCHAR},
       </if>
       <if test="cityCode != null" >
-        #{cityCode,jdbcType=BIGINT},
+        #{cityCode,jdbcType=VARCHAR},
       </if>
       <if test="districtCode != null" >
-        #{districtCode,jdbcType=BIGINT},
+        #{districtCode,jdbcType=VARCHAR},
       </if>
       <if test="longitude != null" >
         #{longitude,jdbcType=DOUBLE},
@@ -268,13 +262,13 @@
         order_status = #{orderStatus,jdbcType=INTEGER},
       </if>
       <if test="provenceCode != null" >
-        provence_code = #{provenceCode,jdbcType=BIGINT},
+        provence_code = #{provenceCode,jdbcType=VARCHAR},
       </if>
       <if test="cityCode != null" >
-        city_code = #{cityCode,jdbcType=BIGINT},
+        city_code = #{cityCode,jdbcType=VARCHAR},
       </if>
       <if test="districtCode != null" >
-        district_code = #{districtCode,jdbcType=BIGINT},
+        district_code = #{districtCode,jdbcType=VARCHAR},
       </if>
       <if test="longitude != null" >
         longitude = #{longitude,jdbcType=DOUBLE},
@@ -329,9 +323,9 @@
       start_time = #{startTime,jdbcType=VARCHAR},
       end_time = #{endTime,jdbcType=VARCHAR},
       order_status = #{orderStatus,jdbcType=INTEGER},
-      provence_code = #{provenceCode,jdbcType=BIGINT},
-      city_code = #{cityCode,jdbcType=BIGINT},
-      district_code = #{districtCode,jdbcType=BIGINT},
+      provence_code = #{provenceCode,jdbcType=VARCHAR},
+      city_code = #{cityCode,jdbcType=VARCHAR},
+      district_code = #{districtCode,jdbcType=VARCHAR},
       longitude = #{longitude,jdbcType=DOUBLE},
       latitude = #{latitude,jdbcType=DOUBLE},
       detail_address = #{detailAddress,jdbcType=VARCHAR},

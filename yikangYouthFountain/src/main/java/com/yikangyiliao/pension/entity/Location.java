@@ -19,6 +19,8 @@ public class Location {
 
     private String phoneCode;
 
+    private Byte level;
+
     private String parentId;
 
     public Long getLocationId() {
@@ -91,6 +93,14 @@ public class Location {
 
     public void setPhoneCode(String phoneCode) {
         this.phoneCode = phoneCode == null ? null : phoneCode.trim();
+    }
+
+    public Byte getLevel() {
+        return level;
+    }
+
+    public void setLevel(Byte level) {
+        this.level = level;
     }
 
     public String getParentId() {

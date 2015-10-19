@@ -128,4 +128,9 @@
       is_delete = #{isDelete,jdbcType=TINYINT}
     where custumer_time_quantum_id = #{custumerTimeQuantumId,jdbcType=BIGINT}
   </update>
+  
+  
+  
+  
+  
 </mapper>
