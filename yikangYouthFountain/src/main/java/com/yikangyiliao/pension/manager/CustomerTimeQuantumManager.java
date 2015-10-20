@@ -6,11 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomerTimeQuantumManager {
 	
-	@Autowired
-	private CustomerTimeQuantumManager customerTimeQuantumManager;
-	
-	
-	
 	
 
 }

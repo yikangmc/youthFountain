@@ -1,5 +1,6 @@
 package com.yikangyiliao.pension.manager;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -116,5 +117,20 @@ public class UserManager {
     * */
 	public Map<String,Object> getPingGuServicerByUserId(Long userId){
 		return userServiceInfoDao.getPingGuServicerByUserId(userId);
+	}
+	
+	
+	
+	/**
+	 * @author liushuaic
+	 * @date 2015/10/20 
+	 * 获取有空闲时间的评估师
+	 * */
+	public List<UserServiceInfo> getPINGGUServicerByServiceDate(String serviceDate){
+		Map<String,Object> param=new HashMap<String,Object>();
+		param.put("serviceDate", serviceDate);
+		param.put("userPosition", 0);
+		
+		return userServiceInfoDao.getServicerByServiceDate(param);
 	}
 }

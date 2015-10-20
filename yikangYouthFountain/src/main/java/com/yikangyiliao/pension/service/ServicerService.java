@@ -1,12 +1,16 @@
-package com.yikangyiliao.pension.entity;
+package com.yikangyiliao.pension.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yikangyiliao.pension.common.error.ExceptionConstants;
+import com.yikangyiliao.pension.common.utils.map.MapUtils;
+import com.yikangyiliao.pension.entity.UserServiceInfo;
+import com.yikangyiliao.pension.manager.TimeQuantumManager;
 import com.yikangyiliao.pension.manager.UserManager;
 
 /**
@@ -24,6 +28,9 @@ public class ServicerService {
 	
 	@Autowired
 	private UserManager userManager;
+	
+	@Autowired
+	private TimeQuantumManager timeQuantumManager;
 	
 	
 	
@@ -43,8 +50,19 @@ public class ServicerService {
 			&& null != paramData.get("serviceDate")
 			&& null != paramData.get("custumerTimeQuantumId")
 		){
+			//有空闲时间的用户
+			//
+			String serviceDate=paramData.get("serviceDate").toString();
+					
+			List<UserServiceInfo> serviers=userManager.getPINGGUServicerByServiceDate(serviceDate);
+
 			
+			
+			if(null != serviers){
+				
+			}
 			Map<String,Object> pingGuData=userManager.getPingGuServicerByUserId(18l);
+			
 			
 			
 			if(pingGuData==null ){

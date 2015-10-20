@@ -88,6 +88,13 @@ public class MapUtils {
 		
 		return geoCodeModel;
 	}
+	
+	
+	
+	
+	
+	
+	
 	public static void main(String[] args) throws IOException {
 		GeoCodeModel gmc=MapUtils.getGeoCodeModelByAddress("北京市海淀区万寿路光华护士基金",null);
 		System.out.println(gmc.getGeocodes().get(0).getLocation());

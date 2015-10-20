@@ -189,7 +189,7 @@
 							tq.end_time
 						from time_quantums tq 
 						left join order_service_details ssd on (
-							ssd.time_quantum_id=tq.time_quantum_id and ssd.service_date='2015-10-14'
+							ssd.time_quantum_id=tq.time_quantum_id and ssd.service_date=#{serviceDate}
 						)
 						group by tq.time_quantum_id
 					) timeQuantums
@@ -200,7 +200,7 @@
 						from service_schedules ss 
 						inner join service_schedule_details ssd 
 						on ss.service_schedule_id=ssd.service_schedule_id
-						where service_date='2015-10-14'
+						where service_date=#{serviceDate}
 					) timeIsHave
 					on timeQuantums.time_quantum_id=timeIsHave.time_quantum_id
 			) timeQuantumsCh,

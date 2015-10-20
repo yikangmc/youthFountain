@@ -15,10 +15,13 @@
     <result column="update_time" property="updateTime" jdbcType="BIGINT" />
     <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
     <result column="user_service_name" property="userServiceName" jdbcType="VARCHAR" />
+    <result column="longitude" property="longitude" jdbcType="DOUBLE" />
+    <result column="latitude" property="latitude" jdbcType="DOUBLE" />
   </resultMap>
   <sql id="Base_Column_List" >
     user_service_info_id, user_id, job_category, user_postion, provence_code, city_code, 
-    district_code, address_detail, photo_url, create_time, update_time, is_delete, user_service_name
+    district_code, address_detail, photo_url, create_time, update_time, is_delete, user_service_name, 
+    longitude, latitude
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -35,12 +38,14 @@
       user_postion, provence_code, city_code, 
       district_code, address_detail, photo_url, 
       create_time, update_time, is_delete, 
-      user_service_name)
+      user_service_name, longitude, latitude
+      )
     values (#{userServiceInfoId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{jobCategory,jdbcType=BIGINT}, 
       #{userPostion,jdbcType=BIGINT}, #{provenceCode,jdbcType=BIGINT}, #{cityCode,jdbcType=BIGINT}, 
       #{districtCode,jdbcType=BIGINT}, #{addressDetail,jdbcType=VARCHAR}, #{photoUrl,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{isDelete,jdbcType=TINYINT}, 
-      #{userServiceName,jdbcType=VARCHAR})
+      #{userServiceName,jdbcType=VARCHAR}, #{longitude,jdbcType=DOUBLE}, #{latitude,jdbcType=DOUBLE}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.UserServiceInfo" >
     insert into user_service_infos
@@ -84,6 +89,12 @@
       <if test="userServiceName != null" >
         user_service_name,
       </if>
+      <if test="longitude != null" >
+        longitude,
+      </if>
+      <if test="latitude != null" >
+        latitude,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userServiceInfoId != null" >
@@ -124,6 +135,12 @@
       </if>
       <if test="userServiceName != null" >
         #{userServiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
@@ -166,6 +183,12 @@
       <if test="userServiceName != null" >
         user_service_name = #{userServiceName,jdbcType=VARCHAR},
       </if>
+      <if test="longitude != null" >
+        longitude = #{longitude,jdbcType=DOUBLE},
+      </if>
+      <if test="latitude != null" >
+        latitude = #{latitude,jdbcType=DOUBLE},
+      </if>
     </set>
     where user_service_info_id = #{userServiceInfoId,jdbcType=BIGINT}
   </update>
@@ -182,7 +205,9 @@
       create_time = #{createTime,jdbcType=BIGINT},
       update_time = #{updateTime,jdbcType=BIGINT},
       is_delete = #{isDelete,jdbcType=TINYINT},
-      user_service_name = #{userServiceName,jdbcType=VARCHAR}
+      user_service_name = #{userServiceName,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=DOUBLE},
+      latitude = #{latitude,jdbcType=DOUBLE}
     where user_service_info_id = #{userServiceInfoId,jdbcType=BIGINT}
   </update>
   
@@ -234,5 +259,27 @@
   	where user_id=#{userId}
 	and us.job_category=0
   </select>
+  
+  <select id="">
+  	select 
+		distinct usi.address_detail,usi.user_id,usi.longitude,usi.latitude
+	from service_schedules ss inner join user_service_infos usi 
+	on ss.service_user_id=usi.user_id
+	where ss.is_can_selected=0
+	and ss.service_date=#{serviceDate}
+  </select>
+  
+  
+  <!-- 查询出这个时间段内有空的，服务人员，要加上cityCode -->
+  <select id="getServicerByServiceDate" resultMap="BaseResultMap" parameterType="map">
+  	select 
+		distinct usi.address_detail,usi.user_id,usi.longitude,usi.latitude
+	from service_schedules ss inner join user_service_infos usi 
+	on ss.service_user_id=usi.user_id
+	where ss.is_can_selected=0
+	and ss.service_date=#{serviceDate}
+	and usi.user_postion=#{userPosition}
+  </select>
+  
   
 </mapper>

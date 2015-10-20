@@ -45,5 +45,15 @@ public interface UserServiceInfoDao {
     Map<String,Object> getPingGuServicerByUserId(Long userId);
     
     
+    /**
+     * @author liushuaic
+     * @date 2015/10/20 19:35
+     * @param serviceDate 2015-10-10
+     * @param userPosition 0 评估师
+     * 查询出这个时间段内有空的，服务人员，要加上cityCode
+     * 
+     * */
+    List<UserServiceInfo> getServicerByServiceDate(Map<String,Object> param);
+    
     
 }
