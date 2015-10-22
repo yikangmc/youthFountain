@@ -254,7 +254,7 @@
 					<username>tomcat</username>
 					<password>tomcat</password>
 					<update>true</update>
-					<path>/youthFuntain</path>
+					<path>/youthFountain</path>
 					<port>8088</port>
 				</configuration>
 			</plugin>

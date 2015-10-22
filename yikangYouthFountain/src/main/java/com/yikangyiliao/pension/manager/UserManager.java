@@ -126,11 +126,12 @@ public class UserManager {
 	 * @date 2015/10/20 
 	 * 获取有空闲时间的评估师
 	 * */
-	public List<UserServiceInfo> getPINGGUServicerByServiceDate(String serviceDate){
+	public List<UserServiceInfo> getPINGGUServicerByServiceDateCustumerQuantumId(String serviceDate,Long custumerQuantumId){
 		Map<String,Object> param=new HashMap<String,Object>();
 		param.put("serviceDate", serviceDate);
 		param.put("userPosition", 0);
+		param.put("custumerQuantumId", custumerQuantumId);
 		
-		return userServiceInfoDao.getServicerByServiceDate(param);
+		return userServiceInfoDao.getServicerByServiceDateCustumerTimeQuantumId(param);
 	}
 }

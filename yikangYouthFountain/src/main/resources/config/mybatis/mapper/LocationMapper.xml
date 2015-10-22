@@ -164,24 +164,23 @@
   
   <!-- 获取市，by 县编码 -->
   <select id="getCityByDistrictCode" resultMap="BaseResultMap" parameterType="string">
- 	select 
- 		loc.* 
+	select 
+ 		parent.* 
  	from 
- 		   locations loc,location parent 
+ 		   locations loc,locations parent 
  	where  loc.parent_id=parent.location_id
  			and loc.administrative_code=#{administrativeCode}
- 			and parent.levle=2
+ 			and parent.level=2
   </select>
   
     <!-- 获取省，by 市编码 -->
   <select id="getProvenceByCityCode" resultMap="BaseResultMap" parameterType="string">
- 	select 
- 		loc.* 
- 	from 
- 		   locations loc,location parent 
- 	where  loc.parent_id=parent.location_id
- 			and loc.administrative_code=#{administrativeCode}
- 			and parent.levle=1
+	select
+	 	pp.* 
+		from locations loc,locations parent ,locations pp
+	 where loc.parent_id=parent.location_id   and parent.parent_id=pp.location_id
+	 	and loc.administrative_code=#{administrativeCode}
+	 	and pp.level=1
   </select>
   
       <!-- 获取城市 by 编码 -->

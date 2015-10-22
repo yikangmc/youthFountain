@@ -254,13 +254,16 @@
   			us.user_id		  	as userId,
   			'无'					as 'desc',
 			us.photo_url		as photoUrl, 
-			us.user_service_name as userServiceName
+			us.user_service_name as userServiceName,
+			''					as img,
+			''					as img2,
+			''					as img3
   	from  user_service_infos us
   	where user_id=#{userId}
 	and us.job_category=0
   </select>
   
-  <select id="">
+  <select id="getServicerByserviceDate">
   	select 
 		distinct usi.address_detail,usi.user_id,usi.longitude,usi.latitude
 	from service_schedules ss inner join user_service_infos usi 
@@ -271,14 +274,30 @@
   
   
   <!-- 查询出这个时间段内有空的，服务人员，要加上cityCode -->
-  <select id="getServicerByServiceDate" resultMap="BaseResultMap" parameterType="map">
-  	select 
+  <select id="getServicerByServiceDateCustumerTimeQuantumId" resultMap="BaseResultMap" parameterType="map">
+<!--   	select  -->
+<!-- 		distinct usi.address_detail,usi.user_id,usi.longitude,usi.latitude -->
+<!-- 	from service_schedules ss inner join user_service_infos usi  -->
+<!-- 	on ss.service_user_id=usi.user_id -->
+<!-- 	where ss.is_can_selected=0 -->
+<!-- 	and ss.service_date=#{serviceDate} -->
+<!-- 	and usi.user_postion=#{userPosition} -->
+	
+	select 
 		distinct usi.address_detail,usi.user_id,usi.longitude,usi.latitude
-	from service_schedules ss inner join user_service_infos usi 
+		from 
+	service_schedule_details ssd 
+	inner join custumer_time_quantums ctq
+	on ssd.time_quantum_id=ctq.custumer_time_quantum_id
+	inner join service_schedules ss 
+	on ss.service_schedule_id=ssd.service_schedule_id
+	inner join user_service_infos usi 
 	on ss.service_user_id=usi.user_id
-	where ss.is_can_selected=0
-	and ss.service_date=#{serviceDate}
+	where ss.service_date=#{serviceDate}
+	and ctq.custumer_time_quantum_id=#{custumerQuantumId}
 	and usi.user_postion=#{userPosition}
+	and ss.is_can_selected=1
+
   </select>
   
   

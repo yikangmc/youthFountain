@@ -53,7 +53,7 @@ public interface UserServiceInfoDao {
      * 查询出这个时间段内有空的，服务人员，要加上cityCode
      * 
      * */
-    List<UserServiceInfo> getServicerByServiceDate(Map<String,Object> param);
+    List<UserServiceInfo> getServicerByServiceDateCustumerTimeQuantumId(Map<String,Object> param);
     
     
 }

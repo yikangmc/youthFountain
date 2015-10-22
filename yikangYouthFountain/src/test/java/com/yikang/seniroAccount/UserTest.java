@@ -27,8 +27,8 @@ public class UserTest {
 	public void TestRegisterUser(){
 		try {
 			Map<String,Object> paramData=new HashMap<String, Object>();
-			paramData.put("loginName","liushuai");
-			paramData.put("passWord","liushuai");
+			paramData.put("loginName","13716907523");
+			paramData.put("passWord","111111");
 			
 			SendRequest.sendPost("regist",paramData);
 		} catch (IOException e) {

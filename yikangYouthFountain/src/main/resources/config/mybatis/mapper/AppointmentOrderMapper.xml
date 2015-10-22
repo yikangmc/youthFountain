@@ -47,6 +47,9 @@
     where appointment_order_id = #{appointmentOrderId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.yikangyiliao.pension.entity.AppointmentOrder" >
+    <selectKey resultType="Long" keyProperty="appointmentOrderId" order="AFTER">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
     insert into appointment_orders (appointment_order_id, parent_link_address, 
       phone_number, my_phone_number, nick_name, 
       appointment_date_time, time_quanturm_id, start_time, 
@@ -69,6 +72,11 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.AppointmentOrder" >
+    
+  	<selectKey resultType="Long" keyProperty="appointmentOrderId" order="AFTER">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
+	
     insert into appointment_orders
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="appointmentOrderId != null" >

@@ -252,14 +252,24 @@ public class AppointmentOrderService {
 					 //设置经纬度
 					if(address.length()>0){
 						 try {
-							 GeoCodeModel geoCodeModel=MapUtils.getGeoCodeModelByAddress(address, city.getAdministrativeCode());
-							 if(null != geoCodeModel.getGeocodes() && geoCodeModel.getGeocodes().size()>0){
+							 GeoCodeModel geoCodeModel=MapUtils.getGeoCodeModelByAddress(mapPositionAddress+detailAddress, city.getAdministrativeCode());
+							 if(null != geoCodeModel && null != geoCodeModel.getGeocodes() && geoCodeModel.getGeocodes().size()>0){
 								 //  TODO 有可能模糊地址对应的有多个这个问题要修改
 								 String lngLatStr=geoCodeModel.getGeocodes().get(0).getLocation();
 								 String lngStr=lngLatStr.split(",")[0];
 								 String latStr=lngLatStr.split(",")[1];
 								 appointmentOrder.setLongitude(Double.valueOf(lngStr));
 								 appointmentOrder.setLatitude(Double.valueOf(latStr));
+							 }else{
+								 geoCodeModel=MapUtils.getGeoCodeModelByAddress(mapPositionAddress, city.getAdministrativeCode());
+								 if(null != geoCodeModel && null != geoCodeModel.getGeocodes() && geoCodeModel.getGeocodes().size()>0){
+									 //  TODO 有可能模糊地址对应的有多个这个问题要修改
+									 String lngLatStr=geoCodeModel.getGeocodes().get(0).getLocation();
+									 String lngStr=lngLatStr.split(",")[0];
+									 String latStr=lngLatStr.split(",")[1];
+									 appointmentOrder.setLongitude(Double.valueOf(lngStr));
+									 appointmentOrder.setLatitude(Double.valueOf(latStr));
+								 }
 							 }
 							
 						} catch (IOException e) {

@@ -18,7 +18,7 @@ public class GeoCode{
 	
 	private String citycode;
 	
-	private String[] district;
+	private String district;
 	
 	private String[] township;
 	
@@ -68,11 +68,11 @@ public class GeoCode{
 		this.citycode = citycode;
 	}
 
-	public String[] getDistrict() {
+	public String getDistrict() {
 		return district;
 	}
 
-	public void setDistrict(String[] district) {
+	public void setDistrict(String district) {
 		this.district = district;
 	}
 

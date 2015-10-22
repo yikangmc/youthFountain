@@ -1,7 +1,10 @@
 package com.yikangyiliao.pension.common.utils.map;
 
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
@@ -14,7 +17,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.yikangyiliao.pension.common.utils.map.model.DistanceModal;
 import com.yikangyiliao.pension.common.utils.map.model.GeoCodeModel;
+import com.yikangyiliao.pension.common.utils.map.model.MapResponse;
 
 /**
  * @author liushuaic
@@ -44,7 +49,8 @@ public class MapUtils {
 		
 		String paramStr=KEYPARAM+"";
 		if(null != address && address !=""){
-			paramStr=paramStr+"&address='"+address+"'";
+			
+			paramStr=paramStr+"&address='"+URLEncoder.encode(address)+"'";
 		}
 		if(null != city && city !=""){
 			paramStr=paramStr+"&city='"+city+"'";
@@ -89,15 +95,132 @@ public class MapUtils {
 		return geoCodeModel;
 	}
 	
+	/**
+	 * @author liushuaic
+	 * @date 2015/10/21 10:43
+	 * 查询出发地与目的地，之间的行驶距离，及预计行驶时间
+	 * 
+	 * @param origins {(1.33333,0.333444),(1.444444,0.66666)}
+	 * @param distance 1.3333,0.666666
+	 * @throws IOException 
+	 * 
+	 * ***/
+	public static MapResponse<LinkedHashMap<String,String>> getOriginsDestinationDistance(String[] origins,String destination) throws IOException{
+		
+		String  orginsStr="";
+		if(null != origins){
+		
+			for(int i=0;i<origins.length;i++){
+				orginsStr=orginsStr+origins[i];
+				if(i<(origins.length-1)){
+					orginsStr=orginsStr+"%7C";
+				}
+			}
+		}
+	
+		
+		String paramStr=KEYPARAM+"";
+		if(!orginsStr.equals("") ){
+			paramStr=paramStr+"&origins="+orginsStr;
+		}
+		
+		if(null != destination && destination !=""){
+			paramStr=paramStr+"&destination="+destination;
+		}
+		
+		
+		MapResponse<LinkedHashMap<String,String>> distances=null;
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		try {
+			
+			String url=requestURl+"distance?"+paramStr;
+			//System.out.println(url);
+			
+			
+			HttpGet httpget = new HttpGet(url);
+
+			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+				public String handleResponse(final HttpResponse response) throws ClientProtocolException,IOException {
+					int status = response.getStatusLine().getStatusCode();
+					if (status >= 200 && status < 300) {
+						HttpEntity entity = response.getEntity();
+						return entity != null ? EntityUtils.toString(entity) : null;
+					} else {
+						throw new ClientProtocolException( "Unexpected response status: " + status);
+					}
+				}
+
+			};
+			String responseBody = httpclient.execute(httpget, responseHandler);
+			if(null != responseBody){
+				distances=objectMapper.readValue(responseBody.getBytes(), MapResponse.class);
+			}
+			
+		} catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			httpclient.close();
+		} 
+		
+		
+		return distances;
+		
+	}
 	
 	
+	/**
+	 * @author liushuaic
+	 * @date 2015/10/22 10:59
+	 * @desc 获取地址经纬度
+	 **/
+	public static String getAddressPosition(String mapPositionAddress,String detailAddress,String cityCode){
+		
+		if(mapPositionAddress.length()>0){
+			 try {
+				 GeoCodeModel geoCodeModel=MapUtils.getGeoCodeModelByAddress(mapPositionAddress+detailAddress,cityCode);
+				 if(null != geoCodeModel && null != geoCodeModel.getGeocodes() && geoCodeModel.getGeocodes().size()>0){
+					 //  TODO 有可能模糊地址对应的有多个这个问题要修改
+					 String lngLatStr=geoCodeModel.getGeocodes().get(0).getLocation();
+					
+					 return lngLatStr;
+				 }else{
+					 geoCodeModel=MapUtils.getGeoCodeModelByAddress(mapPositionAddress, cityCode);
+					 if(null != geoCodeModel && null != geoCodeModel.getGeocodes() && geoCodeModel.getGeocodes().size()>0){
+						 //  TODO 有可能模糊地址对应的有多个这个问题要修改
+						 String lngLatStr=geoCodeModel.getGeocodes().get(0).getLocation();
+						
+						 return lngLatStr;
+					 }
+				 }
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return "";
+	}
 	
 	
 	
 	
 	public static void main(String[] args) throws IOException {
-		GeoCodeModel gmc=MapUtils.getGeoCodeModelByAddress("北京市海淀区万寿路光华护士基金",null);
-		System.out.println(gmc.getGeocodes().get(0).getLocation());
+		
+		
+//		GeoCodeModel gmc=MapUtils.getGeoCodeModelByAddress("five plus旗舰店",null);
+//		System.out.println(gmc.getGeocodes().get(0).getLocation());
+//		MapUtils.getOriginsDestinationDistance();
+//		System.out.println(gmc.getGeocodes().get(0).getLocation());
+		
+		String[] origins={"116.427944,39.903409","116.449226,39.854431"};
+		String destination="116.39241,39.896297";
+		 MapResponse<LinkedHashMap<String,String>> data=MapUtils.getOriginsDestinationDistance(origins, destination);
+		 System.out.println(data.getResults().get(0).get("distance"));
+		
+//		System.out.println(URLEncoder.encode("北京市海淀区万寿路(光华护士基金@@)"));
+//		System.out.println(URLEncoder.encode("|"));
+		
 	}
 	
 }

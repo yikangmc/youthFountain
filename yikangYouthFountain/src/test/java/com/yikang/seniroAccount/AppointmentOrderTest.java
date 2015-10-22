@@ -25,24 +25,7 @@ public class AppointmentOrderTest {
 	@Test
 	public void testAddAppointmentOrder(){
 		try {
-//					null != param.get("parentLinkAddress")
-//					&& null != param.get("phoneNumber")
-//					&& null != param.get("myPhoneNumber")
-//					&& null != param.get("nickName")
-//					&& null != param.get("appointmentDateTime")
-//					&& null != param.get("timeQuantumId")
-//					&& null != param.get("startTime")
-//					&& null != param.get("endTime")
-//					&& null != param.get("provenceCode")
-//					&& null != param.get("cityCode")
-//					&& null != param.get("districtCode")
-//					&& null != param.get("longitude")
-//					&& null != param.get("latitude")
-//					&& null != param.get("detailAddress")
-//					&& null != param.get("mapPostionAddress")
-//					&& null != param.get("serviceCount")
-//					&& null != param.get("dataSource")
-//					&& null != param.get("dataGroup")
+
 			Map<String,Object> paramData=new HashMap<String, Object>();
 			paramData.put("parentLinkAddress","11");
 			paramData.put("phoneNumber","11");
@@ -87,18 +70,16 @@ public class AppointmentOrderTest {
 			paramData.put("phoneNumber","11");
 			
 			//服务时间
-			paramData.put("appointmentDateTime","2015-01-01");
+			paramData.put("appointmentDateTime","2015-10-23");
 			//时间段id
-			paramData.put("timeQuantumId","1");
-			paramData.put("startTime","11");
-			paramData.put("endTime","11");
+			paramData.put("timeQuantumId","3");
 			//联系人名称
 			paramData.put("linkUserName","11");
 			//区县id
-			paramData.put("districtCode","11");
+			paramData.put("districtCode","110108");
 
 			//地图定位地址
-			paramData.put("mapPostionAddress","11");
+			paramData.put("mapPostionAddress","实创大厦东区");
 			//用户输入详细地址
 			paramData.put("detailAddress","北京市海淀区信息号22号实创大厦东区");
 			
