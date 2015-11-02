@@ -7,9 +7,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.yikangyiliao.pension.dao.ServiceItemOwnServicerTypeDao;
 import com.yikangyiliao.pension.dao.UserDao;
 import com.yikangyiliao.pension.dao.UserInfoDao;
 import com.yikangyiliao.pension.dao.UserServiceInfoDao;
+import com.yikangyiliao.pension.entity.ServiceItemOwnServicerType;
 import com.yikangyiliao.pension.entity.User;
 import com.yikangyiliao.pension.entity.UserInfo;
 import com.yikangyiliao.pension.entity.UserServiceInfo;
@@ -27,6 +29,9 @@ public class UserManager {
 	
 	@Autowired
 	private UserInfoDao userInfoDao;
+	
+	@Autowired
+	private ServiceItemOwnServicerTypeDao serviceItemOwnServicerTypeDao;
 	
 	
 	
@@ -134,4 +139,31 @@ public class UserManager {
 		
 		return userServiceInfoDao.getServicerByServiceDateCustumerTimeQuantumId(param);
 	}
+	
+	
+	
+	/**
+	 * @author liushuaic
+	 * @date 2015/10/29 18:14 
+	 * 获取某个服务的服务人员
+	 * */
+	public List<UserServiceInfo>  getServicerByServicerItemId(String serviceDate,Long custumerQuantumId,Long serviceItemId){
+		Map<String,Object> param=new HashMap<String,Object>();
+		param.put("serviceDate", serviceDate);
+		
+		param.put("custumerQuantumId", custumerQuantumId);
+		
+		ServiceItemOwnServicerType serviceItemOwnServicerType=serviceItemOwnServicerTypeDao.getServiceItemOwnServiceByServiceItemId(serviceItemId);
+		if(null != serviceItemOwnServicerType ){
+			param.put("userPosition", serviceItemOwnServicerType.getServicerType());
+		}else{
+			
+			return null;
+		}
+		
+		
+		return userServiceInfoDao.getServicerByServiceDateCustumerTimeQuantumId(param);
+	}
+	
+	
 }

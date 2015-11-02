@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yikangyiliao.pension.dao.ServicePictureDao" >
+  <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.ServicePicture" >
+    <id column="service_picture_id" property="servicePictureId" jdbcType="BIGINT" />
+    <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="service_item_id" property="serviceItemId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    service_picture_id, pic_url, create_time, update_time, service_item_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from service_pictures
+    where service_picture_id = #{servicePictureId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from service_pictures
+    where service_picture_id = #{servicePictureId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yikangyiliao.pension.entity.ServicePicture" >
+    insert into service_pictures (service_picture_id, pic_url, create_time, 
+      update_time, service_item_id)
+    values (#{servicePictureId,jdbcType=BIGINT}, #{picUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=BIGINT}, #{serviceItemId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.ServicePicture" >
+    insert into service_pictures
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="servicePictureId != null" >
+        service_picture_id,
+      </if>
+      <if test="picUrl != null" >
+        pic_url,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="serviceItemId != null" >
+        service_item_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="servicePictureId != null" >
+        #{servicePictureId,jdbcType=BIGINT},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="serviceItemId != null" >
+        #{serviceItemId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yikangyiliao.pension.entity.ServicePicture" >
+    update service_pictures
+    <set >
+      <if test="picUrl != null" >
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="serviceItemId != null" >
+        service_item_id = #{serviceItemId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where service_picture_id = #{servicePictureId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yikangyiliao.pension.entity.ServicePicture" >
+    update service_pictures
+    set pic_url = #{picUrl,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      service_item_id = #{serviceItemId,jdbcType=BIGINT}
+    where service_picture_id = #{servicePictureId,jdbcType=BIGINT}
+  </update>
+</mapper>

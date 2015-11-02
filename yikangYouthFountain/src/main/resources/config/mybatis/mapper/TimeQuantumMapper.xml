@@ -159,6 +159,65 @@
 <!-- 		where usi.user_postion=0 -->
 <!-- 	) usi -->
 	
+<!-- 		select  -->
+<!-- 			ctq.custumer_time_quantum_id as timeQuantumId, -->
+<!-- 			ctq.start_time				 as startTime, -->
+<!-- 			ctq.end_time				 as endTime, -->
+<!-- 		    timeQuantum.disabled -->
+<!-- 		from ( -->
+<!-- 			select -->
+<!-- 				timeQuantumsCh.time_quantum_id  as timeQuantumId, -->
+<!-- 				timeQuantumsCh.start_time		as startTime, -->
+<!-- 				timeQuantumsCh.end_time			as endTime, -->
+<!-- 			case  -->
+<!-- 				when timeQuantumsCh.count >=usi.userNumber or timeQuantumsCh.time_quantum_id2 is null  then true -->
+<!-- 			    else false -->
+<!-- 			end 'disabled' -->
+<!-- 			from(  -->
+<!-- 				select  -->
+<!-- 					timeQuantums.count, -->
+<!-- 					timeQuantums.time_quantum_id, -->
+<!-- 					timeQuantums.start_time, -->
+<!-- 					timeQuantums.end_time, -->
+<!-- 					timeIsHave.time_quantum_id as 'time_quantum_id2' -->
+<!-- 					from  -->
+<!-- 					( -->
+<!-- 						select  -->
+<!-- 							count(ssd.time_quantum_id) 'count', -->
+<!-- 							tq.time_quantum_id, -->
+<!-- 							tq.start_time, -->
+<!-- 							tq.end_time -->
+<!-- 						from time_quantums tq  -->
+<!-- 						left join order_service_details ssd on ( -->
+<!-- 							ssd.time_quantum_id=tq.time_quantum_id and ssd.service_date=#{serviceDate} -->
+<!-- 						) -->
+<!-- 						group by tq.time_quantum_id -->
+<!-- 					) timeQuantums -->
+<!-- 					left join -->
+<!-- 					( -->
+<!-- 						select  -->
+<!-- 						distinct ssd.time_quantum_id -->
+<!-- 						from service_schedules ss  -->
+<!-- 						inner join service_schedule_details ssd  -->
+<!-- 						on ss.service_schedule_id=ssd.service_schedule_id -->
+<!-- 						where service_date=#{serviceDate} -->
+<!-- 					) timeIsHave -->
+<!-- 					on timeQuantums.time_quantum_id=timeIsHave.time_quantum_id -->
+<!-- 			) timeQuantumsCh, -->
+<!-- 		    ( -->
+<!-- 				select  -->
+<!-- 					count(usi.user_id) as 'userNumber'  -->
+<!-- 				from user_service_infos usi -->
+<!-- 				where usi.user_postion=0 -->
+<!-- 			) usi -->
+<!-- 		) timeQuantum -->
+<!-- 		inner join custumer_time_quantums ctq -->
+<!-- 		on timeQuantum.timeQuantumId=ctq.owner_time_quantum_id -->
+		
+		
+		
+		
+	<!-- 查询全部人员的，有空时间 -->	
 		select 
 			ctq.custumer_time_quantum_id as timeQuantumId,
 			ctq.start_time				 as startTime,
@@ -196,7 +255,7 @@
 					left join
 					(
 						select 
-							ssd.time_quantum_id
+						distinct ssd.time_quantum_id
 						from service_schedules ss 
 						inner join service_schedule_details ssd 
 						on ss.service_schedule_id=ssd.service_schedule_id
@@ -208,7 +267,6 @@
 				select 
 					count(usi.user_id) as 'userNumber' 
 				from user_service_infos usi
-				where usi.user_postion=0
 			) usi
 		) timeQuantum
 		inner join custumer_time_quantums ctq

@@ -225,7 +225,7 @@
 
 
 	<build>
-		<finalName>yikangservice</finalName>
+		<finalName>youthFountain</finalName>
 
 		<outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory>
 		<plugins>

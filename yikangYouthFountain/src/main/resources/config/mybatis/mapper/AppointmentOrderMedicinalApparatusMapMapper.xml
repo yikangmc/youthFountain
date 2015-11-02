@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yikangyiliao.pension.dao.AppointmentOrderMedicinalApparatusMapDao" >
+  <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.AppointmentOrderMedicinalApparatusMap" >
+    <id column="appointment_order_medicinal_apparatu_map_id" property="appointmentOrderMedicinalApparatuMapId" jdbcType="BIGINT" />
+    <result column="appointment_order_id" property="appointmentOrderId" jdbcType="BIGINT" />
+    <result column="order_service_detail_id" property="orderServiceDetailId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="medicinal_apparatus_id" property="medicinalApparatusId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    appointment_order_medicinal_apparatu_map_id, appointment_order_id, order_service_detail_id, 
+    create_time, update_time, medicinal_apparatus_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from appointment_order_medicinal_apparatus_maps
+    where appointment_order_medicinal_apparatu_map_id = #{appointmentOrderMedicinalApparatuMapId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from appointment_order_medicinal_apparatus_maps
+    where appointment_order_medicinal_apparatu_map_id = #{appointmentOrderMedicinalApparatuMapId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yikangyiliao.pension.entity.AppointmentOrderMedicinalApparatusMap" >
+    insert into appointment_order_medicinal_apparatus_maps (appointment_order_medicinal_apparatu_map_id, appointment_order_id, 
+      order_service_detail_id, create_time, update_time, 
+      medicinal_apparatus_id)
+    values (#{appointmentOrderMedicinalApparatuMapId,jdbcType=BIGINT}, #{appointmentOrderId,jdbcType=BIGINT}, 
+      #{orderServiceDetailId,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, 
+      #{medicinalApparatusId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.AppointmentOrderMedicinalApparatusMap" >
+    insert into appointment_order_medicinal_apparatus_maps
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="appointmentOrderMedicinalApparatuMapId != null" >
+        appointment_order_medicinal_apparatu_map_id,
+      </if>
+      <if test="appointmentOrderId != null" >
+        appointment_order_id,
+      </if>
+      <if test="orderServiceDetailId != null" >
+        order_service_detail_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="medicinalApparatusId != null" >
+        medicinal_apparatus_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="appointmentOrderMedicinalApparatuMapId != null" >
+        #{appointmentOrderMedicinalApparatuMapId,jdbcType=BIGINT},
+      </if>
+      <if test="appointmentOrderId != null" >
+        #{appointmentOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderServiceDetailId != null" >
+        #{orderServiceDetailId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="medicinalApparatusId != null" >
+        #{medicinalApparatusId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yikangyiliao.pension.entity.AppointmentOrderMedicinalApparatusMap" >
+    update appointment_order_medicinal_apparatus_maps
+    <set >
+      <if test="appointmentOrderId != null" >
+        appointment_order_id = #{appointmentOrderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderServiceDetailId != null" >
+        order_service_detail_id = #{orderServiceDetailId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="medicinalApparatusId != null" >
+        medicinal_apparatus_id = #{medicinalApparatusId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where appointment_order_medicinal_apparatu_map_id = #{appointmentOrderMedicinalApparatuMapId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yikangyiliao.pension.entity.AppointmentOrderMedicinalApparatusMap" >
+    update appointment_order_medicinal_apparatus_maps
+    set appointment_order_id = #{appointmentOrderId,jdbcType=BIGINT},
+      order_service_detail_id = #{orderServiceDetailId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      medicinal_apparatus_id = #{medicinalApparatusId,jdbcType=BIGINT}
+    where appointment_order_medicinal_apparatu_map_id = #{appointmentOrderMedicinalApparatuMapId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -222,6 +222,7 @@ public class InterfaceUtil {
 		mathodClassPath.put("00-21-01", "addPointmentOrder");
 		mathodClassPath.put("00-21-02", "getServiceUserByOrderId");
 		mathodClassPath.put("00-21-03", "addPointmentOrderAndSubmitAssessment");
+		mathodClassPath.put("00-21-04", "addApointmentOrderForServiceItem");
 		
 		
 		/**
@@ -231,10 +232,17 @@ public class InterfaceUtil {
 		 * */
 		serviceClassName.put("00-22","servicerService");
 		mathodClassPath.put("00-22-01","getAssessmentService");
+		mathodClassPath.put("00-22-02","getServicerService");
 		
 		
-		
-		
+		/**
+		 * @author liushuaic
+		 * @date 2015/10/14 15:35
+		 * 查询服务项目列表
+		 * */
+		serviceClassName.put("01-01", "serviceItemService");
+		mathodClassPath.put("01-01-01", "selectServiceItemService");
+		mathodClassPath.put("01-01-02", "selectServiceItemDesc");
 	}
 	
 	

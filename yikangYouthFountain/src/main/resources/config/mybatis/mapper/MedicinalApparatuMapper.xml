@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yikangyiliao.pension.dao.medicinalApparatuDao" >
+  <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.MedicinalApparatu" >
+    <id column="medicinal_apparatu_id" property="medicinalApparatuId" jdbcType="BIGINT" />
+    <result column="ma_name" property="maName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="out_of_stock" property="outOfStock" jdbcType="TINYINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    medicinal_apparatu_id, ma_name, price, create_time, out_of_stock, update_time, pic_url
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from medicinal_apparatus
+    where medicinal_apparatu_id = #{medicinalApparatuId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from medicinal_apparatus
+    where medicinal_apparatu_id = #{medicinalApparatuId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yikangyiliao.pension.entity.MedicinalApparatu" >
+    insert into medicinal_apparatus (medicinal_apparatu_id, ma_name, price, 
+      create_time, out_of_stock, update_time, 
+      pic_url)
+    values (#{medicinalApparatuId,jdbcType=BIGINT}, #{maName,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=BIGINT}, #{outOfStock,jdbcType=TINYINT}, #{updateTime,jdbcType=BIGINT}, 
+      #{picUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.MedicinalApparatu" >
+    insert into medicinal_apparatus
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="medicinalApparatuId != null" >
+        medicinal_apparatu_id,
+      </if>
+      <if test="maName != null" >
+        ma_name,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="outOfStock != null" >
+        out_of_stock,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="picUrl != null" >
+        pic_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="medicinalApparatuId != null" >
+        #{medicinalApparatuId,jdbcType=BIGINT},
+      </if>
+      <if test="maName != null" >
+        #{maName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="outOfStock != null" >
+        #{outOfStock,jdbcType=TINYINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yikangyiliao.pension.entity.MedicinalApparatu" >
+    update medicinal_apparatus
+    <set >
+      <if test="maName != null" >
+        ma_name = #{maName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="outOfStock != null" >
+        out_of_stock = #{outOfStock,jdbcType=TINYINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="picUrl != null" >
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where medicinal_apparatu_id = #{medicinalApparatuId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yikangyiliao.pension.entity.MedicinalApparatu" >
+    update medicinal_apparatus
+    set ma_name = #{maName,jdbcType=VARCHAR},
+      price = #{price,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      out_of_stock = #{outOfStock,jdbcType=TINYINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      pic_url = #{picUrl,jdbcType=VARCHAR}
+    where medicinal_apparatu_id = #{medicinalApparatuId,jdbcType=BIGINT}
+  </update>
+  
+  
+</mapper>

@@ -58,4 +58,13 @@ public interface ServiceScheduleDao {
     void updateIsCanSelected1ByServiceUserIdAndServiceDate(Map<String,Object> param);
     
     
+    
+    /**
+     * @author liushuaic
+     * @date 2015/10/23 10:59
+     * 查询一个servicehSchedule by CustumerTimeQuatumId
+     * **/
+    ServiceSchedule selectServiceScheduleByCustumerTimeQuantumIdServiceDateServiceUserId(Map<String,Object> param);
+    
+    
 }

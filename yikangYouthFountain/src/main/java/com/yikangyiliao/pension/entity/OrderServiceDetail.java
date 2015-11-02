@@ -2,7 +2,7 @@ package com.yikangyiliao.pension.entity;
 
 import java.util.Date;
 
-public class OrderServiceDetail {
+public class OrderServiceDetail{
     private Long orderServiceDetailId;
 
     private Long serviceUserId;
@@ -26,6 +26,8 @@ public class OrderServiceDetail {
     private Long orderId;
 
     private Byte certainServiceUserStatus;
+
+    private Long serviceItemId;
 
     public Long getOrderServiceDetailId() {
         return orderServiceDetailId;
@@ -103,7 +105,7 @@ public class OrderServiceDetail {
         return serviceDetailStatus;
     }
 
-    public void setServiceDetailStatus(Byte serviceDetailStatus){
+    public void setServiceDetailStatus(Byte serviceDetailStatus) {
         this.serviceDetailStatus = serviceDetailStatus;
     }
 
@@ -121,5 +123,13 @@ public class OrderServiceDetail {
 
     public void setCertainServiceUserStatus(Byte certainServiceUserStatus) {
         this.certainServiceUserStatus = certainServiceUserStatus;
+    }
+
+    public Long getServiceItemId() {
+        return serviceItemId;
+    }
+
+    public void setServiceItemId(Long serviceItemId) {
+        this.serviceItemId = serviceItemId;
     }
 }

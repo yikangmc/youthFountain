@@ -189,4 +189,18 @@
   		where service_user_id=#{serviceUserId} and service_date=#{serviceDate}
   </update>
   
+  <!-- 查询一个servicehSchedule by CustumerTimeQuatumId -->
+  <select id="selectServiceScheduleByCustumerTimeQuantumIdServiceDateServiceUserId" parameterType="map" resultMap="BaseResultMap">
+	select 
+		ss.*
+	from service_schedule_details ssd 
+	 inner join custumer_time_quantums ctq on ssd.time_quantum_id=ctq.custumer_time_quantum_id 
+	 inner join service_schedules ss on ss.service_schedule_id=ssd.service_schedule_id
+	where 
+		 ss.service_date=#{serviceDate}
+	 and ctq.custumer_time_quantum_id=#{custumerTimeQuantumId}
+	 and ss.service_user_id=#{serviceUserId}
+  </select>
+  
+  
 </mapper>

@@ -9,21 +9,23 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.NumberUtils;
-
 import com.yikangyiliao.base.utils.DateUtils;
 import com.yikangyiliao.pension.common.error.ExceptionConstants;
 import com.yikangyiliao.pension.common.utils.GenreateNumberUtils;
 import com.yikangyiliao.pension.common.utils.map.MapUtils;
 import com.yikangyiliao.pension.common.utils.map.model.GeoCodeModel;
 import com.yikangyiliao.pension.entity.AppointmentOrder;
+import com.yikangyiliao.pension.entity.AppointmentOrderMedicinalApparatusMap;
 import com.yikangyiliao.pension.entity.Location;
 import com.yikangyiliao.pension.entity.OrderServiceDetail;
+import com.yikangyiliao.pension.entity.ServiceSchedule;
 import com.yikangyiliao.pension.entity.TimeQuantum;
 import com.yikangyiliao.pension.entity.UserServiceInfo;
 import com.yikangyiliao.pension.manager.AppointmentOrderManager;
+import com.yikangyiliao.pension.manager.AppointmentOrderMedicinalApparatusMapManager;
 import com.yikangyiliao.pension.manager.LocationManager;
 import com.yikangyiliao.pension.manager.OrderServiceDetailManager;
+import com.yikangyiliao.pension.manager.ServiceScheduleManager;
 import com.yikangyiliao.pension.manager.TimeQuantumManager;
 import com.yikangyiliao.pension.schedule.PersonnelDistribution;
 
@@ -34,10 +36,8 @@ public class AppointmentOrderService {
 	@Autowired
 	private AppointmentOrderManager appointmentOrderManager;
 	
-	
 	@Autowired
 	private OrderServiceDetailManager orderServiceDetailManager;
-	
 	
 	@Autowired
 	private PersonnelDistribution personnelDistribution;
@@ -45,13 +45,18 @@ public class AppointmentOrderService {
 	@Autowired
 	private TimeQuantumManager timeQuantumManager;
 	
-	
 	@Autowired
 	private GenreateNumberUtils genreateNumberUtils;
 	
-	
 	@Autowired
 	private LocationManager locationManager;
+	
+	@Autowired
+	private ServiceScheduleManager serviceScheduleManager;
+	
+	@Autowired
+	private AppointmentOrderMedicinalApparatusMapManager appointmentOrderMedicinalApparatusMapManager; 
+	
 	
 	
 	public Map<String,Object> addPointmentOrder(Map<String,Object> param) throws ParseException, InterruptedException{
@@ -197,15 +202,17 @@ public class AppointmentOrderService {
 			
 				
 				 String serviceUserId		=  param.get("serviceUserId").toString();
+				 String timeQuantumId		=  param.get("timeQuantumId").toString();
+				 String appointmentDateTime	=  param.get("appointmentDateTime").toString();
 				
-				if(checkServicerTimeQuantum(Long.valueOf(serviceUserId))){
+				if(checkServicerTimeQuantum(Long.valueOf(timeQuantumId),appointmentDateTime,Long.valueOf(serviceUserId))){
 					Long currentDateTimeMillis=Calendar.getInstance().getTimeInMillis();
 				
-					AppointmentOrder appointmentOrder =new AppointmentOrder();
+					AppointmentOrder appointmentOrder = new AppointmentOrder();
 					
 					 String phoneNumber			=  param.get("phoneNumber").toString();
-					 String appointmentDateTime	=  param.get("appointmentDateTime").toString();
-					 String timeQuantumId		=  param.get("timeQuantumId").toString();
+					 
+					 
 					 String districtCode		=  param.get("districtCode").toString();
 					 String detailAddress		=  param.get("detailAddress").toString();
 					 String mapPositionAddress	=  param.get("mapPositionAddress").toString();
@@ -282,10 +289,8 @@ public class AppointmentOrderService {
 					 appointmentOrder.setProvenceCode(provence.getAdministrativeCode());
 					 appointmentOrder.setCityCode(city.getAdministrativeCode());
 					 appointmentOrder.setDistrictCode(districtCode);
-					
 					 
 					 appointmentOrderManager.insertSelective(appointmentOrder);
-					 
 					 
 					 OrderServiceDetail orderServiceDetail=new OrderServiceDetail();
 					 
@@ -346,16 +351,22 @@ public class AppointmentOrderService {
 	 * @author liushuaic
 	 * @date 2015/10/15 11:00
 	 * 确认服务人员的服务时间，是否有问题
+	 * 在再次提交时，对时间进行确认
 	 * 
 	 * **/
-	public boolean checkServicerTimeQuantum(Long serviceUserId){
+	public boolean checkServicerTimeQuantum(Long custumerTimeQuantumId,String serviceDate,Long serviceUserId){
 		
+		// TODO 1.重新确定距离时间 ，是否合适 。查询出来，最新的一个订单的，服务地址与  客户最近的。员工
+		// TODO 2.如果没有，定单，就是住址。计算，最近的距离
+		// 现阶段只做时间是否合适的校验
 		
-		//1.重新确定距离时间 ，是否合适 。查询出来，最新的一个订单的，服务地址与  客户最近的。员工
-		//2.如果没有，定单，就是住址。计算，最近的距离
+		ServiceSchedule serviceSchedule=serviceScheduleManager.selectServiceScheduleByCustumerTimeQuantumIdServiceDate(custumerTimeQuantumId,serviceDate,serviceUserId);
 		
+		if(null != serviceSchedule && serviceSchedule.getIsCanSelected()==1){
+			return true;
+		}
 		
-		return true;
+		return false;
 	}
 	
 	
@@ -412,6 +423,202 @@ public class AppointmentOrderService {
 		return rtnMap;
 	
 	}
+	
+	/**
+	 * @author liushuaic
+	 * @throws ParseException 
+	 * @date 2015/10/27 15:53
+	 * 保存单项服务
+	 * **/
+	public Map<String,Object> addApointmentOrderForServiceItem(Map<String,Object> param) throws ParseException{
+		
+		Map<String,Object> rtnMap=new HashMap<String,Object>();
+		if(	
+			 null != param.get("phoneNumber")
+			&& null != param.get("appointmentDateTime")
+			&& null != param.get("timeQuantumId")
+			&& null != param.get("districtCode")
+			&& null != param.get("detailAddress")
+			&& null != param.get("mapPositionAddress")
+			&& null != param.get("dataSource")
+			&& null != param.get("dataGroup")
+			&& null != param.get("linkUserName")
+			&& null != param.get("serviceUserId")// 服务人员id
+			&& null != param.get("serviceItemId")// 某项目服务id
+		){
+			
+				
+				 String serviceUserId		=  param.get("serviceUserId").toString();
+				 String timeQuantumId		=  param.get("timeQuantumId").toString();
+				 String appointmentDateTime	=  param.get("appointmentDateTime").toString();
+				
+				//if(checkServicerTimeQuantum(Long.valueOf(timeQuantumId),appointmentDateTime,Long.valueOf(serviceUserId))){
+					Long currentDateTimeMillis=Calendar.getInstance().getTimeInMillis();
+				
+					AppointmentOrder appointmentOrder = new AppointmentOrder();
+					
+					 String phoneNumber			=  param.get("phoneNumber").toString();
+					 
+					 
+					 String districtCode		=  param.get("districtCode").toString();
+					 String detailAddress		=  param.get("detailAddress").toString();
+					 String mapPositionAddress	=  param.get("mapPositionAddress").toString();
+					 String dataSource			=  param.get("dataSource").toString();
+					 //String dataGroup			=  param.get("dataGroup").toString();
+					 String linkUserName		=  param.get("linkUserName").toString();
+					 String serviceItemId		= param.get("serviceItemId").toString();
+					 
+					 appointmentOrder.setParentLinkAddress("");
+					 appointmentOrder.setPhoneNumber(phoneNumber);
+					 appointmentOrder.setMyPhoneNumber("");
+					 appointmentOrder.setNickName("");
+					 appointmentOrder.setAppointmentDateTime(DateUtils.getＭillisecond(appointmentDateTime));
+					 appointmentOrder.setTimeQuanturmId(Long.valueOf(timeQuantumId));
+					 appointmentOrder.setLinkUserName(linkUserName);
+					 
+					 // 冗余数据设置的评估师 
+					 appointmentOrder.setAssessmentId(Long.valueOf(serviceUserId));
+					 
+					 TimeQuantum timeQuantum=timeQuantumManager.getTimeQuantumsById(Long.valueOf(timeQuantumId));
+					 appointmentOrder.setStartTime(timeQuantum.getStartTime().toString());
+					 appointmentOrder.setEndTime(timeQuantum.getEndTime().toString());
+					 
+					 appointmentOrder.setDetailAddress(detailAddress);
+					 appointmentOrder.setMapPostionAddress(mapPositionAddress);
+					 appointmentOrder.setServiceCount(Integer.valueOf("1"));
+					 appointmentOrder.setDataSource(Byte.valueOf(dataSource));
+					 
+					 //设置服务分类为2， 预约单项服务
+					 appointmentOrder.setDataGroup(Byte.valueOf("2"));
+					 
+					 appointmentOrder.setCreateTime(currentDateTimeMillis);
+					 appointmentOrder.setUpdateTime(currentDateTimeMillis);
+					 // 生成订单编号
+					 appointmentOrder.setOrderNumber(genreateNumberUtils.generateAppointmentOrderNumber());
+					 
+					 String address="";
+					Location city= locationManager.getCityByDistrictCode(districtCode);
+					Location provence=locationManager.getProvenceByCityCode(districtCode);
+					Location distirct=locationManager.getLocationByAdministrativeCode(districtCode);
+					
+					address=provence.getName()+city.getName()+distirct.getName()+mapPositionAddress+detailAddress;
+					
+					
+					 
+					 //设置经纬度
+					if(address.length()>0){
+						 try {
+							 GeoCodeModel geoCodeModel=MapUtils.getGeoCodeModelByAddress(mapPositionAddress+detailAddress, city.getAdministrativeCode());
+							 if(null != geoCodeModel && null != geoCodeModel.getGeocodes() && geoCodeModel.getGeocodes().size()>0){
+								 //  TODO 有可能模糊地址对应的有多个这个问题要修改
+								 String lngLatStr=geoCodeModel.getGeocodes().get(0).getLocation();
+								 String lngStr=lngLatStr.split(",")[0];
+								 String latStr=lngLatStr.split(",")[1];
+								 appointmentOrder.setLongitude(Double.valueOf(lngStr));
+								 appointmentOrder.setLatitude(Double.valueOf(latStr));
+							 }else{
+								 geoCodeModel=MapUtils.getGeoCodeModelByAddress(mapPositionAddress, city.getAdministrativeCode());
+								 if(null != geoCodeModel && null != geoCodeModel.getGeocodes() && geoCodeModel.getGeocodes().size()>0){
+									 //  TODO 有可能模糊地址对应的有多个这个问题要修改
+									 String lngLatStr=geoCodeModel.getGeocodes().get(0).getLocation();
+									 String lngStr=lngLatStr.split(",")[0];
+									 String latStr=lngLatStr.split(",")[1];
+									 appointmentOrder.setLongitude(Double.valueOf(lngStr));
+									 appointmentOrder.setLatitude(Double.valueOf(latStr));
+								 }
+							 }
+							
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					 
+					 
+					 appointmentOrder.setAddress(address);
+					 appointmentOrder.setProvenceCode(provence.getAdministrativeCode());
+					 appointmentOrder.setCityCode(city.getAdministrativeCode());
+					 appointmentOrder.setDistrictCode(districtCode);
+					 appointmentOrder.setOrderStatus(0);
+					 
+					 appointmentOrderManager.insertSelective(appointmentOrder);
+					 
+					 OrderServiceDetail orderServiceDetail=new OrderServiceDetail();
+					 
+					 orderServiceDetail.setOrderId(appointmentOrder.getAppointmentOrderId());
+					 
+					 orderServiceDetail.setCreateTime(currentDateTimeMillis);
+					 orderServiceDetail.setUpdateTime(currentDateTimeMillis);
+					 
+					 orderServiceDetail.setCertainServiceUserStatus((byte)1);
+					 orderServiceDetail.setServiceDetailStatus((byte)1);
+					 
+					 orderServiceDetail.setTimeQuantumId(Long.valueOf(timeQuantumId));
+					 
+					 
+					 //设置服务预约时间
+					 orderServiceDetail.setAppointmentDate(appointmentDateTime);
+					 //设置真实上门服务时间
+					 orderServiceDetail.setServiceDate(DateUtils.getDate(appointmentDateTime));
+					 
+					 // 设置服务人员的，服务id
+					 orderServiceDetail.setServiceUserId(Long.valueOf(serviceUserId));
+					 
+					 //设置服务状态
+					 orderServiceDetail.setServiceType((byte)0);
+					 
+					 //设置回复
+					 orderServiceDetail.setServiceRecord("");
+					 
+					 //服务项目id
+					 orderServiceDetail.setServiceItemId(Long.valueOf(serviceItemId));
+					 
+					 
+					 
+					 orderServiceDetailManager.insertSelective(orderServiceDetail);
+					 
+					 if(null != param.get("medicinalApparatuIds")){
+						 
+						 Long[] medicinalApparatuIds=(Long[]) param.get("medicinalApparatuIds");
+						 
+						 for(int i=0;i<medicinalApparatuIds.length;i++){
+							 
+							 AppointmentOrderMedicinalApparatusMap appointmentOrderMedicinalApparatusMap=new AppointmentOrderMedicinalApparatusMap();
+							 
+							 appointmentOrderMedicinalApparatusMap.setAppointmentOrderId(appointmentOrder.getAppointmentOrderId());
+							 appointmentOrderMedicinalApparatusMap.setMedicinalApparatusId(medicinalApparatuIds[i]);
+							 appointmentOrderMedicinalApparatusMap.setCreateTime(currentDateTimeMillis);
+							 appointmentOrderMedicinalApparatusMap.setUpdateTime(currentDateTimeMillis);
+							 appointmentOrderMedicinalApparatusMap.setOrderServiceDetailId(currentDateTimeMillis);
+							 
+							 appointmentOrderMedicinalApparatusMapManager.insertSelective(appointmentOrderMedicinalApparatusMap);
+						 }
+						
+					 }
+					 
+					 
+					 Map<String,Object> rtnData=new HashMap<String, Object>();
+					 
+					 rtnData.put("orderId", appointmentOrder.getAppointmentOrderId());
+					 rtnMap.put("data",rtnData);
+				 	 rtnMap.put("status", ExceptionConstants.responseSuccess.responseSuccess.code);
+				 	 rtnMap.put("message", ExceptionConstants.responseSuccess.responseSuccess.message);
+//				}else{
+//					// 服务人员，已经被选择
+//					rtnMap.put("status", ExceptionConstants.orderException.serviceUserHasBeenSelected.errorCode);
+//					rtnMap.put("message", ExceptionConstants.orderException.serviceUserHasBeenSelected.errorMessage);
+//				}
+				 
+			}else{
+				rtnMap.put("status", ExceptionConstants.parameterException.parameterException.errorCode);
+				rtnMap.put("message", ExceptionConstants.parameterException.parameterException.errorMessage);
+			}
+		
+		return rtnMap;
+		
+	}
+	
+	
+	
 	
 	
 }

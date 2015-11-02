@@ -111,4 +111,24 @@ public class ServiceScheduleManager {
 	public int insertServiceSchduleSelective(ServiceSchedule serviceSchedule){
 		return serviceScheduleDao.insertSelective(serviceSchedule);
 	}
+	
+	
+    /**
+     * 
+     * @author liushuaic
+     * @date 2015/10/23 10:59
+     * 查询一个servicehSchedule by CustumerTimeQuatumId,serviceDate,serviceUserId
+     * 
+     **/
+   public ServiceSchedule selectServiceScheduleByCustumerTimeQuantumIdServiceDate(Long custumerTimeQuantumId,String serviceDate,Long serviceUserId){
+	
+	   Map<String,Object> param=new HashMap<String,Object>();
+	   param.put("custumerTimeQuantumId", custumerTimeQuantumId);
+	   param.put("serviceDate", serviceDate);
+	   param.put("serviceUserId", serviceUserId);
+	   
+	   return serviceScheduleDao.selectServiceScheduleByCustumerTimeQuantumIdServiceDateServiceUserId(param);
+   }
+   
+   
 }

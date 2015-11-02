@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yikangyiliao.pension.dao.ServiceItemDao" >
+  <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.ServiceItem" >
+    <id column="service_item_id" property="serviceItemId" jdbcType="BIGINT" />
+    <result column="service_title" property="serviceTitle" jdbcType="VARCHAR" />
+    <result column="service_content" property="serviceContent" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
+    <result column="create_user_id" property="createUserId" jdbcType="BIGINT" />
+    <result column="service_price" property="servicePrice" jdbcType="REAL" />
+    <result column="out_of_stock" property="outOfStock" jdbcType="TINYINT" />
+    <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+    <result column="order_number" property="orderNumber" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    service_item_id, service_title, service_content, create_time, update_time, create_user_id, 
+    service_price, out_of_stock, pic_url, order_number
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from service_items
+    where service_item_id = #{serviceItemId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from service_items
+    where service_item_id = #{serviceItemId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yikangyiliao.pension.entity.ServiceItem" >
+    insert into service_items (service_item_id, service_title, service_content, 
+      create_time, update_time, create_user_id, 
+      service_price, out_of_stock, pic_url, 
+      order_number)
+    values (#{serviceItemId,jdbcType=BIGINT}, #{serviceTitle,jdbcType=VARCHAR}, #{serviceContent,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=BIGINT}, #{updateTime,jdbcType=BIGINT}, #{createUserId,jdbcType=BIGINT}, 
+      #{servicePrice,jdbcType=REAL}, #{outOfStock,jdbcType=TINYINT}, #{picUrl,jdbcType=VARCHAR}, 
+      #{orderNumber,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.ServiceItem" >
+    insert into service_items
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="serviceItemId != null" >
+        service_item_id,
+      </if>
+      <if test="serviceTitle != null" >
+        service_title,
+      </if>
+      <if test="serviceContent != null" >
+        service_content,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createUserId != null" >
+        create_user_id,
+      </if>
+      <if test="servicePrice != null" >
+        service_price,
+      </if>
+      <if test="outOfStock != null" >
+        out_of_stock,
+      </if>
+      <if test="picUrl != null" >
+        pic_url,
+      </if>
+      <if test="orderNumber != null" >
+        order_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="serviceItemId != null" >
+        #{serviceItemId,jdbcType=BIGINT},
+      </if>
+      <if test="serviceTitle != null" >
+        #{serviceTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceContent != null" >
+        #{serviceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="servicePrice != null" >
+        #{servicePrice,jdbcType=REAL},
+      </if>
+      <if test="outOfStock != null" >
+        #{outOfStock,jdbcType=TINYINT},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNumber != null" >
+        #{orderNumber,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yikangyiliao.pension.entity.ServiceItem" >
+    update service_items
+    <set >
+      <if test="serviceTitle != null" >
+        service_title = #{serviceTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceContent != null" >
+        service_content = #{serviceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="servicePrice != null" >
+        service_price = #{servicePrice,jdbcType=REAL},
+      </if>
+      <if test="outOfStock != null" >
+        out_of_stock = #{outOfStock,jdbcType=TINYINT},
+      </if>
+      <if test="picUrl != null" >
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNumber != null" >
+        order_number = #{orderNumber,jdbcType=INTEGER},
+      </if>
+    </set>
+    where service_item_id = #{serviceItemId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yikangyiliao.pension.entity.ServiceItem" >
+    update service_items
+    set service_title = #{serviceTitle,jdbcType=VARCHAR},
+      service_content = #{serviceContent,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      update_time = #{updateTime,jdbcType=BIGINT},
+      create_user_id = #{createUserId,jdbcType=BIGINT},
+      service_price = #{servicePrice,jdbcType=REAL},
+      out_of_stock = #{outOfStock,jdbcType=TINYINT},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      order_number = #{orderNumber,jdbcType=INTEGER}
+    where service_item_id = #{serviceItemId,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectServiceItemsListPage" parameterType="map" resultType="map">
+  	select 
+		service_item_id as serviceItemId,
+		service_title	as serviceTitle,
+		service_content as serviceContent,
+        service_price	as servicePrice,
+        pic_url			as picUrl
+	from service_items
+	where out_of_stock=0
+	order by service_items.order_number asc
+  </select>
+  
+  
+  <resultMap type="map" id="selectServiceItemDescResultMap">
+  
+  	<result column="serviceItemId" property="servcieItemId"/>
+  	<result column="serviceTitle" property="serviceTitle"/>
+  	<result column="serviceContent" property="serviceContent"/>
+  	<result column="outOfStock" property="outOfStock"/>
+  	<result column="price" property="price"/>
+  	
+  	<collection property="pictures" ofType="map" javaType="list">
+  		<result column="servicePictureId" property="servicePictureId"/>
+  		<result column="picUrl" property="picUrl"/>
+  	</collection>
+  	
+  	<collection property="serviceIntroduces" ofType="map" javaType="list">
+  		<result column="serviceIntroduceId" property="serviceIntroduceId"/>
+  		<result column="sinTitle" property="title"/>
+  		<result column="sinContent" property="content"/>
+  	</collection>
+  	
+  	<collection property="medicinalApparatus" ofType="map" javaType="list">
+  		<result column="medicinalApparatuId" property="medicinalApparatuId"/>
+  		<result column="maName" property="maName"/>
+  		<result column="maPrice" property="price"/>
+  		<result column="picUrl" property="picUrl"/>
+  	</collection>
+  	
+  	<collection property="serviceNotes" ofType="map" javaType="list">
+  		<result column="serviceNoteId" property="serviceNoteId"/>
+  		<result column="snTitle" property="title"/>
+  		<result column="snContent" property="content"/>
+  	</collection>
+  	
+  	
+  </resultMap>
+  
+  <!-- 查询某一项服务的详情 -->
+  <select id="selectServiceItemDescByServiceItemId" resultMap="selectServiceItemDescResultMap" parameterType="long">
+  	select 
+	    si.service_item_id  as serviceItemId,
+	    si.service_title	as serviceTitle,
+	    si.service_content  as serviceContent,
+	    si.out_of_stock		as outOfStock,
+	    si.service_price    as price,
+	    
+	    
+	    sp.service_picture_id as servicePictureId,
+	    sp.pic_url			as picUrl,
+	    
+	    sin.service_introduce_id as serviceIntroduceId,
+	    sin.title			as sinTitle,
+	    sin.content 		as sinContent,
+	    
+	    sn.service_note_id 	as serviceNoteId,
+	    sn.title			as snTitle,
+	    sn.content			as snContent,
+	    ma.medicinal_apparatu_id as medicinalApparatuId,
+	    ma.ma_name			as maName,
+	    ma.price 			as maPrice,
+	    ma.pic_url			as picUrl
+	from service_items si 
+		left join service_notes sn 		on si.service_item_id=sn.service_item_id
+		left join service_pictures sp 	on si.service_item_id=sp.service_item_id
+		left join service_item_medicinal_apparatus_maps simam on si.service_item_id=simam.service_item_id
+		left join medicinal_apparatus ma on simam.medicinal_apparatus_id=ma.medicinal_apparatu_id
+		left join service_introduces sin on si.service_item_id=sin.service_item_id
+	where si.service_item_id=#{serviceItemId}
+  	
+  </select>
+  
+  
+</mapper>
