@@ -31,5 +31,5 @@ public interface ServiceItemDao {
      * @date 2015/10/28 11:08
      * 查询服务详情
      * */
-    List<Map<String,Object>> selectServiceItemDescByServiceItemId(Long serviceItemId);
+   Map<String,Object> selectServiceItemDescByServiceItemId(Long serviceItemId);
 }

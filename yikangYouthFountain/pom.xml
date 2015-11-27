@@ -219,6 +219,17 @@
 			<version>2.2.1</version>
 		</dependency>
 		<!--quartz end  -->
+		
+		
+		<!-- 容联云通信 短信发送 start -->
+		<dependency>
+			<groupId>com.ronglian</groupId>
+			<artifactId>CCP_REST_SDK_JAVA</artifactId>
+			<version>2.7</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/CCP_REST_SDK_JAVA_v2.7r.jar</systemPath>
+		</dependency>
+<!-- 容联云通信 短信发送 end -->
 
 	</dependencies>
 
@@ -255,7 +266,7 @@
 					<password>tomcat</password>
 					<update>true</update>
 					<path>/youthFountain</path>
-					<port>8088</port>
+					<port>8090</port>
 				</configuration>
 			</plugin>
 		</plugins>

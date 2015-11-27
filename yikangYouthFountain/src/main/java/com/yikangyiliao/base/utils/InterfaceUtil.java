@@ -10,6 +10,8 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
 
+import com.yikangyiliao.base.config.YiKangServiceConfige;
+
 
 /**
  * @author liushuaic
@@ -23,9 +25,14 @@ public class InterfaceUtil {
 	
 	private static Map<String,String> mathodClassPath=null;
 	
+	private static Map<String,YiKangServiceConfige> mathodServiceConfig=null;
+	
 	static{
 		serviceClassName=new HashMap<String,String>();
 		mathodClassPath=new HashMap<String,String>();
+		mathodServiceConfig=new HashMap<String,YiKangServiceConfige>();
+		
+		
 		serviceClassName.put("0-0","test");
 		mathodClassPath.put("0-0-1","test");
 		
@@ -179,6 +186,22 @@ public class InterfaceUtil {
 		mathodClassPath.put("00-17-04", "getUserServiceInfoByUserId");
 		
 		
+		
+		YiKangServiceConfige validateYiKangService=new YiKangServiceConfige();
+		validateYiKangService.setServiceName("userService");
+		validateYiKangService.setMethodName("getValidateCode");
+		validateYiKangService.setIsFileter(false);
+		mathodServiceConfig.put("00-17-06", validateYiKangService);
+		
+		
+		YiKangServiceConfige registerYiKangService=new YiKangServiceConfige();
+		registerYiKangService.setServiceName("userService");
+		registerYiKangService.setMethodName("registerUser");
+		registerYiKangService.setIsFileter(false);
+		mathodServiceConfig.put("00-17-07", registerYiKangService);
+		
+		
+		
 		/**
 		 * @author liushuaic
 		 * @date 2015/09/01 14:19
@@ -286,6 +309,16 @@ public class InterfaceUtil {
 	 * */
 	public static String getMethodNameByServiceCode(String serviceCode){
 		return mathodClassPath.get(serviceCode);
+	}
+	
+	/**
+	 * @author liushuaic
+	 * @date 2015/11/26 11:06
+	 * 获取method config
+	 * 
+	 * **/
+	public static YiKangServiceConfige getMethodYikangServiceConfigByServiceCode(String serviceCode){
+		return mathodServiceConfig.get(serviceCode);
 	}
 	
 	

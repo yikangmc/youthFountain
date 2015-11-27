@@ -42,7 +42,7 @@ public class ServiceItemService {
 			
 			String serviceItemId=paramMap.get("serviceItemId").toString();
 		
-			List<Map<String,Object>> rtnData=serviceItemManager.selectServiceItemDescByServiceItemId(Long.valueOf(serviceItemId));
+			Map<String,Object> rtnData=serviceItemManager.selectServiceItemDescByServiceItemId(Long.valueOf(serviceItemId));
 			rtnMap.put("data", rtnData);
 			rtnMap.put("status",ExceptionConstants.responseSuccess.responseSuccess.code);
 			rtnMap.put("message", ExceptionConstants.responseSuccess.responseSuccess.message);

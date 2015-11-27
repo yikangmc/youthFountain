@@ -28,7 +28,7 @@ import com.yikangyiliao.base.encryption.AES;
 
 public class SendRequest {
 
-	private static String REQUEST_URL = "http://127.0.0.1:8088/youthFountain/service/";
+	private static String REQUEST_URL = "http://127.0.0.1:8090/youthFountain/service/";
 	
 	private static ObjectMapper objectMapper = new ObjectMapper();
 

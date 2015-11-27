@@ -166,7 +166,7 @@
   
   <resultMap type="map" id="selectServiceItemDescResultMap">
   
-  	<result column="serviceItemId" property="servcieItemId"/>
+  	<result column="serviceItemId" property="serviceItemId"/>
   	<result column="serviceTitle" property="serviceTitle"/>
   	<result column="serviceContent" property="serviceContent"/>
   	<result column="outOfStock" property="outOfStock"/>

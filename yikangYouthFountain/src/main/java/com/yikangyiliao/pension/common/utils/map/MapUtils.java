@@ -1,11 +1,8 @@
 package com.yikangyiliao.pension.common.utils.map;
 
 import java.io.IOException;
-import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -17,9 +14,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.yikangyiliao.pension.common.utils.map.model.DistanceModal;
 import com.yikangyiliao.pension.common.utils.map.model.GeoCodeModel;
 import com.yikangyiliao.pension.common.utils.map.model.MapResponse;
+import com.yikangyiliao.pension.common.utils.map.model.assistant.MapResponseAssistant;
 
 /**
  * @author liushuaic
@@ -204,6 +201,67 @@ public class MapUtils {
 	
 	
 	
+	/**
+	 * @author liushuaic
+	 * @throws IOException 
+	 * @date 2015/11/09 18:54
+	 * @desc 获取相关词
+	 * **/
+	public static MapResponseAssistant getAssistantInputtips(String keywords,String location,String city) throws IOException{
+		
+	
+		
+		String paramStr=KEYPARAM+"";
+		if(!keywords.equals("") ){
+			paramStr=paramStr+"&keywords="+keywords;
+		}
+		
+		if(null != location && location !=""){
+			paramStr=paramStr+"&location="+location;
+		}
+		
+		if(null != city && city !=""){
+			paramStr=paramStr+"&city="+city;
+		}
+		
+		
+		
+		MapResponseAssistant distances=new MapResponseAssistant();
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		try {
+			
+			String url=requestURl+"assistant/inputtips?"+paramStr;
+			
+			HttpGet httpget = new HttpGet(url);
+
+			ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
+
+				public String handleResponse(final HttpResponse response) throws ClientProtocolException,IOException {
+					int status = response.getStatusLine().getStatusCode();
+					if (status >= 200 && status < 300) {
+						HttpEntity entity = response.getEntity();
+						return entity != null ? EntityUtils.toString(entity) : null;
+					} else {
+						throw new ClientProtocolException( "Unexpected response status: " + status);
+					}
+				}
+
+			};
+			String responseBody = httpclient.execute(httpget, responseHandler);
+			if(null != responseBody){
+				distances=objectMapper.readValue(responseBody.getBytes(), distances.getClass());
+				return distances;
+			}
+			
+		} catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			httpclient.close();
+		} 
+		
+		return distances;
+	}
+	
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -213,14 +271,19 @@ public class MapUtils {
 //		MapUtils.getOriginsDestinationDistance();
 //		System.out.println(gmc.getGeocodes().get(0).getLocation());
 		
-		String[] origins={"116.427944,39.903409","116.449226,39.854431"};
-		String destination="116.39241,39.896297";
-		 MapResponse<LinkedHashMap<String,String>> data=MapUtils.getOriginsDestinationDistance(origins, destination);
-		 System.out.println(data.getResults().get(0).get("distance"));
+//		String[] origins={"116.427944,39.903409","116.449226,39.854431"};
+//		String destination="116.39241,39.896297";
+//		 MapResponse<LinkedHashMap<String,String>> data=MapUtils.getOriginsDestinationDistance(origins, destination);
+//		 System.out.println(data.getResults().get(0).get("distance"));
 		
 //		System.out.println(URLEncoder.encode("北京市海淀区万寿路(光华护士基金@@)"));
 //		System.out.println(URLEncoder.encode("|"));
 		
+		
+		MapResponseAssistant ass=MapUtils.getAssistantInputtips("光华",  null,"北京");
+		for(LinkedHashMap<String,Object> data:ass.getTips()){
+			System.out.println(data.get("name"));
+		}
 	}
 	
 }

@@ -33,7 +33,7 @@ public class ServiceItemManager {
 	 * @date 2015/10/28 11:11
 	 * 查询某项目服务详情
 	 * **/
-	public List<Map<String,Object>> selectServiceItemDescByServiceItemId(Long serviceItemId){
+	public Map<String,Object> selectServiceItemDescByServiceItemId(Long serviceItemId){
 		return serviceItemDao.selectServiceItemDescByServiceItemId(serviceItemId);
 	}
 

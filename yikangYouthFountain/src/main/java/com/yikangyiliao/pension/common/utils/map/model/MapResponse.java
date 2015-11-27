@@ -10,7 +10,7 @@ public class MapResponse<T> {
 	private String info;
 	
 	private List<T> results;
-
+	
 	public String getStatus() {
 		return status;
 	}
@@ -34,7 +34,6 @@ public class MapResponse<T> {
 	public void setResults(List<T> results) {
 		this.results = results;
 	}
-	
 	
 
 }

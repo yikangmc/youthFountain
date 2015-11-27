@@ -2,19 +2,12 @@ package com.yikangyiliao.pension.common.response;
 
 public class ResponseMessage {
 
-	public String messageStatus;
+	public String status;
 	
 	public String message;
 	
 	public Object data;
 
-	public String getMessageStatus() {
-		return messageStatus;
-	}
-
-	public void setMessageStatus(String messageStatus) {
-		this.messageStatus = messageStatus;
-	}
 
 	public String getMessage() {
 		return message;
@@ -30,6 +23,14 @@ public class ResponseMessage {
 
 	public void setData(Object data) {
 		this.data = data;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	

@@ -36,6 +36,8 @@ public class DeviceService {
 	 *  codeType	编码类型
 	 *  
 	 * **/
+	
+	//TODO 设备注册失败，犹豫userId 没有不能没有 在拦截器自动设置 userId
 	public Map<String,Object> saveDevice(Map<String,Object> paramData){
 		Map<String,Object> rtnData=new HashMap<String,Object>();
 		if(

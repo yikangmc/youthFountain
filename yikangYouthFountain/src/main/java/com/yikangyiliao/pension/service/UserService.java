@@ -3,253 +3,194 @@ package com.yikangyiliao.pension.service;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yikangyiliao.base.utils.messageUtil.SMSUtil;
+import com.yikangyiliao.pension.common.cache.RedisCache;
 import com.yikangyiliao.pension.common.error.ExceptionConstants;
+import com.yikangyiliao.pension.common.response.ResponseMessage;
 import com.yikangyiliao.pension.entity.User;
-import com.yikangyiliao.pension.entity.UserServiceInfo;
+import com.yikangyiliao.pension.entity.UserFrom;
+import com.yikangyiliao.pension.manager.UserFromManager;
 import com.yikangyiliao.pension.manager.UserManager;
 
-
-@Service(value="userService")
+@Service(value = "userService")
 public class UserService {
-	
+
 	@Autowired
 	private UserManager userManager;
 
-	
+	@Autowired
+	private UserFromManager userFromManager;
+
+	@Autowired
+	private RedisCache redisCache;
+
 	/**
 	 * @author liushuaic
-	 * @date 2015/08/25 17:44 
-	 * 注册用户及保存用户信息
-	 * **/
-	public Map<String,Object> saveRegisterUserAndSaveServiceInfo(Map<String,Object> paramData){
-		Map<String,Object> rtnData=new HashMap<String,Object>();
-		if(
-			paramData.containsKey("loginName")
-			&&paramData.containsKey("passWord")
-			&&paramData.containsKey("userName")
-			&&paramData.containsKey("userPosition") //职位
-			&&paramData.containsKey("jobCategory") //全职，兼职
-//			&&paramData.containsKey("provenceCode")
-			&&paramData.containsKey("cityCode")
-			&&paramData.containsKey("districtCode")
-			&&paramData.containsKey("addressDetail")
-			&&paramData.containsKey("photoUrl")
-			){
-			String loginName=paramData.get("loginName").toString();
-			User u=userManager.getUserByLoginName(loginName);
-			if(null == u){
+	 * @date 2015/11/20 10:51
+	 * @desc 注册用户 手机号，验证码，邀请码
+	 */
+	public ResponseMessage registerUser(Map<String, Object> paramData) {
+		ResponseMessage responseMessage = new ResponseMessage();
+		if (paramData.containsKey("mobileNumber") && paramData.containsKey("validateCode")) {
+
+			Long currentDateTimeMillis = Calendar.getInstance().getTimeInMillis();
+			String phoneNumber = paramData.get("mobileNumber").toString();
+			String validateCode = paramData.get("validateCode").toString();
+			
+			/**
+			 * @author liushuaic TODO 添加验证码校验
+			 */
+
+			boolean isPass = false;
+
+			String storeValidateCode = redisCache.getStringByStringKey(phoneNumber);
+			if (storeValidateCode != null) {
+				Long currentDateTime = Calendar.getInstance().getTimeInMillis();
+				String[] storeValidateCodes = storeValidateCode.split("-");
+				String sendDate = storeValidateCodes[0];
+				String sendValidateCode = storeValidateCodes[1];
+
+				if ((currentDateTime - Long.valueOf(sendDate)) > 60000) {
+					isPass = false;
+					responseMessage.setStatus(ExceptionConstants.parameterException.parameterException.errorCode);
+					responseMessage.setMessage("验证码已经过期");
+				} else {
+					if (sendValidateCode.equals(validateCode)) {
+						isPass = true;
+					} else {
+						responseMessage.setStatus(ExceptionConstants.systemException.systemException.errorCode);
+						responseMessage.setMessage("验证码，不正确！");
+					}
+				}
+
+			}
+
+			if (isPass) {
+
+				// 邀请码
+				String invitationCode = "-2";
+				if (paramData.containsKey("invitationCode")) {
+					invitationCode = paramData.get("invitationCode").toString();
+				}
+				User user = new User();
+				user.setCreateTime(currentDateTimeMillis);
+				user.setLoginName(phoneNumber);
+				user.setUserName(phoneNumber);
+				user.setSalt("-2");
+				user.setAccessTiket("-2");
+				String password="-2";
 				
-				Long currentDateTime=Calendar.getInstance().getTimeInMillis();
-				
-				String passWord=paramData.get("passWord").toString();
-				String userName=paramData.get("userName").toString();
-				String userPosition=paramData.get("userPosition").toString();
-				String jobCategory=paramData.get("jobCategory").toString();
-//				String provenceCode=paramData.get("provenceCode").toString();
-				String cityCode=paramData.get("cityCode").toString();
-				String districtCode=paramData.get("districtCode").toString();
-				String addressDetail=paramData.get("addressDetail").toString();
-				String photoUrl=paramData.get("photoUrl").toString();
-				
-				User user=new User();
-				user.setUserName(userName);
-				user.setLoginName(loginName);
-				user.setLoginPassword(passWord);
-				user.setCreateTime(currentDateTime);
-				user.setSalt("000000");
-				user.setLoginTime(currentDateTime);
-				
+				if(paramData.containsKey("password")){
+					password=paramData.get("password").toString();
+				}
+				user.setLoginPassword(password);
 				
 				userManager.insertUserSelective(user);
-				
-				UserServiceInfo userServiceInfo=new UserServiceInfo();
-				userServiceInfo.setUserId(user.getUserId());
-				userServiceInfo.setPhotoUrl(photoUrl);
-				userServiceInfo.setProvenceCode(Long.valueOf("0"));
-				userServiceInfo.setCityCode(Long.valueOf(cityCode));
-				userServiceInfo.setAddressDetail(addressDetail);
-				userServiceInfo.setDistrictCode(Long.valueOf(districtCode));
-				userServiceInfo.setUserPostion(Long.valueOf(userPosition));
-				userServiceInfo.setJobCategory(Long.valueOf(jobCategory));
-				userServiceInfo.setCreateTime(currentDateTime);
-				userServiceInfo.setUpdateTime(currentDateTime);
-				userServiceInfo.setIsDelete(Byte.valueOf("0"));
-				userServiceInfo.setUserServiceName(userName);
-				
-				userManager.insertUserServiceSelective(userServiceInfo);
-				rtnData.put("status", ExceptionConstants.responseSuccess.responseSuccess.code);
-				rtnData.put("message", ExceptionConstants.responseSuccess.responseSuccess.message);
-			}else{
-				rtnData.put("status", ExceptionConstants.operationException.userDuplicateException.errorCode);
-				rtnData.put("message", ExceptionConstants.operationException.userDuplicateException.errorMessage);
-			}
-		}else{
-			rtnData.put("status", ExceptionConstants.parameterException.parameterException.errorCode);
-			rtnData.put("message", ExceptionConstants.parameterException.parameterException.errorMessage);
-		}
-		return rtnData;
-	}
-	
-	
-	
-	/**
-	 * @author liushuaic
-	 * @date 2015/08/25 17:44 
-	 * 注册用户
-	 * **/
-	public Map<String,Object> registerUser(Map<String,Object> paramData){
-		Map<String,Object> rtnData=new HashMap<String,Object>();
-		if(
-			paramData.containsKey("loginName")
-			&&paramData.containsKey("passWord")
-			){
-			
-			Long currentDateTime=Calendar.getInstance().getTimeInMillis();
-			
-			String loginName=paramData.get("loginName").toString();
-			String passWord=paramData.get("passWord").toString();
-			
-			User user=new User();
-			user.setUserName("");
-			user.setLoginName(loginName);
-			user.setLoginPassword(passWord);
-			user.setCreateTime(currentDateTime);
-			user.setSalt("000000");
-			user.setLoginTime(currentDateTime);
-			
-			userManager.insertUserSelective(user);
-			rtnData.put("status", ExceptionConstants.responseSuccess.responseSuccess.code);
-			rtnData.put("message", ExceptionConstants.responseSuccess.responseSuccess.message);
-		}else{
-			rtnData.put("status", ExceptionConstants.parameterException.parameterException.errorCode);
-			rtnData.put("message", ExceptionConstants.parameterException.parameterException.errorMessage);
-		}
-		return rtnData;
-	}
-	
-	/**
-	 * @author liushuaic
-	 * @date 2015/08/25 17:44 
-	 * 注册用户及保存用户信息
-	 * **/
-	public Map<String,Object> saveServiceUserInfo(Map<String,Object> paramData){
-		
-		//用户id 在paramData中存着
-		
-		Map<String,Object> rtnData=new HashMap<String,Object>();
-		if(
-			paramData.containsKey("userPostion") //职位
-			&&paramData.containsKey("jobCategory") //全职，兼职
-			&&paramData.containsKey("provenceCode")
-			&&paramData.containsKey("cityCode")
-			&&paramData.containsKey("districtCode")
-			&&paramData.containsKey("addressDetail")
-			&&paramData.containsKey("photoUrl")
-			&&paramData.containsKey("userName")
-			){
-			
-			Long currentDateTime=Calendar.getInstance().getTimeInMillis();
-			
-			String userId=paramData.get("userId").toString();
-			String userPostion=paramData.get("userPostion").toString();
-			String jobCategory=paramData.get("jobCategory").toString();
-//			String provenceCode=paramData.get("provenceCode").toString();
-			String cityCode=paramData.get("cityCode").toString();
-			String districtCode=paramData.get("districtCode").toString();
-			String addressDetail=paramData.get("addressDetail").toString();
-			String photoUrl=paramData.get("photoUrl").toString();
-			String userName=paramData.get("userName").toString();
-			
 
-			
-			UserServiceInfo userServiceInfo=new UserServiceInfo();
-			userServiceInfo.setUserId(Long.parseLong(userId));
-			userServiceInfo.setPhotoUrl(photoUrl);
-			userServiceInfo.setProvenceCode(Long.valueOf("0"));
-			userServiceInfo.setCityCode(Long.valueOf(cityCode));
-			userServiceInfo.setAddressDetail(addressDetail);
-			userServiceInfo.setDistrictCode(Long.valueOf(districtCode));
-			userServiceInfo.setUserPostion(Long.valueOf(userPostion));
-			userServiceInfo.setJobCategory(Long.valueOf(jobCategory));
-			userServiceInfo.setCreateTime(currentDateTime);
-			userServiceInfo.setUpdateTime(currentDateTime);
-			userServiceInfo.setUserServiceName(userName);
-			
-			User user=new User();
-			user.setUserId(Long.valueOf(userId));
-			user.setUserName(userName);
-			userManager.updateUser(user);
-			
-			userManager.insertUserServiceSelective(userServiceInfo);
-			rtnData.put("status", ExceptionConstants.responseSuccess.responseSuccess.code);
-			rtnData.put("message", ExceptionConstants.responseSuccess.responseSuccess.message);
-			
-		}else{
-			rtnData.put("status", ExceptionConstants.parameterException.parameterException.errorCode);
-			rtnData.put("message", ExceptionConstants.parameterException.parameterException.errorMessage);
+				UserFrom userFrom = new UserFrom();
+				userFrom.setActiveTime(0L);
+				userFrom.setCreateTime(currentDateTimeMillis);
+				userFrom.setNumbers(0l);
+				userFrom.setFromUrl("");
+				userFrom.setInvitationCode(Integer.valueOf(invitationCode));
+				userFrom.setCreateTime(currentDateTimeMillis);
+				userFrom.setUpdateTime(currentDateTimeMillis);
+				userFrom.setUserStatus((byte) 0);
+				userFrom.setUserId(user.getUserId());
+				userFromManager.insertSelective(userFrom);
+
+				responseMessage.setStatus(ExceptionConstants.responseSuccess.responseSuccess.code);
+				responseMessage.setMessage(ExceptionConstants.responseSuccess.responseSuccess.message);
+
+			}else{
+
+			}
+
+		} else {
+			responseMessage.setStatus(ExceptionConstants.parameterException.parameterException.errorCode);
+			responseMessage.setMessage(ExceptionConstants.parameterException.parameterException.errorMessage);
 		}
-		return rtnData;
+
+		return responseMessage;
 	}
-	
-	
-	
+
 	
 	/**
 	 * @author liushuaic
-	 * @date 2015/08/25 17:44 
-	 * 修改用户信息
+	 * @date 2015/11/26 15:18
+	 * @desc 获取验证码
+	 * TODO 验证码校验，一分钟内的重复发送
 	 * **/
-	public Map<String,Object> updateUser(Map<String,Object> paramData){
-		Map<String,Object> rtnData=new HashMap<String,Object>();
-		if(
-			paramData.containsKey("loginName")
-			&&paramData.containsKey("passWord")
-			){
-			
-//			Long currentDateTime=Calendar.getInstance().getTimeInMillis();
-			
-			String loginName=paramData.get("loginName").toString();
-			String passWord=paramData.get("passWord").toString();
-			
-			User user=new User();
-			//user.setUserName("未填写");
-			user.setLoginName(loginName);
-			user.setLoginPassword(passWord);
-			
-			userManager.insertUserSelective(user);
-			rtnData.put("status", ExceptionConstants.responseSuccess.responseSuccess.code);
-			rtnData.put("message", ExceptionConstants.responseSuccess.responseSuccess.message);
-		}else{
-			rtnData.put("status", ExceptionConstants.parameterException.parameterException.errorCode);
-			rtnData.put("message", ExceptionConstants.parameterException.parameterException.errorMessage);
+	public ResponseMessage getValidateCode(Map<String, Object> paramData) {
+
+		ResponseMessage responseMessage = new ResponseMessage();
+
+		if (paramData.containsKey("mobileNumber")) {
+
+			String mobileNumber = paramData.get("mobileNumber").toString();
+
+			if (mobileNumber.length() == 11) {
+
+				Long currentTimestamp = Calendar.getInstance().getTimeInMillis();
+
+				String validateCode = redisCache.getStringByStringKey(mobileNumber);
+				boolean isPass = false;
+				if (validateCode != null) {
+ 
+					String[] validateCodes = validateCode.split("-");
+					String validateDateTime = validateCodes[0];
+					if ((currentTimestamp - Long.valueOf(validateDateTime)) > 60000) {
+						isPass = true;
+					}else {
+						isPass=false;
+						responseMessage.setStatus(ExceptionConstants.systemException.systemException.errorCode);
+						responseMessage.setMessage("验证码已发出!");
+					}
+				} else {
+					isPass = true;
+				}
+				if (isPass) {
+					Random random = new Random();
+					int captcha = random.nextInt(99999);
+					//SMSUtil.sendMessage(mobileNumber, captcha + "", "1");
+					validateCode = currentTimestamp + "-" + captcha;
+					redisCache.putStringKeyStringVal(mobileNumber, validateCode);
+					responseMessage.setStatus(ExceptionConstants.responseSuccess.responseSuccess.code);
+					responseMessage.setMessage(ExceptionConstants.responseSuccess.responseSuccess.message);
+				}
+
+			}else{
+				responseMessage.setStatus(ExceptionConstants.parameterException.parameterException.errorCode);
+				responseMessage.setMessage("请输入手机号！");
+			}
+
 		}
+		return responseMessage;
+
+	}
+
+	/**
+	 * 
+	 * @author liushuaic
+	 * @date 2015/08/25 17:44 修改用户信息
+	 * 
+	 **/
+	public Map<String, Object> getUserServiceInfoByUserId(Map<String, Object> paramData) {
+
+		Map<String, Object> rtnData = new HashMap<String, Object>();
+
+		String userId = paramData.get("userId").toString();
+
+		Map<String, Object> userServiceInfo = userManager.getUserServiceInfoByUserId(Long.valueOf(userId));
+		rtnData.put("data", userServiceInfo);
+		rtnData.put("status", ExceptionConstants.responseSuccess.responseSuccess.code);
+		rtnData.put("message", ExceptionConstants.responseSuccess.responseSuccess.message);
 		return rtnData;
 	}
-	
-	
-	/**
-	 * @author liushuaic
-	 * @date 2015/08/25 17:44 
-	 * 修改用户信息
-	 * **/
-	public Map<String,Object> getUserServiceInfoByUserId(Map<String,Object> paramData){
-			
-			Map<String,Object> rtnData=new HashMap<String,Object>();
-			
-			String userId=paramData.get("userId").toString();
-			
-			Map<String,Object> userServiceInfo=userManager.getUserServiceInfoByUserId(Long.valueOf(userId));
-			rtnData.put("data", userServiceInfo);
-			rtnData.put("status", ExceptionConstants.responseSuccess.responseSuccess.code);
-			rtnData.put("message", ExceptionConstants.responseSuccess.responseSuccess.message);
-			return rtnData;
-	}
-	
-	
-	
-	
+
 }
