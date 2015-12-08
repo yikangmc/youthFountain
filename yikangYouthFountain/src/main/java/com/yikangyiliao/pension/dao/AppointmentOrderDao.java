@@ -1,5 +1,6 @@
 package com.yikangyiliao.pension.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.yikangyiliao.pension.entity.AppointmentOrder;
@@ -45,6 +46,13 @@ public interface AppointmentOrderDao {
      * ***/
     Map<String,Object> getUserServiceInfoByOrderId(Long orderId);
     
+    
+    /**
+     * @author liushuaic
+     * @date 2015/11/30 16:53
+     * @desc 获取我的订单， 根据userId ,orderStatus
+     * **/
+    List<AppointmentOrder> getMyAppointmentOrderByUserIdOrderStatus(Map<String,Object> paramData);
     
 }
 

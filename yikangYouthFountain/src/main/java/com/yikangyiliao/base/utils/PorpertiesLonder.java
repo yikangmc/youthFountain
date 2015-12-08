@@ -4,6 +4,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+import com.yikangyiliao.base.utils.messageUtil.im.MessageThreads;
 import com.yikangyiliao.pension.schedule.PersonnelDistribution;
 
 
@@ -23,6 +24,13 @@ public class PorpertiesLonder implements ApplicationContextAware {
 		PersonnelDistribution personnelDistribution=applicationContext.getBean(PersonnelDistribution.class);
 		Thread thread=new Thread(personnelDistribution);
 		thread.start();
+		
+		/**
+		 * @author liushuaic
+		 * @date 2015/12/08 11:49 信息推送
+		 * **/
+		MessageThreads messageThreads =new MessageThreads();
+		messageThreads.startSendMessage();
 	}
 
 }

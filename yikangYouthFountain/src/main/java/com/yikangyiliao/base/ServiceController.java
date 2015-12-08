@@ -78,7 +78,7 @@ public class ServiceController {
 							}
 						}
 						
-						if(!serverviceCode.equals("login") && !serverviceCode.equals("registerUserAndSaveServiceInfo") && null != accessTicket){
+						if((!serverviceCode.equals("login") && !serverviceCode.equals("registerUserAndSaveServiceInfo") && null != accessTicket) || (null !=yikangServiceConfige && yikangServiceConfige.getIsFileter())){
 							
 							String UD =AccessTiketCheckout.getAccessTiketUD(accessTicket);
 							String LDT=AccessTiketCheckout.getAccessTiketLDT(accessTicket);

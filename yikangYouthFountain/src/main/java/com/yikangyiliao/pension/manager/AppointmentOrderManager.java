@@ -1,6 +1,7 @@
 package com.yikangyiliao.pension.manager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +91,44 @@ public class AppointmentOrderManager {
 		return appointmentOrderDao.selectByPrimaryKey(appointmentOrderId);
 	}
 	
+	
+	/**
+	 * @author liushuaic
+	 * @date 2015/11/30 16:58
+	 * @desc 获取我的定单
+	 * */
+	public List<AppointmentOrder> getAppointmentOrderByUserId(Long userId){
+		Map<String,Object> paramData=new HashMap<String,Object>();
+		paramData.put("userId", userId);
+		return appointmentOrderDao.getMyAppointmentOrderByUserIdOrderStatus(paramData);
+	}
+	
+	
+	
+	/**
+	 * @author liushuaic
+	 * @date 2015/11/30 16:57
+	 * 获取我的未付款的订单
+	 * */
+	public List<AppointmentOrder> getAppointmentOrderUnPay(Long userId){
+		Map<String,Object> paramData=new HashMap<String,Object>();
+		paramData.put("userId", userId);
+		paramData.put("orderStatus",0);
+		return appointmentOrderDao.getMyAppointmentOrderByUserIdOrderStatus(paramData);
+	}
+	
+	
+	/**
+	 * @author liushuaic
+	 * @date 2015/11/30 17:07
+	 * 获取已经未完成的 订单
+	 * */
+	public List<AppointmentOrder> getAppointmentOrderFinish(Long userId){
+		Map<String,Object> paramData=new HashMap<String,Object>();
+		paramData.put("userId", userId);
+		paramData.put("orderStatus",3);
+		return appointmentOrderDao.getMyAppointmentOrderByUserIdOrderStatus(paramData);
+	}
 	
 
 }

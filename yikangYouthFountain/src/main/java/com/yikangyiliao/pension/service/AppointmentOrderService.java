@@ -5,12 +5,14 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.yikangyiliao.base.utils.DateUtils;
 import com.yikangyiliao.pension.common.error.ExceptionConstants;
+import com.yikangyiliao.pension.common.response.ResponseMessage;
 import com.yikangyiliao.pension.common.utils.GenreateNumberUtils;
 import com.yikangyiliao.pension.common.utils.map.MapUtils;
 import com.yikangyiliao.pension.common.utils.map.model.GeoCodeModel;
@@ -618,7 +620,46 @@ public class AppointmentOrderService {
 	}
 	
 	
+	/**
+	 * 
+	 * @author liushuaic
+	 * @deate 2015/11/30 18:08
+	 * 获取我所有的订单
+	 * 
+	 * */
+	public ResponseMessage getMyAppointmentOrder(Map<String,Object> paramData){
+		ResponseMessage responseMessage=new ResponseMessage();
+		
+		String userId=paramData.get("userId").toString();
+		
+		List<AppointmentOrder> data=appointmentOrderManager.getAppointmentOrderByUserId(Long.valueOf(userId));
+		
+		responseMessage.setData(data);
+		responseMessage.setStatus(ExceptionConstants.responseSuccess.responseSuccess.code);
+		responseMessage.setMessage(ExceptionConstants.responseSuccess.responseSuccess.message);
+		return responseMessage;
+		
+	}
 	
 	
 	
+	
+	/**
+	 * @author liushuaic
+	 * @date 2015/11/30 18:00
+	 * @desc 获取我完成的订单
+	 * **/
+	public ResponseMessage getAppointmentOrderFinish(Map<String,Object> paramData){
+		ResponseMessage responseMessage=new ResponseMessage();
+		String userId=paramData.get("userId").toString();
+		
+		List<AppointmentOrder> data=appointmentOrderManager.getAppointmentOrderFinish(Long.valueOf(userId));
+		
+		responseMessage.setData(data);
+		
+		responseMessage.setStatus(ExceptionConstants.responseSuccess.responseSuccess.code);
+		responseMessage.setMessage(ExceptionConstants.responseSuccess.responseSuccess.message);
+		
+		return responseMessage;
+	}
 }

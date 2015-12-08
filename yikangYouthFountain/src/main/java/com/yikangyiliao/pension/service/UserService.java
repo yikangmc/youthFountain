@@ -9,11 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yikangyiliao.base.utils.messageUtil.SMSUtil;
+import com.yikangyiliao.base.utils.messageUtil.im.Message;
+import com.yikangyiliao.base.utils.messageUtil.im.MessageQueue;
 import com.yikangyiliao.pension.common.cache.RedisCache;
 import com.yikangyiliao.pension.common.error.ExceptionConstants;
 import com.yikangyiliao.pension.common.response.ResponseMessage;
 import com.yikangyiliao.pension.entity.User;
 import com.yikangyiliao.pension.entity.UserFrom;
+import com.yikangyiliao.pension.entity.UserInfo;
 import com.yikangyiliao.pension.manager.UserFromManager;
 import com.yikangyiliao.pension.manager.UserManager;
 
@@ -191,6 +194,104 @@ public class UserService {
 		rtnData.put("status", ExceptionConstants.responseSuccess.responseSuccess.code);
 		rtnData.put("message", ExceptionConstants.responseSuccess.responseSuccess.message);
 		return rtnData;
+	}
+	
+	
+	
+	/**
+	 * @author liushuaic
+	 * @date 2015/11/30 14:58
+	 * @desc 修改用户信息
+	 * 
+	 * */
+	public ResponseMessage getUserInfoByUserId(Map<String,Object> paramData){
+		ResponseMessage responseMessage=new ResponseMessage();
+		String userId=paramData.get("userId").toString();
+		
+		UserInfo userInfo=userManager.getUserInfoByUserId(Long.valueOf(userId));
+		
+		responseMessage.setStatus(ExceptionConstants.responseSuccess.responseSuccess.code);
+		responseMessage.setMessage(ExceptionConstants.responseSuccess.responseSuccess.message);
+		responseMessage.setData(userInfo);
+		
+		
+		return responseMessage;
+	}
+	
+	
+	/**
+	 * @author liushuaic
+	 * @date 2015/11/30 15:27
+	 * @desc 修改用户信息， 根据用户id
+	 * ***/
+	public ResponseMessage updateUserInfoByUserId(Map<String,Object> paramData){
+		ResponseMessage responseMessage=new ResponseMessage();
+		
+		String userId=paramData.get("userId").toString();
+		
+		UserInfo userInfo=new UserInfo();
+		userInfo.setUserId(Long.valueOf(userId));
+		
+//		'user_info_id','bigint(20)','NO','PRI',NULL,'auto_increment'
+//		'user_name','varchar(100)','NO','',NULL,''
+//		'user_sex','tinyint(2)','NO','',NULL,''
+//		'provence_code','varchar(45)','NO','',NULL,''
+//		'city_code','varchar(45)','NO','',NULL,''
+//		'district_code','varchar(45)','NO','',NULL,''
+//		'address','varchar(100)','NO','',NULL,''
+//		'create_at','bigint(20)','NO','',NULL,''
+//		'update_at','bigint(20)','NO','',NULL,''
+//		'user_id','bigint(20)','NO','',NULL,''
+//		'is_delete','bigint(20)','NO','',NULL,''
+//		'user_infos_col','varchar(45)','YES','',NULL,''
+
+		Long currentDateTime=Calendar.getInstance().getTimeInMillis();
+		userInfo.setUpdateAt(currentDateTime);
+		
+		if(paramData.containsKey("userName")){
+			String userName=paramData.get("userName").toString();
+			userInfo.setUserName(userName);
+		}
+		
+		if(paramData.containsKey("userSex")){
+			String userSex=paramData.get("userSex").toString();
+			userInfo.setUserSex(Byte.valueOf(userSex));
+		}
+		
+		if(paramData.containsKey("provenceCode")){
+			String provenceCode=paramData.get("provenceCode").toString();
+			userInfo.setProvenceCode(provenceCode);
+		}
+		
+		if(paramData.containsKey("cityCode")){
+			String cityCode=paramData.get("cityCode").toString();
+			userInfo.setCityCode(cityCode);
+		}
+		
+		if(paramData.containsKey("districtCode")){
+			String districtCode=paramData.get("districtCode").toString();
+			userInfo.setDistrictCode(districtCode);
+		}
+		
+		if(paramData.containsKey("address")){
+			String address=paramData.get("address").toString();
+			userInfo.setAddress(address);
+		}
+		
+		if(paramData.containsKey("mapPositionAdress")){
+			String mapPositionAddress=paramData.get("mapPositionAddress").toString();
+		}
+//		Message message=new Message();
+//		message.setAlias("");
+//		message.setContent("tests");
+//		MessageQueue.put(message);
+		
+		
+		userManager.updateUserInfoBySelective(userInfo);
+		
+		responseMessage.setStatus(ExceptionConstants.responseSuccess.responseSuccess.code);
+		responseMessage.setMessage(ExceptionConstants.responseSuccess.responseSuccess.message);
+		return responseMessage;
 	}
 
 }

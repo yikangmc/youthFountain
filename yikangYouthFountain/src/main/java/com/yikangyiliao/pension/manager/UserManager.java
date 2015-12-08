@@ -125,6 +125,16 @@ public class UserManager {
 	}
 	
 	
+	/**
+	 * @author liushuaic
+	 * @date 2015/11/30 14:49
+	 * @desc 修改消费端用户信息，根据用户id
+	 * 
+	 * */
+	public int updateUserInfoBySelective(UserInfo userInfo){
+		return userInfoDao.updateByPrimaryKeySelective(userInfo);
+	}
+	
 	
 	/**
 	 * @author liushuaic

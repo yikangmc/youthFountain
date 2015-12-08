@@ -322,6 +322,8 @@ public class InterfaceUtil {
 	}
 	
 	
+	
+	
 	public static void main(String[] args) {
 		String codeStr="00-02-01";
 		System.out.println(codeStr.substring(0,codeStr.lastIndexOf('-')));
