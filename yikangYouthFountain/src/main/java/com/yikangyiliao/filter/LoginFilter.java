@@ -16,6 +16,7 @@ import com.yikangyiliao.base.config.YiKangServiceConfige;
 import com.yikangyiliao.base.utils.AccessTiketCheckout;
 import com.yikangyiliao.base.utils.InterfaceUtil;
 import com.yikangyiliao.base.utils.NetworkUtil;
+import com.yikangyiliao.base.utils.SystemProperties;
 
 
 
@@ -70,6 +71,9 @@ public class LoginFilter implements Filter {
 				e.printStackTrace();
 			}
 			
+			// 白名单 ip
+		}else if(hostIp.equals(SystemProperties.NO_FILTER_IP)){
+			arg2.doFilter(arg0, arg1);
 		}else{
 			arg1.setCharacterEncoding("utf-8");
 			arg1.setContentType("application/json;charset=UTF-8");

@@ -53,6 +53,12 @@ public class AppointmentOrder {
 
     private String address;
 
+    private Long seniorId;
+
+    private Long createUserId;
+    
+    
+    
     public Long getAppointmentOrderId() {
         return appointmentOrderId;
     }
@@ -260,4 +266,20 @@ public class AppointmentOrder {
     public void setAddress(String address) {
         this.address = address == null ? null : address.trim();
     }
+
+	public Long getSeniorId() {
+		return seniorId;
+	}
+
+	public void setSeniorId(Long seniorId) {
+		this.seniorId = seniorId;
+	}
+
+	public Long getCreateUserId() {
+		return createUserId;
+	}
+
+	public void setCreateUserId(Long createUserId) {
+		this.createUserId = createUserId;
+	}
 }

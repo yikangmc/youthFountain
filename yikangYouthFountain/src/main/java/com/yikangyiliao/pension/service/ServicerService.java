@@ -77,7 +77,7 @@ public class ServicerService {
 
 			// 获取查询出来的距离结果
 			MapResponse<LinkedHashMap<String, String>> distances = null;
-			;
+			
 			try {
 				distances = MapUtils.getOriginsDestinationDistance(getOriginsStr(serviers),
 						MapUtils.getAddressPosition(mapPositionAddress, detailAddress, city.getAdministrativeCode()));
@@ -98,7 +98,7 @@ public class ServicerService {
 			if (null != server) {
 				pingGuData = userManager.getPingGuServicerByUserId(server.getUserId());
 			} else {
-				pingGuData = userManager.getPingGuServicerByUserId(18l);
+				pingGuData = userManager.getPingGuServicerByUserId(182l);
 			}
 
 			if (pingGuData == null) {
@@ -152,7 +152,7 @@ public class ServicerService {
 
 				// 获取查询出来的距离结果
 				MapResponse<LinkedHashMap<String, String>> distances = null;
-				;
+
 				try {
 					distances = MapUtils.getOriginsDestinationDistance(getOriginsStr(serviers), MapUtils
 							.getAddressPosition(mapPositionAddress, detailAddress, city.getAdministrativeCode()));
@@ -173,11 +173,11 @@ public class ServicerService {
 				if (null != server) {
 					pingGuData = userManager.getPingGuServicerByUserId(server.getUserId());
 				} else {
-					pingGuData = userManager.getPingGuServicerByUserId(18l);
+					pingGuData = userManager.getPingGuServicerByUserId(182l);
 				}
 
 			} else {
-				pingGuData = userManager.getPingGuServicerByUserId(18l);
+				pingGuData = userManager.getPingGuServicerByUserId(182l);
 			}
 
 			if (pingGuData == null) {

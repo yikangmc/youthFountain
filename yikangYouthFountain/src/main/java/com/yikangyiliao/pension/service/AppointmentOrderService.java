@@ -20,6 +20,7 @@ import com.yikangyiliao.pension.entity.AppointmentOrder;
 import com.yikangyiliao.pension.entity.AppointmentOrderMedicinalApparatusMap;
 import com.yikangyiliao.pension.entity.Location;
 import com.yikangyiliao.pension.entity.OrderServiceDetail;
+import com.yikangyiliao.pension.entity.SeniorAccount;
 import com.yikangyiliao.pension.entity.ServiceSchedule;
 import com.yikangyiliao.pension.entity.TimeQuantum;
 import com.yikangyiliao.pension.entity.UserServiceInfo;
@@ -27,6 +28,7 @@ import com.yikangyiliao.pension.manager.AppointmentOrderManager;
 import com.yikangyiliao.pension.manager.AppointmentOrderMedicinalApparatusMapManager;
 import com.yikangyiliao.pension.manager.LocationManager;
 import com.yikangyiliao.pension.manager.OrderServiceDetailManager;
+import com.yikangyiliao.pension.manager.SeniorAccountManager;
 import com.yikangyiliao.pension.manager.ServiceScheduleManager;
 import com.yikangyiliao.pension.manager.TimeQuantumManager;
 import com.yikangyiliao.pension.schedule.PersonnelDistribution;
@@ -58,6 +60,9 @@ public class AppointmentOrderService {
 	
 	@Autowired
 	private AppointmentOrderMedicinalApparatusMapManager appointmentOrderMedicinalApparatusMapManager; 
+	
+	@Autowired
+	private SeniorAccountManager seniorAccountManager;
 	
 	
 	
@@ -191,36 +196,51 @@ public class AppointmentOrderService {
 			 null != param.get("phoneNumber")
 			&& null != param.get("appointmentDateTime")
 			&& null != param.get("timeQuantumId")
-			&& null != param.get("startTime")
-			&& null != param.get("endTime")
-			&& null != param.get("districtCode")
 			&& null != param.get("detailAddress")
 			&& null != param.get("mapPositionAddress")
 			&& null != param.get("dataSource")
 			&& null != param.get("dataGroup")
 			&& null != param.get("linkUserName")
 			&& null != param.get("serviceUserId")
+			&& null != param.get("districtCode")
+			&& null != param.get("userId")
 		){
 			
 				
 				 String serviceUserId		=  param.get("serviceUserId").toString();
 				 String timeQuantumId		=  param.get("timeQuantumId").toString();
 				 String appointmentDateTime	=  param.get("appointmentDateTime").toString();
+				 String userId				=  param.get("userId").toString();
 				
-				if(checkServicerTimeQuantum(Long.valueOf(timeQuantumId),appointmentDateTime,Long.valueOf(serviceUserId))){
+//				if(checkServicerTimeQuantum(Long.valueOf(timeQuantumId),appointmentDateTime,Long.valueOf(serviceUserId))){
 					Long currentDateTimeMillis=Calendar.getInstance().getTimeInMillis();
 				
 					AppointmentOrder appointmentOrder = new AppointmentOrder();
 					
 					 String phoneNumber			=  param.get("phoneNumber").toString();
-					 
-					 
 					 String districtCode		=  param.get("districtCode").toString();
 					 String detailAddress		=  param.get("detailAddress").toString();
 					 String mapPositionAddress	=  param.get("mapPositionAddress").toString();
 					 String dataSource			=  param.get("dataSource").toString();
 					 String dataGroup			=  param.get("dataGroup").toString();
 					 String linkUserName		=  param.get("linkUserName").toString();
+					 
+					 
+					 
+					 
+					SeniorAccount seniorAccount=new SeniorAccount();
+					
+					seniorAccount.setName(linkUserName);
+					seniorAccount.setPhoneNo(phoneNumber);
+					seniorAccount.setCreateTime(currentDateTimeMillis);
+					seniorAccount.setUpdateTime(currentDateTimeMillis);
+					seniorAccount.setCreateUserId(Long.valueOf(userId));
+					seniorAccountManager.insertSelective(seniorAccount);
+
+					 
+					 
+					 appointmentOrder.setCreateUserId(Long.valueOf(userId));
+					 appointmentOrder.setSeniorId(seniorAccount.getSeniorId());
 					 
 					 appointmentOrder.setParentLinkAddress("");
 					 appointmentOrder.setPhoneNumber(phoneNumber);
@@ -261,7 +281,7 @@ public class AppointmentOrderService {
 					 //设置经纬度
 					if(address.length()>0){
 						 try {
-							 GeoCodeModel geoCodeModel=MapUtils.getGeoCodeModelByAddress(mapPositionAddress+detailAddress, city.getAdministrativeCode());
+							 GeoCodeModel geoCodeModel=MapUtils.getGeoCodeModelByAddress(mapPositionAddress, city.getAdministrativeCode());
 							 if(null != geoCodeModel && null != geoCodeModel.getGeocodes() && geoCodeModel.getGeocodes().size()>0){
 								 //  TODO 有可能模糊地址对应的有多个这个问题要修改
 								 String lngLatStr=geoCodeModel.getGeocodes().get(0).getLocation();
@@ -277,11 +297,16 @@ public class AppointmentOrderService {
 									 String lngStr=lngLatStr.split(",")[0];
 									 String latStr=lngLatStr.split(",")[1];
 									 appointmentOrder.setLongitude(Double.valueOf(lngStr));
-									 appointmentOrder.setLatitude(Double.valueOf(latStr));
+									 appointmentOrder.setLatitude(Double.valueOf(latStr));;
+								 }else{
+									 appointmentOrder.setLongitude(0d);
+									 appointmentOrder.setLatitude(0d);
 								 }
 							 }
 							
 						} catch (IOException e) {
+							 appointmentOrder.setLongitude(0d);
+							 appointmentOrder.setLatitude(0d);
 							e.printStackTrace();
 						}
 					}
@@ -336,10 +361,10 @@ public class AppointmentOrderService {
 					rtnMap.put("message", ExceptionConstants.orderException.serviceUserHasBeenSelected.errorMessage);
 				}
 				 
-			}else{
-				rtnMap.put("status", ExceptionConstants.parameterException.parameterException.errorCode);
-				rtnMap.put("message", ExceptionConstants.parameterException.parameterException.errorMessage);
-			}
+//			}else{
+//				rtnMap.put("status", ExceptionConstants.parameterException.parameterException.errorCode);
+//				rtnMap.put("message", ExceptionConstants.parameterException.parameterException.errorMessage);
+//			}
 		
 		return rtnMap;
 		

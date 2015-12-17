@@ -11,6 +11,8 @@ public class MapResponse<T> {
 	
 	private List<T> results;
 	
+	private String infocode;
+	
 	public String getStatus() {
 		return status;
 	}
@@ -33,6 +35,14 @@ public class MapResponse<T> {
 
 	public void setResults(List<T> results) {
 		this.results = results;
+	}
+
+	public String getInfocode() {
+		return infocode;
+	}
+
+	public void setInfocode(String infocode) {
+		this.infocode = infocode;
 	}
 	
 

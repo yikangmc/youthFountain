@@ -24,6 +24,10 @@ public class GeoCodeModel {
 	private String info;
 	
 	
+//	infoCode
+	private String infocode;
+	
+	
 	//查询出的codes 集合
 	private List<GeoCode> geocodes;
 	
@@ -58,6 +62,14 @@ public class GeoCodeModel {
 
 	public void setGeocodes(List<GeoCode> geocodes) {
 		this.geocodes = geocodes;
+	}
+
+	public String getInfocode() {
+		return infocode;
+	}
+
+	public void setInfocode(String infocode) {
+		this.infocode = infocode;
 	}
 	
 }

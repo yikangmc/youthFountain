@@ -29,8 +29,8 @@ public class PorpertiesLonder implements ApplicationContextAware {
 		 * @author liushuaic
 		 * @date 2015/12/08 11:49 信息推送
 		 * **/
-		MessageThreads messageThreads =new MessageThreads();
-		messageThreads.startSendMessage();
+//		MessageThreads messageThreads =new MessageThreads();
+//		messageThreads.startSendMessage();
 	}
 
 }
