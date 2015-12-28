@@ -144,7 +144,7 @@ public class UserManager {
 	public List<UserServiceInfo> getPINGGUServicerByServiceDateCustumerQuantumId(String serviceDate,Long custumerQuantumId){
 		Map<String,Object> param=new HashMap<String,Object>();
 		param.put("serviceDate", serviceDate);
-		param.put("userPosition", 0);
+		param.put("userPosition", 2);
 		param.put("custumerQuantumId", custumerQuantumId);
 		
 		return userServiceInfoDao.getServicerByServiceDateCustumerTimeQuantumId(param);

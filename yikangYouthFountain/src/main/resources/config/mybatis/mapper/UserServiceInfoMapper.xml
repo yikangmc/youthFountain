@@ -260,7 +260,7 @@
 			''					as img3
 	from  user_service_infos us
 	where user_id=#{userId}
-and us.job_category=1
+and us.user_postion=2;
   </select>
   
   <select id="getServicerByserviceDate">

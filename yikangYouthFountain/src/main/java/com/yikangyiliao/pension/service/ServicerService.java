@@ -98,7 +98,7 @@ public class ServicerService {
 			if (null != server) {
 				pingGuData = userManager.getPingGuServicerByUserId(server.getUserId());
 			} else {
-				pingGuData = userManager.getPingGuServicerByUserId(182l);
+				pingGuData = userManager.getPingGuServicerByUserId(8l);
 			}
 
 			if (pingGuData == null) {
