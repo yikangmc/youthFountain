@@ -200,6 +200,19 @@ public class InterfaceUtil {
 		registerYiKangService.setIsFileter(false);
 		mathodServiceConfig.put("00-17-07", registerYiKangService);
 		
+
+		/**
+		 * 
+		 * @author liushuaic
+		 * @date 2015/12/31 10：49
+		 * @desc 注册普通用户
+		 * 
+		 * **/
+		YiKangServiceConfige registerUserForPortal=new YiKangServiceConfige();
+		registerUserForPortal.setServiceName("userService");
+		registerUserForPortal.setMethodName("registerUserForPortal");
+		registerUserForPortal.setIsFileter(false);
+		mathodServiceConfig.put("00-17-08", registerUserForPortal);
 		
 		
 		/**

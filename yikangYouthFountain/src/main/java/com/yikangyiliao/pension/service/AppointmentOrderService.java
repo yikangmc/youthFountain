@@ -18,6 +18,7 @@ import com.yikangyiliao.pension.common.utils.map.MapUtils;
 import com.yikangyiliao.pension.common.utils.map.model.GeoCodeModel;
 import com.yikangyiliao.pension.entity.AppointmentOrder;
 import com.yikangyiliao.pension.entity.AppointmentOrderMedicinalApparatusMap;
+import com.yikangyiliao.pension.entity.CustumerTimeQuantum;
 import com.yikangyiliao.pension.entity.Location;
 import com.yikangyiliao.pension.entity.OrderServiceDetail;
 import com.yikangyiliao.pension.entity.SeniorAccount;
@@ -26,6 +27,7 @@ import com.yikangyiliao.pension.entity.TimeQuantum;
 import com.yikangyiliao.pension.entity.UserServiceInfo;
 import com.yikangyiliao.pension.manager.AppointmentOrderManager;
 import com.yikangyiliao.pension.manager.AppointmentOrderMedicinalApparatusMapManager;
+import com.yikangyiliao.pension.manager.CustomerTimeQuantumManager;
 import com.yikangyiliao.pension.manager.LocationManager;
 import com.yikangyiliao.pension.manager.OrderServiceDetailManager;
 import com.yikangyiliao.pension.manager.SeniorAccountManager;
@@ -63,6 +65,9 @@ public class AppointmentOrderService {
 	
 	@Autowired
 	private SeniorAccountManager seniorAccountManager;
+	
+	@Autowired
+	private CustomerTimeQuantumManager customerTimeQuantumManager;
 	
 	
 	
@@ -121,11 +126,11 @@ public class AppointmentOrderService {
 				 appointmentOrder.setTimeQuanturmId(Long.valueOf(timeQuantumId));
 				 appointmentOrder.setLinkUserName(linkUserName);
 				 
-				 TimeQuantum timeQuantum=timeQuantumManager.getTimeQuantumsById(Long.valueOf(timeQuantumId));
+				 //TimeQuantum timeQuantum=timeQuantumManager.getTimeQuantumsById(Long.valueOf(timeQuantumId));
+				 CustumerTimeQuantum custumerTimeQuantum=customerTimeQuantumManager.selectByPrimaryKey(Long.valueOf(timeQuantumId));
 				 
-				 
-				 appointmentOrder.setStartTime(timeQuantum.getStartTime().toString());
-				 appointmentOrder.setEndTime(timeQuantum.getEndTime().toString());
+				 appointmentOrder.setStartTime(custumerTimeQuantum.getStartTime().toString());
+				 appointmentOrder.setEndTime(custumerTimeQuantum.getEndTime().toString());
 				 
 				 
 				//todo 
@@ -253,9 +258,10 @@ public class AppointmentOrderService {
 					 // 冗余数据设置的评估师 
 					 appointmentOrder.setAssessmentId(Long.valueOf(serviceUserId));
 					 
-					 TimeQuantum timeQuantum=timeQuantumManager.getTimeQuantumsById(Long.valueOf(timeQuantumId));
-					 appointmentOrder.setStartTime(timeQuantum.getStartTime().toString());
-					 appointmentOrder.setEndTime(timeQuantum.getEndTime().toString());
+					 CustumerTimeQuantum custumerTimeQuantum=customerTimeQuantumManager.selectByPrimaryKey(Long.valueOf(timeQuantumId));
+					 
+					 appointmentOrder.setStartTime(custumerTimeQuantum.getStartTime().toString());
+					 appointmentOrder.setEndTime(custumerTimeQuantum.getEndTime().toString());
 					 
 					 appointmentOrder.setDetailAddress(detailAddress);
 					 appointmentOrder.setMapPostionAddress(mapPositionAddress);

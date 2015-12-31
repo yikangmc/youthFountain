@@ -17,6 +17,10 @@ public class User {
 
     private Long loginTime;
 
+    private String invitationCode;
+
+    private String pushAlias;
+
     public Long getUserId() {
         return userId;
     }
@@ -79,5 +83,21 @@ public class User {
 
     public void setLoginTime(Long loginTime) {
         this.loginTime = loginTime;
+    }
+
+    public String getInvitationCode() {
+        return invitationCode;
+    }
+
+    public void setInvitationCode(String invitationCode) {
+        this.invitationCode = invitationCode == null ? null : invitationCode.trim();
+    }
+
+    public String getPushAlias() {
+        return pushAlias;
+    }
+
+    public void setPushAlias(String pushAlias) {
+        this.pushAlias = pushAlias == null ? null : pushAlias.trim();
     }
 }

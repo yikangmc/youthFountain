@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yikangyiliao.base.utils.SystemProperties;
 import com.yikangyiliao.pension.common.error.ExceptionConstants;
 import com.yikangyiliao.pension.common.utils.map.MapUtils;
 import com.yikangyiliao.pension.common.utils.map.model.MapResponse;
@@ -98,7 +99,11 @@ public class ServicerService {
 			if (null != server) {
 				pingGuData = userManager.getPingGuServicerByUserId(server.getUserId());
 			} else {
-				pingGuData = userManager.getPingGuServicerByUserId(8l);
+				String defaultServicerId="8";
+				if(null != SystemProperties.getPropertieValue("DEFULT_SERVICER_ID")){
+					defaultServicerId= SystemProperties.getPropertieValue("DEFULT_SERVICER_ID").toString();
+				}
+				pingGuData = userManager.getPingGuServicerByUserId(Long.valueOf(defaultServicerId));
 			}
 
 			if (pingGuData == null) {

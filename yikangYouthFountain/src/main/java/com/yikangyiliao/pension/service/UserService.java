@@ -1,6 +1,7 @@
 package com.yikangyiliao.pension.service;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -8,6 +9,8 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yikangyiliao.base.utils.AliasFactory;
+import com.yikangyiliao.base.utils.InvitationCodeGnerateUtil;
 import com.yikangyiliao.base.utils.messageUtil.SMSUtil;
 import com.yikangyiliao.base.utils.messageUtil.im.Message;
 import com.yikangyiliao.base.utils.messageUtil.im.MessageQueue;
@@ -17,6 +20,7 @@ import com.yikangyiliao.pension.common.response.ResponseMessage;
 import com.yikangyiliao.pension.entity.User;
 import com.yikangyiliao.pension.entity.UserFrom;
 import com.yikangyiliao.pension.entity.UserInfo;
+import com.yikangyiliao.pension.entity.UserServiceInfo;
 import com.yikangyiliao.pension.manager.UserFromManager;
 import com.yikangyiliao.pension.manager.UserManager;
 
@@ -31,6 +35,7 @@ public class UserService {
 
 	@Autowired
 	private RedisCache redisCache;
+	
 
 	/**
 	 * @author liushuaic
@@ -281,11 +286,6 @@ public class UserService {
 		if(paramData.containsKey("mapPositionAdress")){
 			String mapPositionAddress=paramData.get("mapPositionAddress").toString();
 		}
-//		Message message=new Message();
-//		message.setAlias("");
-//		message.setContent("tests");
-//		MessageQueue.put(message);
-		
 		
 		userManager.updateUserInfoBySelective(userInfo);
 		
@@ -293,5 +293,79 @@ public class UserService {
 		responseMessage.setMessage(ExceptionConstants.responseSuccess.responseSuccess.message);
 		return responseMessage;
 	}
+	
+	
+	/**
+	 * @author liushuaic
+	 * @date 2015/12/30 16:31
+	 * @desc 注册用户为主页消费用户
+	 * */
+	public ResponseMessage registerUserForPortal(Map<String,Object> paramData){
+		
+		ResponseMessage responseMessage=new ResponseMessage();
+		
+		try{
+			
+			if(paramData.containsKey("loginName")  &&
+			   paramData.containsKey("loginPassword")){
+				
+				
+				Long curentTime=Calendar.getInstance().getTimeInMillis();
+				
+				User user=new User();
+				
+				String loginName=paramData.get("loginName").toString();
+				String loginPassword=paramData.get("loginPassword").toString();
+				
+				user.setLoginName(loginName);
+				user.setLoginPassword(loginPassword);
+				user.setCreateTime(curentTime);
+				user.setSalt("");
+				user.setAccessTiket("");
+				user.setUserName("");
+				user.setLoginTime(curentTime);
+				user.setPushAlias("");
+				
+				userManager.insertUserSelective(user);
+				user.setUserName(null);
+				user.setLoginName(null);
+				user.setLoginPassword(null);
+				user.setCreateTime(null);
+				user.setSalt(null);
+				user.setLoginTime(null);
+				user.setPushAlias(AliasFactory.generateAliasByUser(user.getUserId().toString()));
+				userManager.updateUser(user);  //修改用户推送
+				//修改用户邀请码
+				userManager.updateInvitationCodeByUserId(InvitationCodeGnerateUtil.generateInvitationCodeTwo(user), user.getUserId());
+			
+				UserInfo userInfo=new UserInfo();
+				
+				userInfo.setAddress("");
+				userInfo.setCityCode("");
+				userInfo.setDistrictCode("");
+				userInfo.setIsDelete(0l);
+				userInfo.setCreateAt(curentTime);
+				userInfo.setUpdateAt(curentTime);
+				userInfo.setUserId(user.getUserId());
+				userInfo.setProvenceCode("");
+				userInfo.setUserName("");
+				userInfo.setUserSex(Byte.valueOf("-2"));
+				
+				userManager.insertUserInfoSelective(userInfo);
+				responseMessage.setStatus(ExceptionConstants.responseSuccess.responseSuccess.code);
+				responseMessage.setMessage(ExceptionConstants.responseSuccess.responseSuccess.message);
+				
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			responseMessage.setStatus(ExceptionConstants.systemException.systemException.errorCode);
+			responseMessage.setMessage(ExceptionConstants.systemException.systemException.errorMessage);
+		}
+		
+		return responseMessage;
+		
+	}
+	
 
 }

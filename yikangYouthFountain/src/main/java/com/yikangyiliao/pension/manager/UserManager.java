@@ -176,4 +176,28 @@ public class UserManager {
 	}
 	
 	
+	
+	/**
+	 * @author liushuaic
+	 * @date 2015/12/31 10:36
+	 * @desc 添加注册用户信息
+	 * 
+	 * ***/
+	public int insertUserInfoSelective(UserInfo userInfo) {
+		return userInfoDao.insertSelective(userInfo);
+	}
+	
+    /**
+     * @author liushuaic
+     * @date 2015/11/18 15:29
+     * @desc 邀请码，是根据用户id 获取的
+     * 添加用户邀请码
+     * */
+	public int updateInvitationCodeByUserId(String invitationCode,Long userId){
+		Map<String,Object> paramData=new HashMap<String,Object>();
+		paramData.put("invitationCode", invitationCode);
+		paramData.put("userId", userId);
+		return userDao.updateInvitationCodeByUserId(paramData);
+	}
+	
 }
