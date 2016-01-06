@@ -56,9 +56,11 @@ public class AppointmentOrder {
     private Long seniorId;
 
     private Long createUserId;
-    
-    
-    
+
+    private String timeBucket;
+
+    private String appellation;
+
     public Long getAppointmentOrderId() {
         return appointmentOrderId;
     }
@@ -267,19 +269,35 @@ public class AppointmentOrder {
         this.address = address == null ? null : address.trim();
     }
 
-	public Long getSeniorId() {
-		return seniorId;
-	}
+    public Long getSeniorId() {
+        return seniorId;
+    }
 
-	public void setSeniorId(Long seniorId) {
-		this.seniorId = seniorId;
-	}
+    public void setSeniorId(Long seniorId) {
+        this.seniorId = seniorId;
+    }
 
-	public Long getCreateUserId() {
-		return createUserId;
-	}
+    public Long getCreateUserId() {
+        return createUserId;
+    }
 
-	public void setCreateUserId(Long createUserId) {
-		this.createUserId = createUserId;
-	}
+    public void setCreateUserId(Long createUserId) {
+        this.createUserId = createUserId;
+    }
+
+    public String getTimeBucket() {
+        return timeBucket;
+    }
+
+    public void setTimeBucket(String timeBucket) {
+        this.timeBucket = timeBucket == null ? null : timeBucket.trim();
+    }
+
+    public String getAppellation() {
+        return appellation;
+    }
+
+    public void setAppellation(String appellation) {
+        this.appellation = appellation == null ? null : appellation.trim();
+    }
 }

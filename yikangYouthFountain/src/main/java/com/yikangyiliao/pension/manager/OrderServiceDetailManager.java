@@ -1,5 +1,8 @@
 package com.yikangyiliao.pension.manager;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,5 +50,18 @@ public class OrderServiceDetailManager {
 		return orderServiceDetailDao.insertSelective(record);
 	}
 
+	
+	/**
+	 * @author liushuaic
+	 * @date 2016/1/5 19:04
+	 * @desc 获取某一个服务订单的信息 ，根据，  orderId and serviceItemIds
+	 * */
+	public Map<String,Object> getServiceDetailByOrderIdAndServiceItemId(Long serviceItemId,Long orderId){
+		Map<String,Object> paramData=new HashMap<String,Object>();
+		paramData.put("orderId",orderId);
+		paramData.put("serviceItemId", serviceItemId);
+		return orderServiceDetailDao.getServiceDetailByOrderIdAndServiceItemId(paramData);
+	}
+	
 	
 }

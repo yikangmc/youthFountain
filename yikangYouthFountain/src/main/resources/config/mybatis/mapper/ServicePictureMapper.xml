@@ -90,4 +90,14 @@
       service_item_id = #{serviceItemId,jdbcType=BIGINT}
     where service_picture_id = #{servicePictureId,jdbcType=BIGINT}
   </update>
+  
+  <!--查询某一个服务的图片  -->
+  <select id="getServicePictureByServiceItemId" resultType="map"  parameterType="long">
+  	select 
+    service_picture_id as servicePictureId,
+    pic_url	as picUrl
+    from service_pictures
+    where service_item_id=#{serviceItemId}
+  </select>
+  
 </mapper>

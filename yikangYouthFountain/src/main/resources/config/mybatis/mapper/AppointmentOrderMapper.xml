@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yikangyiliao.pension.dao.AppointmentOrderDao" >
-   <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.AppointmentOrder" >
+  <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.AppointmentOrder" >
     <id column="appointment_order_id" property="appointmentOrderId" jdbcType="BIGINT" />
     <result column="parent_link_address" property="parentLinkAddress" jdbcType="VARCHAR" />
     <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
@@ -30,13 +30,15 @@
     <result column="address" property="address" jdbcType="VARCHAR" />
     <result column="senior_id" property="seniorId" jdbcType="BIGINT" />
     <result column="create_user_id" property="createUserId" jdbcType="BIGINT" />
+    <result column="time_bucket" property="timeBucket" jdbcType="VARCHAR" />
+    <result column="appellation" property="appellation" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     appointment_order_id, parent_link_address, phone_number, my_phone_number, nick_name, 
     appointment_date_time, time_quanturm_id, start_time, end_time, order_status, provence_code, 
     city_code, district_code, longitude, latitude, detail_address, map_postion_address, 
     assessment_id, service_count, order_number, data_source, data_group, create_time, 
-    update_time, link_user_name, address, senior_id, create_user_id
+    update_time, link_user_name, address, senior_id, create_user_id, time_bucket, appellation
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -49,6 +51,9 @@
     where appointment_order_id = #{appointmentOrderId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.yikangyiliao.pension.entity.AppointmentOrder" >
+	<selectKey resultType="Long" keyProperty="appointmentOrderId" order="AFTER">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
     insert into appointment_orders (appointment_order_id, parent_link_address, 
       phone_number, my_phone_number, nick_name, 
       appointment_date_time, time_quanturm_id, start_time, 
@@ -58,7 +63,8 @@
       assessment_id, service_count, order_number, 
       data_source, data_group, create_time, 
       update_time, link_user_name, address, 
-      senior_id, create_user_id)
+      senior_id, create_user_id, time_bucket, 
+      appellation)
     values (#{appointmentOrderId,jdbcType=BIGINT}, #{parentLinkAddress,jdbcType=VARCHAR}, 
       #{phoneNumber,jdbcType=VARCHAR}, #{myPhoneNumber,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
       #{appointmentDateTime,jdbcType=BIGINT}, #{timeQuanturmId,jdbcType=BIGINT}, #{startTime,jdbcType=VARCHAR}, 
@@ -68,12 +74,13 @@
       #{assessmentId,jdbcType=BIGINT}, #{serviceCount,jdbcType=INTEGER}, #{orderNumber,jdbcType=VARCHAR}, 
       #{dataSource,jdbcType=TINYINT}, #{dataGroup,jdbcType=TINYINT}, #{createTime,jdbcType=BIGINT}, 
       #{updateTime,jdbcType=BIGINT}, #{linkUserName,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{seniorId,jdbcType=BIGINT}, #{createUserId,jdbcType=BIGINT})
+      #{seniorId,jdbcType=BIGINT}, #{createUserId,jdbcType=BIGINT}, #{timeBucket,jdbcType=VARCHAR}, 
+      #{appellation,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.AppointmentOrder" >
-    <selectKey resultType="Long" keyProperty="appointmentOrderId" order="AFTER">
+	  <selectKey resultType="Long" keyProperty="appointmentOrderId" order="AFTER">
 		SELECT LAST_INSERT_ID()
-	</selectKey>
+	 </selectKey>
     insert into appointment_orders
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="appointmentOrderId != null" >
@@ -159,6 +166,12 @@
       </if>
       <if test="createUserId != null" >
         create_user_id,
+      </if>
+      <if test="timeBucket != null" >
+        time_bucket,
+      </if>
+      <if test="appellation != null" >
+        appellation,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -246,6 +259,12 @@
       <if test="createUserId != null" >
         #{createUserId,jdbcType=BIGINT},
       </if>
+      <if test="timeBucket != null" >
+        #{timeBucket,jdbcType=VARCHAR},
+      </if>
+      <if test="appellation != null" >
+        #{appellation,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.yikangyiliao.pension.entity.AppointmentOrder" >
@@ -332,6 +351,12 @@
       <if test="createUserId != null" >
         create_user_id = #{createUserId,jdbcType=BIGINT},
       </if>
+      <if test="timeBucket != null" >
+        time_bucket = #{timeBucket,jdbcType=VARCHAR},
+      </if>
+      <if test="appellation != null" >
+        appellation = #{appellation,jdbcType=VARCHAR},
+      </if>
     </set>
     where appointment_order_id = #{appointmentOrderId,jdbcType=BIGINT}
   </update>
@@ -363,7 +388,9 @@
       link_user_name = #{linkUserName,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       senior_id = #{seniorId,jdbcType=BIGINT},
-      create_user_id = #{createUserId,jdbcType=BIGINT}
+      create_user_id = #{createUserId,jdbcType=BIGINT},
+      time_bucket = #{timeBucket,jdbcType=VARCHAR},
+      appellation = #{appellation,jdbcType=VARCHAR}
     where appointment_order_id = #{appointmentOrderId,jdbcType=BIGINT}
   </update>
   

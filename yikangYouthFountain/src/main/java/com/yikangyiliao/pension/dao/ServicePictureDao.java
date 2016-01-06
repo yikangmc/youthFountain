@@ -1,3 +1,4 @@
+
 package com.yikangyiliao.pension.dao;
 
 import com.yikangyiliao.pension.entity.ServicePicture;
@@ -14,4 +15,6 @@ public interface ServicePictureDao {
     int updateByPrimaryKeySelective(ServicePicture record);
 
     int updateByPrimaryKey(ServicePicture record);
+    
+   // List<Service>
 }

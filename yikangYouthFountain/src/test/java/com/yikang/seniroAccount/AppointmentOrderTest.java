@@ -145,7 +145,21 @@ public class AppointmentOrderTest {
 		}
 	}
 	
-	
+	@Test
+	public void orderComplateTest(){
+		Map<String,Object> paramData=new HashMap<String,Object>();
+		
+		try {
+			
+			paramData.put("orderId", 1);
+			paramData.put("serviceItemId", 1);
+			paramData.put("userId", 1);
+			SendRequest.sendPost("00-21-05?1=1",paramData);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 }

@@ -260,6 +260,19 @@ public class InterfaceUtil {
 		mathodClassPath.put("00-21-03", "addPointmentOrderAndSubmitAssessment");
 		mathodClassPath.put("00-21-04", "addApointmentOrderForServiceItem");
 		
+		/**
+		 * @author liushuaic
+		 * @date 2016/01/06 10:06
+		 * @desc 用于在portal 中请求的接口
+		 * **/
+		YiKangServiceConfige orderComplete=new YiKangServiceConfige();
+		orderComplete.setServiceName("userService");
+		orderComplete.setMethodName("orderComplete");
+		orderComplete.setIsFileter(false);
+		mathodServiceConfig.put("00-21-05", orderComplete);
+		
+		
+		
 		
 		/**
 		 * @author liushuaic

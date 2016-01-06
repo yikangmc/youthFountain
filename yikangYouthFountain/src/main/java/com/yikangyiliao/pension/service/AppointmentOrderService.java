@@ -33,6 +33,7 @@ import com.yikangyiliao.pension.manager.OrderServiceDetailManager;
 import com.yikangyiliao.pension.manager.SeniorAccountManager;
 import com.yikangyiliao.pension.manager.ServiceScheduleManager;
 import com.yikangyiliao.pension.manager.TimeQuantumManager;
+import com.yikangyiliao.pension.manager.UserManager;
 import com.yikangyiliao.pension.schedule.PersonnelDistribution;
 
 @Service(value="appointmentOrderService")
@@ -68,6 +69,9 @@ public class AppointmentOrderService {
 	
 	@Autowired
 	private CustomerTimeQuantumManager customerTimeQuantumManager;
+	
+	@Autowired
+	private UserManager userManager;
 	
 	
 	
@@ -209,6 +213,7 @@ public class AppointmentOrderService {
 			&& null != param.get("serviceUserId")
 			&& null != param.get("districtCode")
 			&& null != param.get("userId")
+			&& null != param.get("serviceItemId")
 		){
 			
 				
@@ -229,8 +234,9 @@ public class AppointmentOrderService {
 					 String dataSource			=  param.get("dataSource").toString();
 					 String dataGroup			=  param.get("dataGroup").toString();
 					 String linkUserName		=  param.get("linkUserName").toString();
+					 String myPhoneNumber 		=  param.get("myPhoneNumber").toString();
 					 
-					 
+					 String serviceItemId       =  param.get("serviceItemId").toString();
 					 
 					 
 					SeniorAccount seniorAccount=new SeniorAccount();
@@ -249,7 +255,7 @@ public class AppointmentOrderService {
 					 
 					 appointmentOrder.setParentLinkAddress("");
 					 appointmentOrder.setPhoneNumber(phoneNumber);
-					 appointmentOrder.setMyPhoneNumber("");
+					 appointmentOrder.setMyPhoneNumber(myPhoneNumber);
 					 appointmentOrder.setNickName("");
 					 appointmentOrder.setAppointmentDateTime(DateUtils.getＭillisecond(appointmentDateTime));
 					 appointmentOrder.setTimeQuanturmId(Long.valueOf(timeQuantumId));
@@ -337,6 +343,8 @@ public class AppointmentOrderService {
 					 
 					 orderServiceDetail.setTimeQuantumId(Long.valueOf(timeQuantumId));
 					 
+					 // 设置某一项的具体服务
+					 orderServiceDetail.setServiceItemId(Long.valueOf(serviceItemId));
 					 
 					 //设置服务预约时间
 					 orderServiceDetail.setAppointmentDate(appointmentDateTime);
@@ -693,4 +701,64 @@ public class AppointmentOrderService {
 		
 		return responseMessage;
 	}
+	
+	/**
+	 * @author liushuaic
+	 * @date 2016/01/05 17:56
+	 * @desc 预订成功的信息返回接口
+	 * */
+	public ResponseMessage orderComplete(Map<String,Object> paramData){
+		
+		ResponseMessage responseMessage=new ResponseMessage();
+		
+		if(
+			paramData.containsKey("userId")
+			&&paramData.containsKey("orderId")
+			&&paramData.containsKey("serviceItemId")
+			){
+			String orderId=paramData.get("orderId").toString();
+			String serviceItemId=paramData.get("serviceItemId").toString();
+			
+			Map<String,Object> rtnData=new HashMap<String,Object>();
+			
+			
+			AppointmentOrder appointmentOrder= appointmentOrderManager.getAppointmentOrderByOrderId(Long.valueOf(orderId));
+			if(null != appointmentOrder){
+			
+				Map<String, Object> result=orderServiceDetailManager.getServiceDetailByOrderIdAndServiceItemId(Long.valueOf(serviceItemId),Long.valueOf(orderId));
+				
+				if(null!= result){
+					
+					String serviceUserId=result.get("serviceUserId").toString();
+					
+					Map<String,Object> userServiceInfo=userManager.getPingGuServicerByUserId(Long.valueOf(serviceUserId));
+					
+					rtnData.put("userServiceInfo", userServiceInfo);
+					rtnData.put("orderDetail", result);
+					rtnData.put("appointmentOrder", appointmentOrder);
+					
+					responseMessage.setData(rtnData);
+					responseMessage.setStatus(ExceptionConstants.responseSuccess.responseSuccess.code);
+					responseMessage.setMessage(ExceptionConstants.responseSuccess.responseSuccess.message);
+					
+				}else{
+					responseMessage.setStatus(ExceptionConstants.systemException.systemException.errorCode);
+					responseMessage.setMessage(ExceptionConstants.systemException.systemException.errorMessage);
+				}
+				
+			}else{
+				responseMessage.setStatus(ExceptionConstants.systemException.systemException.errorCode);
+				responseMessage.setMessage(ExceptionConstants.systemException.systemException.errorMessage);
+			}
+			
+		}else{
+			responseMessage.setStatus(ExceptionConstants.parameterException.parameterException.errorCode);
+			responseMessage.setMessage(ExceptionConstants.parameterException.parameterException.errorMessage);
+		}
+		
+		return responseMessage;
+		
+	}
+	
+	
 }

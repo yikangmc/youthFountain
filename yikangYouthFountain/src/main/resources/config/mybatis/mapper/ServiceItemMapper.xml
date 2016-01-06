@@ -172,9 +172,7 @@
   	<result column="outOfStock" property="outOfStock"/>
   	<result column="price" property="price"/>
   	
-  	<collection property="pictures" ofType="map" javaType="list">
-  		<result column="servicePictureId" property="servicePictureId"/>
-  		<result column="picUrl" property="picUrl"/>
+  	<collection property="pictures"  column="service_item_id"   fetchType="eager" select="com.yikangyiliao.pension.dao.ServicePictureDao.getServicePictureByServiceItemId">
   	</collection>
   	
   	<collection property="serviceIntroduces" ofType="map" javaType="list">
@@ -209,9 +207,6 @@
 	    si.service_price    as price,
 	    
 	    
-	    sp.service_picture_id as servicePictureId,
-	    sp.pic_url			as picUrl,
-	    
 	    sin.service_introduce_id as serviceIntroduceId,
 	    sin.title			as sinTitle,
 	    sin.content 		as sinContent,
@@ -225,7 +220,6 @@
 	    ma.pic_url			as picUrl
 	from service_items si 
 		left join service_notes sn 		on si.service_item_id=sn.service_item_id
-		left join service_pictures sp 	on si.service_item_id=sp.service_item_id
 		left join service_item_medicinal_apparatus_maps simam on si.service_item_id=simam.service_item_id
 		left join medicinal_apparatus ma on simam.medicinal_apparatus_id=ma.medicinal_apparatu_id
 		left join service_introduces sin on si.service_item_id=sin.service_item_id

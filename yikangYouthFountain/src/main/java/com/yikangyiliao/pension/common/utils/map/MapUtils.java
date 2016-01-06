@@ -47,10 +47,10 @@ public class MapUtils {
 		String paramStr=KEYPARAM+"";
 		if(null != address && address !=""){
 			
-			paramStr=paramStr+"&address='"+URLEncoder.encode(address)+"'";
+			paramStr=paramStr+"&address="+URLEncoder.encode(address)+"";
 		}
 		if(null != city && city !=""){
-			paramStr=paramStr+"&city='"+city+"'";
+			paramStr=paramStr+"&city="+city+"";
 		}
 		
 		

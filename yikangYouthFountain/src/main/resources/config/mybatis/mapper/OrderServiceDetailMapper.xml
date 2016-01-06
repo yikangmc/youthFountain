@@ -211,4 +211,14 @@
 	where ssd.order_id=#{orderId}
   </select>
   
+  <!-- 查询某一个服务人员信息 根据  订单id 与 服务项目id -->
+  <select id="getServiceDetailByOrderIdAndServiceItemId" parameterType="map" resultType="map">
+	select osd.service_user_id as serviceUserId,osd.appointment_date as appointmentDate,ctq.start_time as startTime from 
+	order_service_details osd 
+	inner join custumer_time_quantums ctq
+	on osd.time_quantum_id=ctq.custumer_time_quantum_id
+	where osd.order_id=#{orderId} and osd.service_item_id=#{serviceItemId}
+  </select>
+  
+  
 </mapper>
