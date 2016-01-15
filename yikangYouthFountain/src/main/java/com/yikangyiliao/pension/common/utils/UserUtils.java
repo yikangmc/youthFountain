@@ -35,9 +35,10 @@ public class UserUtils {
 		return 0l;
 	}
 	
+	
+	
 	public static User getUserByAccessTiket(String accessTiket){
 		return new User();
-		//return (User)redisExample.get(accessTiket);
 	}
 	
 	

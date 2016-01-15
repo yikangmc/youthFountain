@@ -27,6 +27,9 @@
       #{orderNumber,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.GenerateNumber" >
+  	<selectKey resultType="Long" keyProperty="gnid" order="AFTER">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
     insert into generate_numbers
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="gnid != null" >

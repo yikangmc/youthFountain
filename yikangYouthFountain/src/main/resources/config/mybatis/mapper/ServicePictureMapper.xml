@@ -92,7 +92,11 @@
   </update>
   
   <!--查询某一个服务的图片  -->
-  <select id="getServicePictureByServiceItemId" resultType="map"  parameterType="long">
+  <resultMap type="map" id="getServicePictureByServiceItemIdResultMap">
+ 	<result column="servicePictureId" property="servicePictureId" />
+ 	<result column="picUrl" property="picUrl" />
+  </resultMap>
+  <select id="getServicePictureByServiceItemId"  resultMap="getServicePictureByServiceItemIdResultMap" parameterType="long">
   	select 
     service_picture_id as servicePictureId,
     pic_url	as picUrl

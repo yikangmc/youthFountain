@@ -2,16 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yikangyiliao.pension.dao.ServiceItemDao" >
   <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.ServiceItem" >
-    <id column="service_item_id" property="serviceItemId" jdbcType="BIGINT" />
-    <result column="service_title" property="serviceTitle" jdbcType="VARCHAR" />
-    <result column="service_content" property="serviceContent" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="BIGINT" />
-    <result column="update_time" property="updateTime" jdbcType="BIGINT" />
-    <result column="create_user_id" property="createUserId" jdbcType="BIGINT" />
-    <result column="service_price" property="servicePrice" jdbcType="REAL" />
-    <result column="out_of_stock" property="outOfStock" jdbcType="TINYINT" />
-    <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
-    <result column="order_number" property="orderNumber" jdbcType="INTEGER" />
+    <id column="service_item_id" 		property="serviceItemId" jdbcType="BIGINT" />
+    <result column="service_title" 		property="serviceTitle" jdbcType="VARCHAR" />
+    <result column="service_content" 	property="serviceContent" jdbcType="VARCHAR" />
+    <result column="create_time" 		property="createTime" jdbcType="BIGINT" />
+    <result column="update_time" 		property="updateTime" jdbcType="BIGINT" />
+    <result column="create_user_id" 	property="createUserId" jdbcType="BIGINT" />
+    <result column="service_price" 		property="servicePrice" jdbcType="REAL" />
+    <result column="out_of_stock" 		property="outOfStock" jdbcType="TINYINT" />
+    <result column="pic_url" 			property="picUrl" jdbcType="VARCHAR" />
+    <result column="order_number" 		property="orderNumber" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     service_item_id, service_title, service_content, create_time, update_time, create_user_id, 
@@ -157,7 +157,8 @@
 		service_title	as serviceTitle,
 		service_content as serviceContent,
         service_price	as servicePrice,
-        pic_url			as picUrl
+        pic_url			as picUrl,
+    	service_time	as serviceTime
 	from service_items
 	where out_of_stock=0
 	order by service_items.order_number asc
@@ -166,13 +167,15 @@
   
   <resultMap type="map" id="selectServiceItemDescResultMap">
   
-  	<result column="serviceItemId" property="serviceItemId"/>
-  	<result column="serviceTitle" property="serviceTitle"/>
+  	<result column="serviceItemId" 	property="serviceItemId"/>
+  	<result column="serviceTitle" 	property="serviceTitle"/>
   	<result column="serviceContent" property="serviceContent"/>
-  	<result column="outOfStock" property="outOfStock"/>
-  	<result column="price" property="price"/>
+  	<result column="outOfStock" 	property="outOfStock"/>
+  	<result column="price" 			property="price"/>
+  	<result column="serviceTime" 	property="serviceTime"/>
   	
-  	<collection property="pictures"  column="service_item_id"   fetchType="eager" select="com.yikangyiliao.pension.dao.ServicePictureDao.getServicePictureByServiceItemId">
+  	<collection property="pictures"  column="serviceItemId"   
+  	fetchType="eager" select="com.yikangyiliao.pension.dao.ServicePictureDao.getServicePictureByServiceItemId">
   	</collection>
   	
   	<collection property="serviceIntroduces" ofType="map" javaType="list">
@@ -205,7 +208,7 @@
 	    si.service_content  as serviceContent,
 	    si.out_of_stock		as outOfStock,
 	    si.service_price    as price,
-	    
+	    si.service_time		as serviceTime,
 	    
 	    sin.service_introduce_id as serviceIntroduceId,
 	    sin.title			as sinTitle,

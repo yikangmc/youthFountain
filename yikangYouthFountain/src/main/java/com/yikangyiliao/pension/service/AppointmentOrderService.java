@@ -279,9 +279,9 @@ public class AppointmentOrderService {
 					 appointmentOrder.setOrderStatus(0);
 					 
 					 // 生成订单编号
-					 appointmentOrder.setOrderNumber(genreateNumberUtils.generateAppointmentOrderNumber());
+					appointmentOrder.setOrderNumber(genreateNumberUtils.generateAppointmentOrderNumber(serviceItemId));
 					 
-					 String address="";
+					String address="";
 					Location city= locationManager.getCityByDistrictCode(districtCode);
 					Location provence=locationManager.getProvenceByCityCode(districtCode);
 					Location distirct=locationManager.getLocationByAdministrativeCode(districtCode);

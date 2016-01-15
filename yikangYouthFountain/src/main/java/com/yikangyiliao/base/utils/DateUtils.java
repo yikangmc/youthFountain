@@ -55,17 +55,35 @@ public class DateUtils {
 		return sdf3.format(Calendar.getInstance().getTime());
 	}
 	
+	/**
+	 * @author liushuaic
+	 * @date 2017/1/14 14:44
+	 * @desc 获取当时日期的格式化的，字符串
+	 * @return '150114'
+	 * */
+	public static String getFormateCurrentDateStr(){
+		
+		SimpleDateFormat sdf3=new SimpleDateFormat("yyMMdd");
+		return sdf3.format(Calendar.getInstance().getTime());
+		
+	}
+	
 	
 	public static void main(String[] args) throws ParseException {
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date d=sdf.parse("2015-07-15");
-		System.out.println(d.getTime());
-		System.out.println(sdf2.format(sdf.parse("2015-07-15")));
+//		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+//		SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		Date d=sdf.parse("2015-07-15");
+//		System.out.println(d.getTime());
+//		System.out.println(sdf2.format(sdf.parse("2015-07-15")));
+//		
+//		
+//		SimpleDateFormat sdf3=new SimpleDateFormat("yyyyMMdd");
+//		System.out.println(sdf3.format(Calendar.getInstance().getTime()));
 		
 		
-		SimpleDateFormat sdf3=new SimpleDateFormat("yyyyMMdd");
-		System.out.println(sdf3.format(Calendar.getInstance().getTime()));
+		SimpleDateFormat sdf3=new SimpleDateFormat("yyMMdd");
+		String str= sdf3.format(Calendar.getInstance().getTime());
+		System.out.println(str);
 		
 	}
 

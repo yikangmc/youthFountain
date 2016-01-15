@@ -71,4 +71,31 @@ public class GenreateNumberUtils {
 	}
 	
 	
+	/**
+	 * @author liushuaic
+	 * @date 2016/01/14 15:53
+	 * @desc 生成定单编号
+	 * */
+	public String generateAppointmentOrderNumber(String serviceItemId){
+		
+		Integer maxNumber=generateNumberDao.selectMaxOrderNumberByGenerateTable("appointmentOrders");
+		
+		if(null == maxNumber){
+			maxNumber=0;
+		}
+		maxNumber=maxNumber+1;
+		Long currentDateTime=Calendar.getInstance().getTime().getTime();
+		GenerateNumber generateNumber=new GenerateNumber(); 
+		
+		generateNumber.setCreateTime(currentDateTime);
+		generateNumber.setGenerateTable("assessments");
+		generateNumber.setOrderNumber(maxNumber.longValue());
+		
+		generateNumberDao.insert(generateNumber);
+		
+		return  serviceItemId+DateUtils.getFormateCurrenteDateStr()+maxNumber;
+		
+	}
+	
+	
 }
