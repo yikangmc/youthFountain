@@ -158,7 +158,8 @@
 		service_content as serviceContent,
         service_price	as servicePrice,
         pic_url			as picUrl,
-    	service_time	as serviceTime
+    	service_time	as serviceTime,
+    	web_pic_url		as webPicUrl
 	from service_items
 	where out_of_stock=0
 	order by service_items.order_number asc

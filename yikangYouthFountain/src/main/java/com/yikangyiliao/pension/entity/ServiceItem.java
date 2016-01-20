@@ -23,6 +23,8 @@ public class ServiceItem {
 
     private Integer serviceTime;
 
+    private String webPicUrl;
+
     public Long getServiceItemId() {
         return serviceItemId;
     }
@@ -35,7 +37,7 @@ public class ServiceItem {
         return serviceTitle;
     }
 
-    public void setServiceTitle(String serviceTitle) {
+    public void setServiceTitle(String serviceTitle) { 
         this.serviceTitle = serviceTitle == null ? null : serviceTitle.trim();
     }
 
@@ -109,5 +111,13 @@ public class ServiceItem {
 
     public void setServiceTime(Integer serviceTime) {
         this.serviceTime = serviceTime;
+    }
+
+    public String getWebPicUrl() {
+        return webPicUrl;
+    }
+
+    public void setWebPicUrl(String webPicUrl) {
+        this.webPicUrl = webPicUrl == null ? null : webPicUrl.trim();
     }
 }

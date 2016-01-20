@@ -221,7 +221,6 @@
 		<!--quartz end  -->
 		
 		
-		<!-- 容联云通信 短信发送 start -->
 		<dependency>
 			<groupId>com.ronglian</groupId>
 			<artifactId>CCP_REST_SDK_JAVA</artifactId>
@@ -229,7 +228,7 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/libs/CCP_REST_SDK_JAVA_v2.7r.jar</systemPath>
 		</dependency>
-<!-- 容联云通信 短信发送 end -->
+		<!-- 容联云通信 短信发送 end -->
 
 	</dependencies>
 
