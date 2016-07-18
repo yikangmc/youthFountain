@@ -54,5 +54,13 @@ public class UserFromManager {
 		return userFromDao.selectByUserId(userId);
 	}
 	
+	/**
+     * @author liushuaic
+     * @date 2016/03/01 10:56
+     * @desc 修改用户消费状态
+     * */
+	public int updateUserStatusSpentCost(Long userId){
+		return userFromDao.updateUserStatusSpentCost(userId);
+	}
 	
 }

@@ -33,6 +33,7 @@ import com.yikangyiliao.pension.manager.OrderServiceDetailManager;
 import com.yikangyiliao.pension.manager.SeniorAccountManager;
 import com.yikangyiliao.pension.manager.ServiceScheduleManager;
 import com.yikangyiliao.pension.manager.TimeQuantumManager;
+import com.yikangyiliao.pension.manager.UserFromManager;
 import com.yikangyiliao.pension.manager.UserManager;
 import com.yikangyiliao.pension.schedule.PersonnelDistribution;
 
@@ -72,6 +73,9 @@ public class AppointmentOrderService {
 	
 	@Autowired
 	private UserManager userManager;
+	
+	@Autowired
+	private UserFromManager userFromManager;
 	
 	
 	
@@ -362,6 +366,12 @@ public class AppointmentOrderService {
 					 
 					 
 					 orderServiceDetailManager.insertSelective(orderServiceDetail);
+					 
+					 
+					 //修改用户消费状态，为已消费
+					 userFromManager.updateUserStatusSpentCost(Long.valueOf(userId));
+					 
+					 
 					 
 					 Map<String,Object> rtnData=new HashMap<String, Object>();
 					 

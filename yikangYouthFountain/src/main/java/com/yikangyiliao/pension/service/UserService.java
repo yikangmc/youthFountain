@@ -56,7 +56,8 @@ public class UserService {
 
 			boolean isPass = false;
 
-			String storeValidateCode = redisCache.getStringByStringKey(phoneNumber);
+//			String storeValidateCode = redisCache.getStringByStringKey(phoneNumber);
+			String storeValidateCode = null;
 			if (storeValidateCode != null) {
 				Long currentDateTime = Calendar.getInstance().getTimeInMillis();
 				String[] storeValidateCodes = storeValidateCode.split("-");
@@ -146,7 +147,8 @@ public class UserService {
 
 				Long currentTimestamp = Calendar.getInstance().getTimeInMillis();
 
-				String validateCode = redisCache.getStringByStringKey(mobileNumber);
+//				String validateCode = redisCache.getStringByStringKey(mobileNumber);
+				String validateCode = null;
 				boolean isPass = false;
 				if (validateCode != null) {
  
@@ -167,7 +169,7 @@ public class UserService {
 					int captcha = random.nextInt(99999);
 					//SMSUtil.sendMessage(mobileNumber, captcha + "", "1");
 					validateCode = currentTimestamp + "-" + captcha;
-					redisCache.putStringKeyStringVal(mobileNumber, validateCode);
+//					redisCache.putStringKeyStringVal(mobileNumber, validateCode);
 					responseMessage.setStatus(ExceptionConstants.responseSuccess.responseSuccess.code);
 					responseMessage.setMessage(ExceptionConstants.responseSuccess.responseSuccess.message);
 				}
@@ -310,51 +312,58 @@ public class UserService {
 			   paramData.containsKey("loginPassword")){
 				
 				
+				
+				
 				Long curentTime=Calendar.getInstance().getTimeInMillis();
 				
 				User user=new User();
 				
 				String loginName=paramData.get("loginName").toString();
 				String loginPassword=paramData.get("loginPassword").toString();
+			   	User useri= userManager.getUserByLoginName(loginName);
+				if(null == useri){
+						
+					user.setLoginName(loginName);
+					user.setLoginPassword(loginPassword);
+					user.setCreateTime(curentTime);
+					user.setSalt("");
+					user.setAccessTiket("");
+					user.setUserName("");
+					user.setLoginTime(curentTime);
+					user.setPushAlias("");
+					
+					userManager.insertUserSelective(user);
+					user.setUserName(null);
+					user.setLoginName(null);
+					user.setLoginPassword(null);
+					user.setCreateTime(null);
+					user.setSalt(null);
+					user.setLoginTime(null);
+					user.setPushAlias(AliasFactory.generateAliasByUser(user.getUserId().toString()));
+					userManager.updateUser(user);  //修改用户推送
+					//修改用户邀请码
+					userManager.updateInvitationCodeByUserId(InvitationCodeGnerateUtil.generateInvitationCodeTwo(user), user.getUserId());
 				
-				user.setLoginName(loginName);
-				user.setLoginPassword(loginPassword);
-				user.setCreateTime(curentTime);
-				user.setSalt("");
-				user.setAccessTiket("");
-				user.setUserName("");
-				user.setLoginTime(curentTime);
-				user.setPushAlias("");
-				
-				userManager.insertUserSelective(user);
-				user.setUserName(null);
-				user.setLoginName(null);
-				user.setLoginPassword(null);
-				user.setCreateTime(null);
-				user.setSalt(null);
-				user.setLoginTime(null);
-				user.setPushAlias(AliasFactory.generateAliasByUser(user.getUserId().toString()));
-				userManager.updateUser(user);  //修改用户推送
-				//修改用户邀请码
-				userManager.updateInvitationCodeByUserId(InvitationCodeGnerateUtil.generateInvitationCodeTwo(user), user.getUserId());
-			
-				UserInfo userInfo=new UserInfo();
-				
-				userInfo.setAddress("");
-				userInfo.setCityCode("");
-				userInfo.setDistrictCode("");
-				userInfo.setIsDelete(0l);
-				userInfo.setCreateAt(curentTime);
-				userInfo.setUpdateAt(curentTime);
-				userInfo.setUserId(user.getUserId());
-				userInfo.setProvenceCode("");
-				userInfo.setUserName("");
-				userInfo.setUserSex(Byte.valueOf("-2"));
-				
-				userManager.insertUserInfoSelective(userInfo);
-				responseMessage.setStatus(ExceptionConstants.responseSuccess.responseSuccess.code);
-				responseMessage.setMessage(ExceptionConstants.responseSuccess.responseSuccess.message);
-				
+					UserInfo userInfo=new UserInfo();
+					
+					userInfo.setAddress("");
+					userInfo.setCityCode("");
+					userInfo.setDistrictCode("");
+					userInfo.setIsDelete(0l);
+					userInfo.setCreateAt(curentTime);
+					userInfo.setUpdateAt(curentTime);
+					userInfo.setUserId(user.getUserId());
+					userInfo.setProvenceCode("");
+					userInfo.setUserName("");
+					userInfo.setUserSex(Byte.valueOf("-2"));
+					
+					userManager.insertUserInfoSelective(userInfo);
+					responseMessage.setStatus(ExceptionConstants.responseSuccess.responseSuccess.code);
+					responseMessage.setMessage(ExceptionConstants.responseSuccess.responseSuccess.message);
+				}else{
+					responseMessage.setStatus(ExceptionConstants.operationException.userDuplicateException.errorCode);
+					responseMessage.setMessage(ExceptionConstants.operationException.userDuplicateException.errorMessage);
+				}
 			}
 			
 		}catch(Exception e){

@@ -7,7 +7,7 @@ public class UserServiceInfo {
 
     private Long jobCategory;
 
-    private Long userPostion;
+    private Byte userPosition;
 
     private Long provenceCode;
 
@@ -53,14 +53,6 @@ public class UserServiceInfo {
 
     public void setJobCategory(Long jobCategory) {
         this.jobCategory = jobCategory;
-    }
-
-    public Long getUserPostion() {
-        return userPostion;
-    }
-
-    public void setUserPostion(Long userPostion) {
-        this.userPostion = userPostion;
     }
 
     public Long getProvenceCode() {
@@ -150,4 +142,13 @@ public class UserServiceInfo {
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
+
+	public Byte getUserPosition() {
+		return userPosition;
+	}
+
+	public void setUserPosition(Byte userPosition) {
+		this.userPosition = userPosition;
+	}
+
 }

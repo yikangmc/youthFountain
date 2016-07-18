@@ -164,4 +164,12 @@
     where user_id = #{user_id,jdbcType=BIGINT}
   </select>
   
+  
+  <!--修改用户状态为已消费  -->
+  <update id="updateUserStatusSpentCost" parameterType="long">
+ 	update user_froms set  user_status=1 where user_id=#{userId}
+  </update>
+  
+  
+  
 </mapper>

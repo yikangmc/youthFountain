@@ -5,7 +5,7 @@
     <id column="user_service_info_id" property="userServiceInfoId" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="job_category" property="jobCategory" jdbcType="BIGINT" />
-    <result column="user_postion" property="userPostion" jdbcType="BIGINT" />
+    <result column="user_position" property="userPosition" jdbcType="BIGINT" />
     <result column="provence_code" property="provenceCode" jdbcType="BIGINT" />
     <result column="city_code" property="cityCode" jdbcType="BIGINT" />
     <result column="district_code" property="districtCode" jdbcType="BIGINT" />
@@ -19,7 +19,7 @@
     <result column="latitude" property="latitude" jdbcType="DOUBLE" />
   </resultMap>
   <sql id="Base_Column_List" >
-    user_service_info_id, user_id, job_category, user_postion, provence_code, city_code, 
+    user_service_info_id, user_id, job_category, user_position, provence_code, city_code, 
     district_code, address_detail, photo_url, create_time, update_time, is_delete, user_service_name, 
     longitude, latitude
   </sql>
@@ -35,7 +35,7 @@
   </delete>
   <insert id="insert" parameterType="com.yikangyiliao.pension.entity.UserServiceInfo" >
     insert into user_service_infos (user_service_info_id, user_id, job_category, 
-      user_postion, provence_code, city_code, 
+      user_position, provence_code, city_code, 
       district_code, address_detail, photo_url, 
       create_time, update_time, is_delete, 
       user_service_name, longitude, latitude
@@ -60,7 +60,7 @@
         job_category,
       </if>
       <if test="userPostion != null" >
-        user_postion,
+        user_position,
       </if>
       <if test="provenceCode != null" >
         provence_code,
@@ -154,7 +154,7 @@
         job_category = #{jobCategory,jdbcType=BIGINT},
       </if>
       <if test="userPostion != null" >
-        user_postion = #{userPostion,jdbcType=BIGINT},
+        user_position = #{userPostion,jdbcType=BIGINT},
       </if>
       <if test="provenceCode != null" >
         provence_code = #{provenceCode,jdbcType=BIGINT},
@@ -196,7 +196,7 @@
     update user_service_infos
     set user_id = #{userId,jdbcType=BIGINT},
       job_category = #{jobCategory,jdbcType=BIGINT},
-      user_postion = #{userPostion,jdbcType=BIGINT},
+      user_position = #{userPostion,jdbcType=BIGINT},
       provence_code = #{provenceCode,jdbcType=BIGINT},
       city_code = #{cityCode,jdbcType=BIGINT},
       district_code = #{districtCode,jdbcType=BIGINT},
@@ -216,7 +216,7 @@
 	  select 
 			us.user_id		  as userId, 
 			us.job_category   as jobCategory, 
-			us.user_postion   as userPosition, 
+			us.user_position   as userPosition, 
 			us.city_code      as cityCode, 
 			us.district_code  as districtCode, 
 			us.address_detail as addressDetail, 
@@ -235,7 +235,7 @@
   	select 
   			us.user_id		  	as userId, 
 			us.job_category   	as jobCategory, 
-			us.user_postion   	as userPosition, 
+			us.user_position   	as userPosition, 
 			us.city_code      	as cityCode, 
 			us.district_code  	as districtCode, 
 			us.address_detail 	as addressDetail, 
@@ -260,7 +260,7 @@
 			''					as img3
 	from  user_service_infos us
 	where user_id=#{userId}
-and us.user_postion=2;
+and us.user_position=2;
   </select>
   
   <select id="getServicerByserviceDate">
@@ -281,7 +281,7 @@ and us.user_postion=2;
 <!-- 	on ss.service_user_id=usi.user_id -->
 <!-- 	where ss.is_can_selected=0 -->
 <!-- 	and ss.service_date=#{serviceDate} -->
-<!-- 	and usi.user_postion=#{userPosition} -->
+<!-- 	and usi.user_position=#{userPosition} -->
 	
 	select 
 		distinct usi.address_detail,usi.user_id,usi.longitude,usi.latitude
@@ -295,7 +295,7 @@ and us.user_postion=2;
 	on ss.service_user_id=usi.user_id
 	where ss.service_date=#{serviceDate}
 	and ctq.custumer_time_quantum_id=#{custumerQuantumId}
-	and usi.user_postion=#{userPosition}
+	and usi.user_position=#{userPosition}
 	and ss.is_can_selected=1
 
   </select>

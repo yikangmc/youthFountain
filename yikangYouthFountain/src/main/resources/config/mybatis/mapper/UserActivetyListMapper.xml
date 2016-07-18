@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yikangyiliao.pension.dao.UserActivetyListDao" >
+  <resultMap id="BaseResultMap" type="com.yikangyiliao.pension.entity.UserActivetyList" >
+    <id column="user_activety_list_id" property="userActivetyListId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="activety_id" property="activetyId" jdbcType="BIGINT" />
+    <result column="pay_status" property="payStatus" jdbcType="TINYINT" />
+    <result column="audit_status" property="auditStatus" jdbcType="TINYINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_activety_list_id, user_id, activety_id, pay_status, audit_status, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_activety_lists
+    where user_activety_list_id = #{userActivetyListId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user_activety_lists
+    where user_activety_list_id = #{userActivetyListId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yikangyiliao.pension.entity.UserActivetyList" >
+    insert into user_activety_lists (user_activety_list_id, user_id, activety_id, 
+      pay_status, audit_status, create_time, 
+      update_time)
+    values (#{userActivetyListId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{activetyId,jdbcType=BIGINT}, 
+      #{payStatus,jdbcType=TINYINT}, #{auditStatus,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yikangyiliao.pension.entity.UserActivetyList" >
+    insert into user_activety_lists
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userActivetyListId != null" >
+        user_activety_list_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="activetyId != null" >
+        activety_id,
+      </if>
+      <if test="payStatus != null" >
+        pay_status,
+      </if>
+      <if test="auditStatus != null" >
+        audit_status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userActivetyListId != null" >
+        #{userActivetyListId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="activetyId != null" >
+        #{activetyId,jdbcType=BIGINT},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=TINYINT},
+      </if>
+      <if test="auditStatus != null" >
+        #{auditStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yikangyiliao.pension.entity.UserActivetyList" >
+    update user_activety_lists
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="activetyId != null" >
+        activety_id = #{activetyId,jdbcType=BIGINT},
+      </if>
+      <if test="payStatus != null" >
+        pay_status = #{payStatus,jdbcType=TINYINT},
+      </if>
+      <if test="auditStatus != null" >
+        audit_status = #{auditStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_activety_list_id = #{userActivetyListId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yikangyiliao.pension.entity.UserActivetyList" >
+    update user_activety_lists
+    set user_id = #{userId,jdbcType=BIGINT},
+      activety_id = #{activetyId,jdbcType=BIGINT},
+      pay_status = #{payStatus,jdbcType=TINYINT},
+      audit_status = #{auditStatus,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_activety_list_id = #{userActivetyListId,jdbcType=BIGINT}
+  </update>
+ 
+ 
+ <!-- 查询某一个活动的所有的参加的用户  -->
+ <resultMap type="com.yikangyiliao.pension.entity.UserInfo" id="getUserInfoListByActivetyIdResultMap">
+	 <result column="user_id"   property="userId"/>
+	 <result column="user_name" property="userName"/>
+	 <result column="photo_url" property="photoUrl"/>
+ </resultMap>
+  <select id="getUserInfoListByActivetyId" resultMap="getUserInfoListByActivetyIdResultMap" parameterType="long">
+  	select 
+		ui.user_id,
+		ui.user_name,
+		ui.photo_url  
+	from user_activety_lists ual inner join user_infos ui
+	on ual.user_id=ui.user_id
+	where activety_id=#{activetyId}
+  </select>
+  
+  <resultMap type="com.yikangyiliao.pension.entity.Activety" id="getMyActivetyByUserIdResultMap">
+  	<id column="activety_id" 	jdbcType="BIGINT" property="activetyId" />
+    <result column="title" 		jdbcType="VARCHAR" property="title" />
+    <result column="content" 	jdbcType="VARCHAR" property="content" />
+    <result column="cost" 		jdbcType="DOUBLE" property="cost" />
+    <result column="create_time" 	jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" 	jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="person_number" 	jdbcType="INTEGER" property="personNumber" />
+    <result column="check_status" 	jdbcType="TINYINT" property="checkStatus" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+    <result column="map_psition_address" jdbcType="VARCHAR" property="mapPsitionAddress" />
+    <result column="detail_address" jdbcType="VARCHAR" property="detailAddress" />
+    <result column="start_time" 	jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" 		jdbcType="TIMESTAMP" property="endTime" />
+    <result column="entry_start_time" jdbcType="TIMESTAMP" property="entryStartTime" />
+    <result column="entry_end_time" jdbcType="TIMESTAMP" property="entryEndTime" />
+    <result column="activety_mode" 	jdbcType="TINYINT" property="activetyMode" />
+    <result column="recommend_pic_url" jdbcType="VARCHAR" property="recommendPicUrl" />
+	<result column="createUsername" property="createUsername"/>
+	<result column="photo_url"      property="photoUrl"/>
+  </resultMap>
+  
+  <!-- 获取我参见的活动 -->
+  <select id="getMyActivetyByUserId" resultMap="getMyActivetyByUserIdResultMap">
+  	select act.*,
+		ui.user_name as createUsername,
+		ui.user_sex,
+		ui.photo_url
+	 from user_activety_lists ual 
+	inner join activetys act on ual.activety_id=act.activety_id
+	left  join user_infos ui on act.create_user_id=ui.user_id  where ual.user_id=#{userId}
+  </select>
+  
+  
+  
+  
+  
+</mapper>

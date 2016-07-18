@@ -292,6 +292,65 @@ public class InterfaceUtil {
 		serviceClassName.put("01-01", "serviceItemService");
 		mathodClassPath.put("01-01-01", "selectServiceItemService");
 		mathodClassPath.put("01-01-02", "selectServiceItemDesc");
+		
+		
+		
+		//查询问题详情
+		serviceClassName.put("00-29", "questionService");
+		YiKangServiceConfige getQuestionDetailByQuestionId=new YiKangServiceConfige();
+		getQuestionDetailByQuestionId.setServiceName("questionService");
+		getQuestionDetailByQuestionId.setMethodName("getQuestionDetailByQuestionId");
+		getQuestionDetailByQuestionId.setIsFileter(true);
+		mathodServiceConfig.put("00-29-04",getQuestionDetailByQuestionId);
+		
+
+		/**
+		 * @author liushuaic
+		 * @date 2016-05-12 15:03
+		 * @desc 活动管理
+		 **/
+		serviceClassName.put("00-31","activetyService");
+		YiKangServiceConfige getActivetys=new YiKangServiceConfige();
+		getActivetys.setServiceName("activetyService");
+		getActivetys.setMethodName("getActivetys");
+		getActivetys.setIsFileter(false);
+		mathodServiceConfig.put("00-31-01",getActivetys);
+		
+		
+		/**
+		 * @author liushuaic
+		 * @date 2016-05-13 16:27
+		 * @desc 查询某一个活动详情
+		 * */
+		YiKangServiceConfige getActivetyByActivetyId=new YiKangServiceConfige();
+		getActivetyByActivetyId.setServiceName("activetyService");
+		getActivetyByActivetyId.setMethodName("getActivetyByActivetyId");
+		getActivetyByActivetyId.setIsFileter(true);
+		mathodServiceConfig.put("00-31-02",getActivetyByActivetyId);
+		
+		
+		/**
+		 * @author liushuaic
+		 * @date 2016-05-23 15:52
+		 * @desc 添加活动
+		 * **/
+		YiKangServiceConfige insertActivety=new YiKangServiceConfige();
+		insertActivety.setServiceName("activetyService");
+		insertActivety.setMethodName("insertActivety");
+		insertActivety.setIsFileter(false);
+		mathodServiceConfig.put("00-31-03",insertActivety);
+		
+		
+		/**
+		 * @author liushuaic
+		 * @date 2016-05-23 15:56
+		 * @desc 参与活动
+		 * **/
+		YiKangServiceConfige insertMyAcitivety=new YiKangServiceConfige();
+		insertMyAcitivety.setServiceName("activetyService");
+		insertMyAcitivety.setMethodName("insertMyAcitivety");
+		insertMyAcitivety.setIsFileter(false);
+		mathodServiceConfig.put("00-31-04",insertMyAcitivety);
 	}
 	
 	

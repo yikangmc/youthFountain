@@ -16,8 +16,8 @@ public class RedisCache {
 //	@Resource(name="redisTemplate")
 //	private ListOperations<String, String> listOps;
 
-	@Resource(name="redisTemplate")
-	private RedisTemplate<String, String> redisTemplate;
+//	@Resource(name="redisTemplate")
+//	private RedisTemplate<String, String> redisTemplate;
 	
 	
 //	@Resource(name="stringRedisTemplate")
@@ -44,10 +44,10 @@ public class RedisCache {
 	 * @date 2015/11/25 12:06
 	 * 存储字符串
 	 * **/
-	public void putStringKeyStringVal(String key,String val){
-		redisTemplate.opsForValue().set(key, val);
+//	public void putStringKeyStringVal(String key,String val){
+//		redisTemplate.opsForValue().set(key, val);
 //		return redisTemplate.opsForList().leftPush(key, val);
-	}
+//	}
 	
 	/**
 	 * @author liushuaic
@@ -55,8 +55,8 @@ public class RedisCache {
 	 * 获取字符串
 	 * 
 	 * **/
-	public String getStringByStringKey(String key){
-		return	redisTemplate.opsForValue().get(key);
+//	public String getStringByStringKey(String key){
+//		return	redisTemplate.opsForValue().get(key);
 //		return redisTemplate.opsForList().rightPopAndLeftPush(key, key);
-	}
+//	}
 }

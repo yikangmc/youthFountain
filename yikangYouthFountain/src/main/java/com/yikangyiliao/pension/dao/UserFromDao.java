@@ -30,4 +30,11 @@ public interface UserFromDao {
      * @desc  修改定单状态 
      * */
     int updateUserStatusByUserId(Map<String,Object> paramData);
+    
+    /**
+     * @author liushuaic
+     * @date 2016/03/01 10:56
+     * @desc 修改用户消费状态
+     * */
+    int updateUserStatusSpentCost(Long userId);
 }

@@ -200,4 +200,13 @@ public class UserManager {
 		return userDao.updateInvitationCodeByUserId(paramData);
 	}
 	
+	 /**
+     * @author liushuaic
+     * @date 2016/03/14 11:58
+     * @dsec 查询某一个员工的信息，根据 用户id 
+     * */
+	public UserServiceInfo getUserServiceInfoByUserIdTwo(Long userId){
+		return userServiceInfoDao.getUserServiceInfoByUserIdTwo(userId);
+	}
+	
 }
