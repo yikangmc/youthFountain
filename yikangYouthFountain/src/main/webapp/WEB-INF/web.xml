@@ -21,7 +21,7 @@
 	</filter-mapping>
 	
 	<servlet>
-		<servlet-name>springMVC</servlet-name>
+		<ssservlet-name>springMVC</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>

@@ -351,6 +351,26 @@ public class InterfaceUtil {
 		insertMyAcitivety.setMethodName("insertMyAcitivety");
 		insertMyAcitivety.setIsFileter(false);
 		mathodServiceConfig.put("00-31-04",insertMyAcitivety);
+		
+		
+		/**
+		 * @author liushuaic
+		 * @date 2016-07-20 16:08
+		 * @desc 文章编辑
+		 * */
+		serviceClassName.put("00-43", "forumPostTextEditorService");
+		YiKangServiceConfige updateForumPostTxtEditorOwnUserIdByUniqueCode=new YiKangServiceConfige();
+		updateForumPostTxtEditorOwnUserIdByUniqueCode.setServiceName("forumPostTextEditorService");
+		updateForumPostTxtEditorOwnUserIdByUniqueCode.setMethodName("updateForumPostTxtEditorOwnUserIdByUniqueCode");
+		updateForumPostTxtEditorOwnUserIdByUniqueCode.setIsFileter(true);
+		mathodServiceConfig.put("00-43-01", updateForumPostTxtEditorOwnUserIdByUniqueCode);
+		
+		YiKangServiceConfige inserSelective=new YiKangServiceConfige();
+		inserSelective.setServiceName("forumPostTextEditorService");
+		inserSelective.setMethodName("inserSelective");
+		inserSelective.setIsFileter(true);
+		mathodServiceConfig.put("00-43-02", inserSelective);
+		
 	}
 	
 	
