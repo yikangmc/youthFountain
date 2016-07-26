@@ -371,6 +371,12 @@ public class InterfaceUtil {
 		inserSelective.setIsFileter(true);
 		mathodServiceConfig.put("00-43-02", inserSelective);
 		
+		YiKangServiceConfige getForumPostTextByUniqueCode=new YiKangServiceConfige();
+		getForumPostTextByUniqueCode.setServiceName("forumPostTextEditorService");
+		getForumPostTextByUniqueCode.setMethodName("getForumPostTextByUniqueCode");
+		getForumPostTextByUniqueCode.setIsFileter(true);
+		mathodServiceConfig.put("00-43-03", getForumPostTextByUniqueCode);
+		
 	}
 	
 	
