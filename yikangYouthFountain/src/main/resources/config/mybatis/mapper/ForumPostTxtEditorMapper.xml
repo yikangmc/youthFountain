@@ -147,6 +147,9 @@
 		update forum_post_txt_editors 
 		set own_user_id=#{userId},
 			editor_type=#{editorType}
+			<if test="null != dataId">
+				,data_id=#{dataId}
+			</if>
 		 where
 		unique_code=#{uniqueCode} and is_delete=0
 	</update>

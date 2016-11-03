@@ -52,11 +52,12 @@ public class ForumPostTextEditorManager {
      * @desc 修改唯一标记的，所属用户 
      * **/
    
-	public  int updateForumPostTxtEditorOwnUserIdEditorTypeByUniqueCode(Long userId,Byte editorType,String uniqueCode){
+	public  int updateForumPostTxtEditorOwnUserIdEditorTypeByUniqueCode(Long userId,Byte editorType,String uniqueCode,Long dataId){
 		Map<String,Object> paramData=new HashMap<String,Object>();
 		paramData.put("userId", userId);
 		paramData.put("editorType", editorType);
 		paramData.put("uniqueCode", uniqueCode);
+		paramData.put("dataId", dataId);
 		return forumPostTxtEditorDao.updateForumPostTxtEditorOwnUserIdEditorTypeByUniqueCode(paramData);
 	}
 	 /**

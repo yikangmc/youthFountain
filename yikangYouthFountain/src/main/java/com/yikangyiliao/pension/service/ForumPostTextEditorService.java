@@ -24,16 +24,20 @@ public class ForumPostTextEditorService {
 
 		ResponseMessage<String> responseMessage = new ResponseMessage<String>();
 		if (paramMap.containsKey("userId") && paramMap.containsKey("uniqueCode")
-				&& paramMap.containsKey("editorType")) {
+				&& paramMap.containsKey("editorType") && (paramMap.get("editorType").toString().equals("3") && paramMap.containsKey("dataId"))) {
 			Byte editorType = Byte.valueOf(paramMap.get("editorType").toString());
 			Long userId = Long.valueOf(paramMap.get("userId").toString());
 			String uniqueCode = paramMap.get("uniqueCode").toString();
-			int row = forumPostTextEditorManager.updateForumPostTxtEditorOwnUserIdEditorTypeByUniqueCode(userId,
-					editorType, uniqueCode);
+			Long dataId=null;
+			if(paramMap.containsKey("dataId")){
+				String dataIdStr=paramMap.get("dataId").toString();
+				dataId=Long.valueOf(dataIdStr);
+			}
+
+			int row = forumPostTextEditorManager.updateForumPostTxtEditorOwnUserIdEditorTypeByUniqueCode(userId,editorType,uniqueCode,dataId);
 			if (row == 0) {
 				responseMessage.setStatus(ExceptionConstants.forumPostTextEditException.unquieCodeIsOverdue.errorCode);
-				responseMessage
-						.setMessage(ExceptionConstants.forumPostTextEditException.unquieCodeIsOverdue.errorMessage);
+				responseMessage.setMessage(ExceptionConstants.forumPostTextEditException.unquieCodeIsOverdue.errorMessage);
 			}
 		} else {
 			responseMessage.setStatus(ExceptionConstants.parameterException.parameterException.errorCode);
