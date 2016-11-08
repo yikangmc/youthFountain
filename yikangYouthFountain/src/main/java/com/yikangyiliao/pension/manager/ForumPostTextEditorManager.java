@@ -33,6 +33,7 @@ public class ForumPostTextEditorManager {
     	forumPostTxtEditor.setOwnUserId(Long.valueOf("-2"));
     	forumPostTxtEditor.setIsDelete(Byte.valueOf("0"));
     	forumPostTxtEditor.setUniqueCode(uniqueCode);
+    	forumPostTxtEditor.setDataId(-2l);
     	return forumPostTxtEditorDao.insertSelective(forumPostTxtEditor);
     }
     
